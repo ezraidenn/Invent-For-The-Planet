@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import {
@@ -162,31 +162,22 @@ export default function BatchDetailPage() {
           <Map
             defaultCenter={mapCenter}
             defaultZoom={14}
-            mapId="recimap-batch"
             gestureHandling="greedy"
             disableDefaultUI
             className="h-full w-full"
-            colorScheme={isDark ? "DARK" : "LIGHT"}
           >
             {route.map((stop, i) => (
-              <AdvancedMarker
+              <Marker
                 key={i}
                 position={{ lat: stop.lat, lng: stop.lng }}
                 onClick={() => setActiveStop(i)}
-              >
-                <div
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-bold shadow-lg transition-all",
-                    i === activeStop
-                      ? "scale-125 border-emerald-400 bg-emerald-500 text-white"
-                      : i < activeStop && batch.status === "in_progress"
-                      ? "border-green-500 bg-green-500 text-white"
-                      : "border-white bg-background text-foreground"
-                  )}
-                >
-                  {i + 1}
-                </div>
-              </AdvancedMarker>
+                label={{
+                  text: String(i + 1),
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                }}
+              />
             ))}
           </Map>
         </APIProvider>

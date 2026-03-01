@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import {
@@ -239,58 +239,60 @@ export default function MapPage() {
 
       {/* Map */}
       <div className="relative flex-1" style={{ minHeight: 0 }}>
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}>
+        {!process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-muted/50">
+            <MapPin className="h-12 w-12 text-muted-foreground/50" />
+            <p className="text-sm text-muted-foreground">Google Maps API key not configured</p>
+            <p className="max-w-xs text-center text-xs text-muted-foreground/70">Set NEXT_PUBLIC_GOOGLE_MAPS_KEY in your environment variables to enable the map</p>
+          </div>
+        ) : (
+        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
           <Map
             defaultCenter={userLocation}
             defaultZoom={DEFAULT_MAP_ZOOM}
-            mapId="recimap-main"
             gestureHandling="greedy"
             disableDefaultUI={false}
             style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
-            colorScheme={isDark ? "DARK" : "LIGHT"}
           >
             {/* Listing markers */}
             {showListings &&
               filteredListings?.map((listing) => (
-                <AdvancedMarker
+                <Marker
                   key={listing.id}
                   position={{ lat: listing.latitude, lng: listing.longitude }}
                   onClick={() => handleListingClick(listing)}
-                >
-                  <div
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white shadow-lg"
-                    style={{
-                      backgroundColor:
-                        MATERIAL_COLORS[listing.materialType] || "#64748b",
-                    }}
-                  >
-                    <Package className="h-4 w-4 text-white" />
-                  </div>
-                </AdvancedMarker>
+                  title={`${MATERIAL_LABELS[listing.materialType] || listing.materialType} - ${listing.estimatedKg}kg`}
+                />
               ))}
 
             {/* Center markers */}
             {showCenters &&
               centers?.map((center) => (
-                <AdvancedMarker
+                <Marker
                   key={center.id}
                   position={{ lat: center.latitude, lng: center.longitude }}
                   onClick={() => handleCenterClick(center)}
-                >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-white bg-emerald-600 shadow-lg">
-                    <Factory className="h-4 w-4 text-white" />
-                  </div>
-                </AdvancedMarker>
+                  title={center.name}
+                  icon={{
+                    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%2316a34a"/><text x="16" y="22" text-anchor="middle" font-size="18" fill="white">♻</text></svg>'),
+                    scaledSize: typeof google !== "undefined" ? new google.maps.Size(32, 32) : undefined,
+                  }}
+                />
               ))}
 
             {/* User location */}
-            <AdvancedMarker position={userLocation}>
-              <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-lg">
-                <MapPin className="h-3 w-3 text-white" />
-              </div>
-            </AdvancedMarker>
+            <Marker
+              position={userLocation}
+              title="Your location"
+              icon={{
+                url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%233b82f6" stroke="white" stroke-width="3"/></svg>'),
+                scaledSize: typeof google !== "undefined" ? new google.maps.Size(24, 24) : undefined,
+                anchor: typeof google !== "undefined" ? new google.maps.Point(12, 12) : undefined,
+              }}
+            />
           </Map>
         </APIProvider>
+        )}
       </div>
 
       {/* Selected listing info panel */}

@@ -120,13 +120,13 @@ export async function GET(request: NextRequest) {
       totalTx: sql<number>`count(*)`,
       totalKg: sql<number>`coalesce(sum(${transactions.totalKg}), 0)`,
       totalAmount: sql<number>`coalesce(sum(${transactions.totalAmount}), 0)`,
-    }).from(transactions);
+    }).from(transactions).where(gte(transactions.createdAt, cutoff));
 
     const listingStats = await db.select({
       materialType: listings.materialType,
       count: sql<number>`count(*)`,
       totalKg: sql<number>`coalesce(sum(${listings.estimatedKg}), 0)`,
-    }).from(listings).groupBy(listings.materialType);
+    }).from(listings).where(gte(listings.createdAt, cutoff)).groupBy(listings.materialType);
 
     // Best price per material
     const priceMap: Record<string, { centerId: string; price: number }[]> = {};

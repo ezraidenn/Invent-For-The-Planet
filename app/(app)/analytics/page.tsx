@@ -163,32 +163,14 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-5 p-4 lg:p-6">
-      {/* Header + Time Range */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
-            <Brain className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <h1 className="font-display text-xl font-bold lg:text-2xl">Market Analytics</h1>
-            <p className="text-xs text-muted-foreground">Real-time predictions &amp; technical indicators</p>
-          </div>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
+          <Brain className="h-5 w-5 text-white" />
         </div>
-        <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/30 p-1">
-          {RANGES.map(r => (
-            <button
-              key={r}
-              onClick={() => setRange(r)}
-              className={cn(
-                "rounded-md px-3 py-1.5 text-xs font-semibold transition-all",
-                range === r
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {r}
-            </button>
-          ))}
+        <div>
+          <h1 className="font-display text-xl font-bold lg:text-2xl">Market Analytics</h1>
+          <p className="text-xs text-muted-foreground">Real-time predictions &amp; technical indicators</p>
         </div>
       </div>
 
@@ -249,55 +231,75 @@ export default function AnalyticsPage() {
         <div className="grid gap-5 lg:grid-cols-5">
           {/* Main chart area */}
           <div className="space-y-4 lg:col-span-3">
-            {/* Material header card */}
-            <Card className="border-border/50">
-              <CardContent className="flex items-center justify-between p-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-4 w-4 rounded-full" style={{ backgroundColor: MATERIAL_COLORS[activeMat!] || "#64748b" }} />
-                  <div>
-                    <h2 className="font-display text-lg font-bold">{MATERIAL_LABELS[activeMat!] || activeMat}</h2>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>H: {formatCurrency(matData.high)}</span>
-                      <span>L: {formatCurrency(matData.low)}</span>
-                      <span>{matData.daily.length} days</span>
+            {/* Material header + inline controls */}
+            <Card className="sticky top-0 z-20 border-border/50">
+              <CardContent className="space-y-3 p-4">
+                {/* Price header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="h-4 w-4 rounded-full" style={{ backgroundColor: MATERIAL_COLORS[activeMat!] || "#64748b" }} />
+                    <div>
+                      <h2 className="font-display text-lg font-bold">{MATERIAL_LABELS[activeMat!] || activeMat}</h2>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>H: {formatCurrency(matData.high)}</span>
+                        <span>L: {formatCurrency(matData.low)}</span>
+                        <span>{matData.daily.length} days</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-display text-2xl font-bold">{formatCurrency(matData.currentPrice)}<span className="text-sm font-normal text-muted-foreground">/kg</span></p>
+                    <div className={cn("flex items-center justify-end gap-1 text-sm font-bold",
+                      matData.pctChange > 0 ? "text-emerald-500" : matData.pctChange < 0 ? "text-red-500" : "text-muted-foreground"
+                    )}>
+                      {matData.pctChange > 0 ? <ArrowUpRight className="h-4 w-4" /> : matData.pctChange < 0 ? <ArrowDownRight className="h-4 w-4" /> : null}
+                      {matData.pctChange > 0 ? "+" : ""}{matData.pctChange}%
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-display text-2xl font-bold">{formatCurrency(matData.currentPrice)}<span className="text-sm font-normal text-muted-foreground">/kg</span></p>
-                  <div className={cn("flex items-center justify-end gap-1 text-sm font-bold",
-                    matData.pctChange > 0 ? "text-emerald-500" : matData.pctChange < 0 ? "text-red-500" : "text-muted-foreground"
-                  )}>
-                    {matData.pctChange > 0 ? <ArrowUpRight className="h-4 w-4" /> : matData.pctChange < 0 ? <ArrowDownRight className="h-4 w-4" /> : null}
-                    {matData.pctChange > 0 ? "+" : ""}{matData.pctChange}%
+                {/* Chart mode tabs + time range — all inline */}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/30 p-0.5">
+                    {([
+                      { key: "price", label: "Price", icon: LineChart },
+                      { key: "bollinger", label: "Bollinger", icon: CandlestickChart },
+                      { key: "rsi", label: "RSI", icon: Activity },
+                      { key: "macd", label: "MACD", icon: BarChart3 },
+                    ] as const).map(tab => (
+                      <button
+                        key={tab.key}
+                        onClick={() => setChartMode(tab.key)}
+                        className={cn(
+                          "flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-medium transition-all",
+                          chartMode === tab.key
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <tab.icon className="h-3 w-3" />
+                        <span className="hidden sm:inline">{tab.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-0.5 rounded-lg border border-border/50 bg-muted/30 p-0.5">
+                    {RANGES.map(r => (
+                      <button
+                        key={r}
+                        onClick={() => setRange(r)}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 text-[11px] font-semibold transition-all",
+                          range === r
+                            ? "bg-primary text-primary-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        {r}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </CardContent>
             </Card>
-
-            {/* Chart mode tabs */}
-            <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/30 p-1">
-              {([
-                { key: "price", label: "Price + EMA", icon: LineChart },
-                { key: "bollinger", label: "Bollinger", icon: CandlestickChart },
-                { key: "rsi", label: "RSI", icon: Activity },
-                { key: "macd", label: "MACD", icon: BarChart3 },
-              ] as const).map(tab => (
-                <button
-                  key={tab.key}
-                  onClick={() => setChartMode(tab.key)}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
-                    chartMode === tab.key
-                      ? "bg-background text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <tab.icon className="h-3 w-3" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
-              ))}
-            </div>
 
             {/* Price + EMA chart */}
             {chartMode === "price" && (
