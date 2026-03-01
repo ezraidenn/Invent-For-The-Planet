@@ -22,7 +22,6 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
-import { DebugSwitcher } from "@/components/debug-switcher";
 import { PageTransition } from "@/components/motion";
 import type { UserRole } from "@/types";
 
@@ -169,7 +168,6 @@ export function AppShell({ user, children }: AppShellProps) {
                 {ROLE_LABELS[user.role]}
               </span>
             </div>
-            <DebugSwitcher />
           </div>
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -198,7 +196,6 @@ export function AppShell({ user, children }: AppShellProps) {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            <DebugSwitcher />
           </div>
         </header>
 

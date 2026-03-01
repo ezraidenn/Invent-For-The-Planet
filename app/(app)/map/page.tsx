@@ -3,7 +3,8 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Ably from "ably";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -123,6 +124,7 @@ interface CenterPrice {
 
 export default function MapPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const [selectedListing, setSelectedListing] = useState<ListingMarker | null>(null);
@@ -157,6 +159,30 @@ export default function MapPage() {
       );
     }
   }, []);
+
+  // ─── Ably real-time: new listings appear instantly on map ─────
+  useEffect(() => {
+    const key = process.env.NEXT_PUBLIC_ABLY_KEY;
+    if (!key) return;
+    const client = new Ably.Realtime({ key, clientId: "map-" + Math.random().toString(36).slice(2) });
+    const channel = client.channels.get("listings:map");
+
+    channel.subscribe("listing:new", (msg: Ably.Message) => {
+      const d = msg.data as any;
+      if (!d?.id || !d?.latitude || !d?.longitude) return;
+      // Add to React Query cache so the marker appears instantly
+      queryClient.setQueryData<ListingMarker[]>(["map-listings"], (old) => {
+        if (!old) return [d];
+        if (old.some((l) => l.id === d.id)) return old;
+        return [{ ...d, status: "scheduled", userName: "New", address: null }, ...old];
+      });
+    });
+
+    return () => {
+      channel.unsubscribe();
+      client.close();
+    };
+  }, [queryClient]);
 
   const { data: listings, isLoading: listingsLoading, refetch: refetchListings } = useQuery({
     queryKey: ["map-listings"],

@@ -27,6 +27,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -47,7 +48,7 @@ import { cn } from "@/lib/utils";
 import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 const MERIDA_CENTER = { lat: 20.9674, lng: -89.6235 };
-const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
+const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "";
 
 export default function ListingsPage() {
   const { data: session } = useSession();
@@ -189,6 +190,7 @@ export default function ListingsPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create New Listing</DialogTitle>
+              <DialogDescription>Add a recyclable material listing with location and details.</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4">
               <AIScanner
