@@ -39,6 +39,7 @@ import { toast } from "sonner";
 import { DEFAULT_MAP_CENTER, STATUS_COLORS, MATERIAL_LABELS, MATERIAL_COLORS } from "@/lib/constants";
 import { formatKg, formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { compressImage, dataUrlSizeKB } from "@/lib/image-compress";
 
 // Stop status progression
 const STOP_FLOW = ["pending", "arrived", "weighed", "photographed", "confirmed"] as const;
@@ -80,15 +81,43 @@ export default function BatchDetailPage() {
 
   // Per-stop action state
   const [weighInput, setWeighInput] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");  // compressed base64 data URL
+  const [photoPreview, setPhotoPreview] = useState(""); // thumbnail preview
+  const [compressing, setCompressing] = useState(false);
   const [stopActing, setStopActing] = useState(false);
+  const stopPhotoRef = useRef<HTMLInputElement>(null);
 
   // Delivery state
   const [deliveryPhase, setDeliveryPhase] = useState<"stops" | "select_center" | "delivery_photo" | "summary" | "rating">("stops");
   const [selectedCenterId, setSelectedCenterId] = useState("");
-  const [deliveryPhoto, setDeliveryPhoto] = useState("");
+  const [deliveryPhoto, setDeliveryPhoto] = useState(""); // compressed base64 data URL
+  const [deliveryPhotoPreview, setDeliveryPhotoPreview] = useState("");
+  const [deliveryCompressing, setDeliveryCompressing] = useState(false);
+  const deliveryPhotoRef = useRef<HTMLInputElement>(null);
   const [deliveryResult, setDeliveryResult] = useState<any>(null);
   const [rating, setRating] = useState(0);
+
+  // Camera capture + compress handler
+  const handlePhotoCapture = async (file: File, target: "stop" | "delivery") => {
+    const setComp = target === "stop" ? setCompressing : setDeliveryCompressing;
+    setComp(true);
+    try {
+      const dataUrl = await compressImage(file);
+      const sizeKb = dataUrlSizeKB(dataUrl);
+      if (target === "stop") {
+        setPhotoUrl(dataUrl);
+        setPhotoPreview(dataUrl);
+      } else {
+        setDeliveryPhoto(dataUrl);
+        setDeliveryPhotoPreview(dataUrl);
+      }
+      toast.success(`Photo compressed: ${sizeKb}KB`);
+    } catch (err: any) {
+      toast.error("Failed to process photo");
+    } finally {
+      setComp(false);
+    }
+  };
 
   const { data: batch, isLoading, refetch } = useQuery({
     queryKey: ["batch", id],
@@ -191,6 +220,8 @@ export default function BatchDetailPage() {
         // Reset inputs
         setWeighInput("");
         setPhotoUrl("");
+        setPhotoPreview("");
+        if (stopPhotoRef.current) stopPhotoRef.current.value = "";
 
         // If all confirmed, prompt for delivery
         if (result.progress?.allConfirmed) {
@@ -500,30 +531,58 @@ export default function BatchDetailPage() {
                               <div className="space-y-2">
                                 <p className="text-xs font-medium flex items-center gap-1.5">
                                   <Camera className="h-3.5 w-3.5 text-purple-500" />
-                                  Upload photo proof of material
+                                  Take photo proof of material
                                 </p>
-                                <div className="flex gap-2">
-                                  <Input
-                                    type="text"
-                                    placeholder="Photo URL (camera/upload)"
-                                    value={photoUrl}
-                                    onChange={(e) => setPhotoUrl(e.target.value)}
-                                    className="h-9 text-sm"
-                                  />
+                                <input
+                                  ref={stopPhotoRef}
+                                  type="file"
+                                  accept="image/*"
+                                  capture="environment"
+                                  className="hidden"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handlePhotoCapture(file, "stop");
+                                  }}
+                                />
+                                {photoPreview ? (
+                                  <div className="space-y-2">
+                                    <div className="relative rounded-lg overflow-hidden border border-purple-200 dark:border-purple-800">
+                                      <img src={photoPreview} alt="Proof" className="w-full h-32 object-cover" />
+                                      <button
+                                        onClick={() => { setPhotoUrl(""); setPhotoPreview(""); if (stopPhotoRef.current) stopPhotoRef.current.value = ""; }}
+                                        className="absolute top-1 right-1 h-6 w-6 rounded-full bg-black/60 flex items-center justify-center text-white"
+                                      >
+                                        <XCircle className="h-4 w-4" />
+                                      </button>
+                                      <div className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[9px] text-white">
+                                        {dataUrlSizeKB(photoUrl)}KB compressed
+                                      </div>
+                                    </div>
+                                    <Button
+                                      className="w-full gap-1.5 bg-purple-500 hover:bg-purple-600 text-white"
+                                      size="sm"
+                                      onClick={() => stopAction(i, "photo", { photoUrl })}
+                                      disabled={stopActing}
+                                    >
+                                      {stopActing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+                                      Submit Photo Proof
+                                    </Button>
+                                  </div>
+                                ) : (
                                   <Button
-                                    className="gap-1.5 bg-purple-500 hover:bg-purple-600 text-white"
-                                    size="sm"
-                                    onClick={() => {
-                                      if (!photoUrl.trim()) { toast.error("Enter photo URL"); return; }
-                                      stopAction(i, "photo", { photoUrl: photoUrl.trim() });
-                                    }}
-                                    disabled={stopActing || !photoUrl.trim()}
+                                    variant="outline"
+                                    className="w-full h-20 gap-2 border-dashed border-2 border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30"
+                                    onClick={() => stopPhotoRef.current?.click()}
+                                    disabled={compressing}
                                   >
-                                    {stopActing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-                                    Upload
+                                    {compressing ? (
+                                      <><Loader2 className="h-5 w-5 animate-spin" /> Compressing...</>
+                                    ) : (
+                                      <><Camera className="h-5 w-5" /> Open Camera</>
+                                    )}
                                   </Button>
-                                </div>
-                                <p className="text-[10px] text-muted-foreground">Photo is sent to the generator as proof of weight and material.</p>
+                                )}
+                                <p className="text-[10px] text-muted-foreground">Photo is compressed and sent to the generator as proof.</p>
                               </div>
                             )}
 
@@ -609,13 +668,53 @@ export default function BatchDetailPage() {
               This photo is sent to each generator as proof.
             </p>
           </div>
-          <Input
-            type="text"
-            placeholder="Paste delivery photo URL"
-            value={deliveryPhoto}
-            onChange={(e) => setDeliveryPhoto(e.target.value)}
-            className="h-11"
+          <input
+            ref={deliveryPhotoRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handlePhotoCapture(file, "delivery");
+            }}
           />
+          {deliveryPhotoPreview ? (
+            <div className="space-y-3">
+              <div className="relative rounded-xl overflow-hidden border-2 border-purple-200 dark:border-purple-800 shadow-lg">
+                <img src={deliveryPhotoPreview} alt="Delivery proof" className="w-full h-48 object-cover" />
+                <button
+                  onClick={() => { setDeliveryPhoto(""); setDeliveryPhotoPreview(""); if (deliveryPhotoRef.current) deliveryPhotoRef.current.value = ""; }}
+                  className="absolute top-2 right-2 h-8 w-8 rounded-full bg-black/60 flex items-center justify-center text-white hover:bg-black/80"
+                >
+                  <XCircle className="h-5 w-5" />
+                </button>
+                <div className="absolute bottom-2 left-2 rounded-lg bg-black/60 px-2 py-1 text-[10px] text-white">
+                  {dataUrlSizeKB(deliveryPhoto)}KB compressed
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                onClick={() => deliveryPhotoRef.current?.click()}
+              >
+                <Camera className="h-4 w-4" /> Retake Photo
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="outline"
+              className="w-full h-32 gap-3 border-dashed border-2 border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30 flex-col"
+              onClick={() => deliveryPhotoRef.current?.click()}
+              disabled={deliveryCompressing}
+            >
+              {deliveryCompressing ? (
+                <><Loader2 className="h-8 w-8 animate-spin" /><span>Compressing photo...</span></>
+              ) : (
+                <><Camera className="h-8 w-8" /><span className="text-sm font-medium">Open Camera</span><span className="text-[10px] text-muted-foreground">Photo will be auto-compressed</span></>
+              )}
+            </Button>
+          )}
           <p className="text-[11px] text-muted-foreground text-center">
             The photo proves that the material was actually delivered and weighed at the center.
           </p>

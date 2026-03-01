@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReciMap — Tu Basura Se Convierte en Comida</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --green: #16a34a;
+    --green-light: #22c55e;
+    --green-dark: #15803d;
+    --teal: #0d9488;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --purple: #8b5cf6;
+    --blue: #3b82f6;
+    --pink: #ec4899;
+    --bg: #fafbfc;
+    --text: #0f172a;
+    --text-muted: #64748b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ────── HERO ────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a2f 40%, #0f2419 100%);
+    color: white;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: rgba(255,255,255,0.7);
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #22c55e, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-stat .label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .scroll-arrow {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: rgba(255,255,255,0.4);
+    font-size: 2rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* ────── PUNCHLINE SECTION ────── */
+  .punchline {
+    padding: 6rem 2rem;
+    text-align: center;
+    background: white;
+  }
+
+  .punchline h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 700;
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.2;
+  }
+
+  .punchline p {
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+  }
+
+  .emoji-big {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ────── CIRCULAR DIAGRAM ────── */
+  .circle-section {
+    padding: 5rem 2rem 6rem;
+    background: linear-gradient(180deg, #f0fdf4 0%, white 100%);
+    text-align: center;
+  }
+
+  .circle-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .circle-section .subtitle {
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .circle-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .circle-ring {
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+  }
+
+  .circle-step {
+    position: absolute;
+    width: 130px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-step .icon-bubble {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 0.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 2;
+  }
+
+  .circle-step .step-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .circle-step .step-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+
+  /* Position steps in a circle */
+  .step-1 { top: 2%; left: 50%; }
+  .step-2 { top: 25%; left: 93%; }
+  .step-3 { top: 65%; left: 93%; }
+  .step-4 { top: 90%; left: 50%; }
+  .step-5 { top: 65%; left: 7%; }
+  .step-6 { top: 25%; left: 7%; }
+
+  .circle-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 3;
+  }
+
+  .circle-center .logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 0.5rem;
+    color: white;
+    box-shadow: 0 8px 30px rgba(22, 163, 74, 0.3);
+  }
+
+  .circle-center p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--green-dark);
+  }
+
+  /* SVG arrows ring */
+  .ring-svg {
+    position: absolute;
+    inset: 10%;
+    width: 80%;
+    height: 80%;
+    z-index: 1;
+  }
+
+  .ring-svg circle {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2;
+    stroke-dasharray: 8 6;
+    opacity: 0.3;
+  }
+
+  /* ────── IMPACT CARDS ────── */
+  .impact-section {
+    padding: 5rem 2rem;
+    background: white;
+  }
+
+  .impact-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .impact-section .subtitle {
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .impact-card {
+    border-radius: 1.25rem;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .impact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+
+  .impact-card .card-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .impact-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .impact-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .impact-card .stat-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+  }
+
+  .card-green { background: linear-gradient(135deg, #f0fdf4, #ecfdf5); }
+  .card-green .stat-big { color: var(--green); }
+  .card-blue { background: linear-gradient(135deg, #eff6ff, #f0f9ff); }
+  .card-blue .stat-big { color: var(--blue); }
+  .card-amber { background: linear-gradient(135deg, #fffbeb, #fefce8); }
+  .card-amber .stat-big { color: var(--amber); }
+  .card-purple { background: linear-gradient(135deg, #faf5ff, #f5f3ff); }
+  .card-purple .stat-big { color: var(--purple); }
+
+  /* ────── MATERIALS FLOW ────── */
+  .materials-section {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, #fafbfc 0%, #f0fdf4 100%);
+  }
+
+  .materials-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .material-flow {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .material-item {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+  }
+
+  .material-item:hover { transform: translateY(-3px); }
+
+  .material-item .mat-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .material-item h4 { font-weight: 700; margin-bottom: 0.25rem; }
+  .material-item .from { font-size: 0.8rem; color: var(--text-muted); }
+  .material-item .arrow { font-size: 1.5rem; margin: 0.5rem 0; color: var(--green); }
+  .material-item .to { font-size: 0.85rem; font-weight: 600; color: var(--green-dark); }
+
+  /* ────── HOMES SECTION ────── */
+  .homes-section {
+    padding: 5rem 2rem;
+    background: white;
+    text-align: center;
+  }
+
+  .homes-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .homes-section p {
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  .home-steps {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .home-step {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .home-step .step-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 0 auto 0.75rem;
+    color: white;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.25);
+  }
+
+  .home-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .home-step p { font-size: 0.75rem; color: var(--text-muted); }
+
+  .step-arrow {
+    font-size: 1.5rem;
+    color: var(--green-light);
+    margin-top: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ────── CTA SECTION ────── */
+  .cta-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #0f172a, #1e3a2f);
+    color: white;
+  }
+
+  .cta-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .cta-section p {
+    color: rgba(255,255,255,0.6);
+    max-width: 550px;
+    margin: 0 auto 2rem;
+    font-size: 1.05rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 30px rgba(22, 163, 74, 0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(22, 163, 74, 0.45);
+  }
+
+  /* ────── FOOTER ────── */
+  footer {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+    background: #0a1015;
+  }
+
+  /* ────── RESPONSIVE ────── */
+  @media (max-width: 640px) {
+    .hero-stats { gap: 1.25rem; }
+    .hero-stat .num { font-size: 1.8rem; }
+    .circle-step { width: 90px; }
+    .circle-step .icon-bubble { width: 52px; height: 52px; font-size: 1.4rem; }
+    .circle-step .step-label { font-size: 0.7rem; }
+    .circle-step .step-desc { font-size: 0.6rem; }
+    .circle-center .logo { width: 56px; height: 56px; font-size: 1.8rem; border-radius: 14px; }
+    .circle-center p { font-size: 0.85rem; }
+    .step-arrow { display: none; }
+  }
+
+  /* ────── ANIMATIONS ────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .ring-svg { animation: spin-slow 60s linear infinite; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">♻️ Economía Circular en Hogares</span>
+    <h1>
+      Tu basura de hoy es<br>
+      <span class="gradient-text">la comida de mañana</span>
+    </h1>
+    <p class="hero-sub">
+      Cada botella, cada caja de cartón, cada residuo orgánico de tu casa
+      tiene el poder de convertirse en alimento. No es magia — es economía circular.
+      Y empieza en tu puerta.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">40%</div><div class="label">De residuos domésticos<br>son orgánicos</div></div>
+      <div class="hero-stat"><div class="num">$286B</div><div class="label">Valor de materiales<br>perdidos/año en LATAM</div></div>
+      <div class="hero-stat"><div class="num">12x</div><div class="label">ROI por kg reciclado<br>vs. extraer nuevo</div></div>
+    </div>
+  </div>
+  <a href="#punchline" class="scroll-arrow">↓</a>
+</section>
+
+<!-- ══════════════ PUNCHLINE ══════════════ -->
+<section class="punchline fade-in" id="punchline">
+  <span class="emoji-big">🍽️</span>
+  <h2>¿Qué tiene que ver tu basura con la comida?</h2>
+  <p>
+    <strong>Todo.</strong> Cuando separas tus residuos, activas una cadena invisible:
+    tu cartón se convierte en empaques para alimentos. Tu PET se transforma en fibra
+    para invernaderos. Tus residuos orgánicos se convierten en composta que nutre
+    la tierra que produce las frutas que compras la siguiente semana.
+    <br><br>
+    <strong>El ciclo es real. Y empieza en tu casa.</strong>
+  </p>
+</section>
+
+<!-- ══════════════ CIRCULAR DIAGRAM ══════════════ -->
+<section class="circle-section">
+  <h2 class="fade-in">El Ciclo Completo</h2>
+  <p class="subtitle fade-in">Cada paso conecta tu hogar con el sistema alimentario</p>
+
+  <div class="circle-wrapper fade-in">
+    <div class="circle-ring">
+      <!-- SVG dashed ring -->
+      <svg class="ring-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" />
+      </svg>
+
+      <!-- Center -->
+      <div class="circle-center">
+        <div class="logo">♻️</div>
+        <p>ReciMap</p>
+      </div>
+
+      <!-- Steps arranged in a circle -->
+      <div class="circle-step step-1">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #ef4444, #f97316);">🏠</div>
+        <div class="step-label">1. Tu Hogar</div>
+        <div class="step-desc">Generas residuos diarios</div>
+      </div>
+
+      <div class="circle-step step-2">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #3b82f6, #6366f1);">📱</div>
+        <div class="step-label">2. Escaneas</div>
+        <div class="step-desc">IA clasifica tu material</div>
+      </div>
+
+      <div class="circle-step step-3">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">🚛</div>
+        <div class="step-label">3. Recolección</div>
+        <div class="step-desc">Ruta inteligente optimizada</div>
+      </div>
+
+      <div class="circle-step step-4">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #22c55e, #0d9488);">🏭</div>
+        <div class="step-label">4. Centro</div>
+        <div class="step-desc">Procesamiento y transformación</div>
+      </div>
+
+      <div class="circle-step step-5">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">🌱</div>
+        <div class="step-label">5. Nuevo Recurso</div>
+        <div class="step-desc">Composta, material reciclado</div>
+      </div>
+
+      <div class="circle-step step-6">
+        <div class="icon-bubble" style="background: linear-gradient(135deg, #06b6d4, #22c55e);">🍎</div>
+        <div class="step-label">6. Alimento</div>
+        <div class="step-desc">Vuelve a tu mesa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MATERIALS → FOOD ══════════════ -->
+<section class="materials-section">
+  <h2 class="fade-in">De Tu Casa a Tu Plato: Cada Material Cuenta</h2>
+
+  <div class="material-flow fade-in">
+    <div class="material-item">
+      <div class="mat-icon">📦</div>
+      <h4>Cartón</h4>
+      <div class="from">Cajas de Amazon, cereal, zapatos</div>
+      <div class="arrow">↓</div>
+      <div class="to">Empaques de alimentos orgánicos + cajas de frutas en mercados</div>
+    </div>
+
+    <div class="material-item">
+      <div class="mat-icon">🍶</div>
+      <h4>PET / Plástico</h4>
+      <div class="from">Botellas, envases, contenedores</div>
+      <div class="arrow">↓</div>
+      <div class="to">Fibra para mallas de invernadero → donde se cultivan jitomates y pepinos</div>
+    </div>
+
+    <div class="material-item">
+      <div class="mat-icon">🥫</div>
+      <h4>Aluminio</h4>
+      <div class="from">Latas de refresco, comida</div>
+      <div class="arrow">↓</div>
+      <div class="to">Estructuras de sistemas de riego → producción agrícola eficiente</div>
+    </div>
+
+    <div class="material-item">
+      <div class="mat-icon">🍳</div>
+      <h4>Aceite de Cocina</h4>
+      <div class="from">Aceite usado de frituras</div>
+      <div class="arrow">↓</div>
+      <div class="to">Biodiésel para tractores y transporte de alimentos a mercados</div>
+    </div>
+
+    <div class="material-item">
+      <div class="mat-icon">🍌</div>
+      <h4>Orgánicos</h4>
+      <div class="from">Cáscaras, restos de comida</div>
+      <div class="arrow">↓</div>
+      <div class="to">Composta rica en nutrientes → suelo fértil → frutas y verduras frescas</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ HOMES / HOW IT WORKS ══════════════ -->
+<section class="homes-section">
+  <h2 class="fade-in">El Hogar es el Centro de Todo</h2>
+  <p class="fade-in">
+    Cada hogar genera en promedio <strong>1.2 kg de residuos diarios</strong>.
+    Con ReciMap, esos residuos no van al relleno sanitario —
+    generan <strong>ingresos, empleo y alimentos</strong>.
+  </p>
+
+  <div class="home-steps fade-in">
+    <div class="home-step">
+      <div class="step-num">1</div>
+      <h4>Separa</h4>
+      <p>Clasifica en tu hogar con ayuda de la IA</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="home-step">
+      <div class="step-num">2</div>
+      <h4>Publica</h4>
+      <p>Escanea y lista tu material en ReciMap</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="home-step">
+      <div class="step-num">3</div>
+      <h4>Recibe</h4>
+      <p>Un recolector recoge en tu puerta</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="home-step">
+      <div class="step-num">4</div>
+      <h4>Gana</h4>
+      <p>EcoPoints + pago directo por tus materiales</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="home-step">
+      <div class="step-num">5</div>
+      <h4>Alimenta</h4>
+      <p>Tu residuo se transforma en recursos para producir alimentos</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ IMPACT NUMBERS ══════════════ -->
+<section class="impact-section">
+  <h2 class="fade-in">El Impacto Real</h2>
+  <p class="subtitle fade-in">Lo que pasa cuando cada hogar participa</p>
+
+  <div class="impact-grid fade-in">
+    <div class="impact-card card-green">
+      <div class="card-emoji">🌳</div>
+      <h3>Árboles Salvados</h3>
+      <p>Cada tonelada de cartón reciclado salva 17 árboles que producen el oxígeno de 170 personas por día</p>
+      <div class="stat-big">17 árboles/ton</div>
+    </div>
+
+    <div class="impact-card card-blue">
+      <div class="card-emoji">💧</div>
+      <h3>Agua Conservada</h3>
+      <p>Reciclar 1 tonelada de papel ahorra 26,000 litros de agua — suficiente para regar un huerto familiar un año</p>
+      <div class="stat-big">26,000 L/ton</div>
+    </div>
+
+    <div class="impact-card card-amber">
+      <div class="card-emoji">🌾</div>
+      <h3>Composta → Comida</h3>
+      <p>1 kg de composta produce hasta 5 kg de alimentos. Los residuos de 10 familias alimentan un huerto comunitario</p>
+      <div class="stat-big">5x multiplicador</div>
+    </div>
+
+    <div class="impact-card card-purple">
+      <div class="card-emoji">💰</div>
+      <h3>Ingreso Comunitario</h3>
+      <p>Un recolector promedio gana $3,000-8,000 MXN/semana. Cada hogar que separa habilita este empleo verde</p>
+      <div class="stat-big">+$8K/semana</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-section">
+  <h2>Tu próxima botella<br>puede ser la próxima cosecha 🌱</h2>
+  <p>
+    La economía circular no es un concepto lejano. Es lo que pasa
+    cuando decides que tu basura vale más de lo que crees.
+  </p>
+  <a href="/" class="cta-btn">♻️ Empieza con ReciMap</a>
+</section>
+
+<footer>
+  ReciMap — Circular Materials · Invent for the Planet 2026 · Tecnológico de Monterrey
+</footer>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Counter animation for hero stats
+  function animateCounters() {
+    document.querySelectorAll('.hero-stat .num').forEach(el => {
+      const text = el.textContent;
+      el.style.opacity = '1';
+    });
+  }
+  setTimeout(animateCounters, 500);
+</script>
+
+</body>
+</html>
