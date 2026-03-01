@@ -131,18 +131,59 @@ export default function WalletPage() {
     ? REWARDS_CATALOG
     : REWARDS_CATALOG.filter((r) => r.category === activeCategory);
 
+  const txCount = transactions?.length || 0;
+  const joinedDate = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+    : "recently";
+
   const statCards = [
-    { label: "EcoPoints", value: ecoPoints.toLocaleString(), icon: Leaf, gradient: "from-emerald-500 to-teal-500" },
-    { label: "Total Recycled", value: formatKg(totalKg), icon: Scale, gradient: "from-blue-500 to-cyan-500" },
-    { label: "CO₂ Avoided", value: formatCO2(totalKg), icon: TrendingUp, gradient: "from-green-500 to-emerald-500" },
-    { label: "Earnings", value: formatCurrency(totalEarnings), icon: Wallet, gradient: "from-amber-500 to-orange-500" },
+    { label: "EcoPoints", value: ecoPoints.toLocaleString(), sub: `${level.name} tier`, icon: Leaf, gradient: "from-emerald-500 to-teal-500" },
+    { label: "Total Recycled", value: formatKg(totalKg), sub: `across ${txCount} deliveries`, icon: Scale, gradient: "from-blue-500 to-cyan-500" },
+    { label: "CO₂ Avoided", value: formatCO2(totalKg), sub: `since ${joinedDate}`, icon: TrendingUp, gradient: "from-violet-500 to-purple-500" },
+    { label: "Earnings", value: formatCurrency(totalEarnings), sub: `${txCount} transactions`, icon: Wallet, gradient: "from-amber-500 to-orange-500" },
   ];
 
   const impactCards = [
-    { label: "Trees Saved", value: Math.max(1, Math.round(totalKg * 0.017)).toString(), sub: "~17 trees per ton recycled", icon: TreePine, bg: "bg-emerald-50 dark:bg-emerald-950/30", iconBg: "bg-emerald-100 dark:bg-emerald-900/50", iconColor: "text-emerald-600 dark:text-emerald-400", labelColor: "text-emerald-600 dark:text-emerald-400", valueColor: "text-emerald-700 dark:text-emerald-300", subColor: "text-emerald-500/70" },
-    { label: "Water Saved", value: `${Math.round(totalKg * 3.5).toLocaleString()}L`, sub: "~3.5L per kg recycled", icon: Droplets, bg: "bg-blue-50 dark:bg-blue-950/30", iconBg: "bg-blue-100 dark:bg-blue-900/50", iconColor: "text-blue-600 dark:text-blue-400", labelColor: "text-blue-600 dark:text-blue-400", valueColor: "text-blue-700 dark:text-blue-300", subColor: "text-blue-500/70" },
-    { label: "Energy Saved", value: `${Math.round(totalKg * 2.4).toLocaleString()} kWh`, sub: "~2.4 kWh per kg recycled", icon: Zap, bg: "bg-amber-50 dark:bg-amber-950/30", iconBg: "bg-amber-100 dark:bg-amber-900/50", iconColor: "text-amber-600 dark:text-amber-400", labelColor: "text-amber-600 dark:text-amber-400", valueColor: "text-amber-700 dark:text-amber-300", subColor: "text-amber-500/70" },
-    { label: "Landfill Avoided", value: formatKg(totalKg), sub: "kept out of landfills", icon: Trash2, bg: "bg-purple-50 dark:bg-purple-950/30", iconBg: "bg-purple-100 dark:bg-purple-900/50", iconColor: "text-purple-600 dark:text-purple-400", labelColor: "text-purple-600 dark:text-purple-400", valueColor: "text-purple-700 dark:text-purple-300", subColor: "text-purple-500/70" },
+    {
+      label: "Trees Saved", value: Math.max(1, Math.round(totalKg * 0.017)).toString(), sub: "~17 trees per ton recycled", icon: TreePine,
+      bg: "bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/20",
+      iconBg: "bg-white dark:bg-emerald-900/60 shadow-sm shadow-emerald-200/50 dark:shadow-none",
+      iconColor: "text-emerald-600 dark:text-emerald-400",
+      labelColor: "text-gray-600 dark:text-gray-400",
+      valueColor: "text-gray-900 dark:text-white",
+      subColor: "text-gray-400 dark:text-gray-500",
+      border: "border border-emerald-200/60 dark:border-emerald-800/30",
+    },
+    {
+      label: "Water Saved", value: `${Math.round(totalKg * 3.5).toLocaleString()}L`, sub: "~3.5L per kg recycled", icon: Droplets,
+      bg: "bg-gradient-to-br from-sky-50 to-blue-50 dark:from-sky-950/40 dark:to-blue-950/20",
+      iconBg: "bg-white dark:bg-blue-900/60 shadow-sm shadow-blue-200/50 dark:shadow-none",
+      iconColor: "text-blue-500 dark:text-blue-400",
+      labelColor: "text-gray-600 dark:text-gray-400",
+      valueColor: "text-gray-900 dark:text-white",
+      subColor: "text-gray-400 dark:text-gray-500",
+      border: "border border-blue-200/60 dark:border-blue-800/30",
+    },
+    {
+      label: "Energy Saved", value: `${Math.round(totalKg * 2.4).toLocaleString()} kWh`, sub: "~2.4 kWh per kg recycled", icon: Zap,
+      bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/40 dark:to-yellow-950/20",
+      iconBg: "bg-white dark:bg-amber-900/60 shadow-sm shadow-amber-200/50 dark:shadow-none",
+      iconColor: "text-amber-500 dark:text-amber-400",
+      labelColor: "text-gray-600 dark:text-gray-400",
+      valueColor: "text-gray-900 dark:text-white",
+      subColor: "text-gray-400 dark:text-gray-500",
+      border: "border border-amber-200/60 dark:border-amber-800/30",
+    },
+    {
+      label: "Landfill Avoided", value: formatKg(totalKg), sub: "kept out of landfills", icon: Trash2,
+      bg: "bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/40 dark:to-purple-950/20",
+      iconBg: "bg-white dark:bg-purple-900/60 shadow-sm shadow-purple-200/50 dark:shadow-none",
+      iconColor: "text-violet-500 dark:text-violet-400",
+      labelColor: "text-gray-600 dark:text-gray-400",
+      valueColor: "text-gray-900 dark:text-white",
+      subColor: "text-gray-400 dark:text-gray-500",
+      border: "border border-violet-200/60 dark:border-violet-800/30",
+    },
   ];
 
   return (
@@ -251,6 +292,7 @@ export default function WalletPage() {
                       </div>
                       <p className="text-[11px] text-muted-foreground">{stat.label}</p>
                       <p className="truncate font-display text-lg font-bold lg:text-xl">{stat.value}</p>
+                      {stat.sub && <p className="mt-0.5 text-[10px] text-muted-foreground/70">{stat.sub}</p>}
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -333,20 +375,20 @@ export default function WalletPage() {
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3, delay: i * 0.08 }}
-                          className={`rounded-xl p-4 ${card.bg}`}
+                          className={`rounded-xl p-4 ${card.bg} ${card.border}`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${card.iconBg}`}>
-                              <card.icon className={`h-4 w-4 ${card.iconColor}`} />
+                            <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${card.iconBg}`}>
+                              <card.icon className={`h-5 w-5 ${card.iconColor}`} />
                             </div>
                             <div>
-                              <p className={`text-[11px] ${card.labelColor}`}>{card.label}</p>
-                              <p className={`font-display text-lg font-bold ${card.valueColor}`}>
+                              <p className={`text-[11px] font-medium ${card.labelColor}`}>{card.label}</p>
+                              <p className={`font-display text-xl font-bold ${card.valueColor}`}>
                                 {card.value}
                               </p>
                             </div>
                           </div>
-                          <p className={`mt-1.5 text-[10px] ${card.subColor}`}>{card.sub}</p>
+                          <p className={`mt-2 text-[10px] ${card.subColor}`}>{card.sub}</p>
                         </motion.div>
                       ))}
                     </div>
