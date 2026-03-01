@@ -238,7 +238,7 @@ export default function MapPage() {
       </div>
 
       {/* Map */}
-      <div className="relative flex-1" style={{ minHeight: 0 }}>
+      <div className="relative flex-1" style={{ minHeight: 0, minWidth: 0 }}>
         {!process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-muted/50">
             <MapPin className="h-12 w-12 text-muted-foreground/50" />
@@ -246,13 +246,17 @@ export default function MapPage() {
             <p className="max-w-xs text-center text-xs text-muted-foreground/70">Set NEXT_PUBLIC_GOOGLE_MAPS_KEY in your environment variables to enable the map</p>
           </div>
         ) : (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}>
+        <APIProvider 
+          apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}
+          onLoad={() => console.log('Google Maps API loaded successfully')}
+        >
           <Map
             defaultCenter={userLocation}
             defaultZoom={DEFAULT_MAP_ZOOM}
             gestureHandling="greedy"
             disableDefaultUI={false}
-            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, minHeight: '400px' }}
+            onCameraChanged={(ev) => console.log('Map camera changed:', ev.detail)}
           >
             {/* Listing markers */}
             {showListings &&
