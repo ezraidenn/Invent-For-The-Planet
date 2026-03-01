@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -11,6 +11,10 @@ import {
   Loader2,
   Trash2,
   Clock,
+  MapPin,
+  Navigation,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +56,27 @@ export default function ListingsPage() {
   const [pricingMode, setPricingMode] = useState("free");
   const [pricePerKg, setPricePerKg] = useState("");
   const [description, setDescription] = useState("");
+  const [userLat, setUserLat] = useState<number | null>(null);
+  const [userLng, setUserLng] = useState<number | null>(null);
+  const [locationStatus, setLocationStatus] = useState<"loading" | "granted" | "denied">("loading");
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setUserLat(pos.coords.latitude);
+          setUserLng(pos.coords.longitude);
+          setLocationStatus("granted");
+        },
+        () => {
+          setLocationStatus("denied");
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    } else {
+      setLocationStatus("denied");
+    }
+  }, []);
 
   const { data: listings, isLoading } = useQuery({
     queryKey: ["my-listings"],
@@ -117,14 +142,17 @@ export default function ListingsPage() {
       return;
     }
 
+    const lat = userLat ?? 20.9674 + (Math.random() - 0.5) * 0.02;
+    const lng = userLng ?? -89.6235 + (Math.random() - 0.5) * 0.02;
+
     createMutation.mutate({
       materialType,
       estimatedKg: parseFloat(estimatedKg),
       pricingMode,
       pricePerKg: pricingMode === "for_sale" ? parseFloat(pricePerKg) : undefined,
       description: description || undefined,
-      latitude: 20.9674 + (Math.random() - 0.5) * 0.05,
-      longitude: -89.6235 + (Math.random() - 0.5) * 0.05,
+      latitude: lat,
+      longitude: lng,
     });
   }
 
@@ -235,6 +263,56 @@ export default function ListingsPage() {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
+
+              {/* Location status */}
+              <div className="rounded-lg border p-3">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <Label className="text-xs font-medium">Location</Label>
+                </div>
+                {locationStatus === "loading" && (
+                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Getting your location...
+                  </div>
+                )}
+                {locationStatus === "granted" && (
+                  <div className="mt-2 flex items-center gap-2 text-xs text-emerald-600">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    Using your current location ({userLat?.toFixed(4)}, {userLng?.toFixed(4)})
+                  </div>
+                )}
+                {locationStatus === "denied" && (
+                  <div className="mt-2 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-amber-600">
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      Location access denied. Using Merida default area.
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-1.5 text-xs"
+                      onClick={() => {
+                        setLocationStatus("loading");
+                        navigator.geolocation?.getCurrentPosition(
+                          (pos) => {
+                            setUserLat(pos.coords.latitude);
+                            setUserLng(pos.coords.longitude);
+                            setLocationStatus("granted");
+                          },
+                          () => setLocationStatus("denied"),
+                          { enableHighAccuracy: true }
+                        );
+                      }}
+                    >
+                      <Navigation className="h-3 w-3" />
+                      Retry Location
+                    </Button>
+                  </div>
+                )}
+              </div>
+
               <Button
                 type="submit"
                 className="w-full"

@@ -19,6 +19,16 @@ import {
   Leaf,
   Scale,
   Award,
+  BadgeCheck,
+  Crown,
+  Sparkles,
+  TreePine,
+  Recycle,
+  Truck,
+  Flame,
+  Heart,
+  Globe,
+  Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,30 +128,31 @@ export default function ProfilePage() {
       {/* User hero card */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
         <Card className="overflow-hidden">
-          <div className={`h-20 bg-gradient-to-r ${roleGradient} opacity-90`} />
-          <CardContent className="-mt-10 flex flex-col items-center gap-3 pb-6 text-center sm:flex-row sm:items-end sm:text-left">
-            <Avatar className="h-20 w-20 border-4 border-background shadow-lg">
-              <AvatarImage src={user?.avatarUrl} />
-              <AvatarFallback className={`bg-gradient-to-br ${roleGradient} text-xl font-bold text-white`}>
-                {getInitials(user?.name || "U")}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 pt-2">
-              <h2 className="font-display text-xl font-bold">{user?.name}</h2>
-              <p className="text-sm text-muted-foreground">{user?.email}</p>
-              <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                <Badge className={`bg-gradient-to-r ${roleGradient} text-white`}>
-                  {ROLE_LABELS[user?.role] || user?.role}
-                </Badge>
-                {user?.isVerified && (
-                  <Badge variant="outline" className="gap-1 border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
-                    <Shield className="h-3 w-3" />
-                    Verified
+          <div className={`relative bg-gradient-to-r ${roleGradient} px-6 pb-16 pt-8 sm:pb-8`}>
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
+              <Avatar className="h-20 w-20 border-4 border-white/30 shadow-xl">
+                <AvatarImage src={user?.avatarUrl} />
+                <AvatarFallback className="bg-white/20 text-xl font-bold text-white backdrop-blur-sm">
+                  {getInitials(user?.name || "U")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-center sm:text-left">
+                <h2 className="font-display text-xl font-bold text-white">{user?.name}</h2>
+                <p className="text-sm text-white/70">{user?.email}</p>
+                <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                  <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                    {ROLE_LABELS[user?.role] || user?.role}
                   </Badge>
-                )}
+                  {user?.isVerified && (
+                    <Badge className="gap-1 bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                      <Shield className="h-3 w-3" />
+                      Verified
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </motion.div>
 
@@ -165,6 +176,57 @@ export default function ProfilePage() {
             </Card>
           ))}
         </div>
+      </motion.div>
+
+      {/* Badges & Achievements */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18 }}>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <BadgeCheck className="h-5 w-5 text-violet-500" />
+              Badges & Achievements
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+              {[
+                { icon: Recycle, label: "First Recycle", desc: "Completed first listing", gradient: "from-emerald-500 to-teal-500", earned: (user?.totalKg || 0) > 0 },
+                { icon: Truck, label: "10 Deliveries", desc: "Delivered 10+ batches", gradient: "from-blue-500 to-indigo-500", earned: (user?.totalRatings || 0) >= 10 },
+                { icon: Flame, label: "100kg Club", desc: "Recycled 100+ kg", gradient: "from-orange-500 to-red-500", earned: (user?.totalKg || 0) >= 100 },
+                { icon: TreePine, label: "Eco Warrior", desc: "Recycled 500+ kg", gradient: "from-green-600 to-emerald-600", earned: (user?.totalKg || 0) >= 500 },
+                { icon: Crown, label: "1 Ton Hero", desc: "Recycled 1000+ kg", gradient: "from-amber-500 to-yellow-500", earned: (user?.totalKg || 0) >= 1000 },
+                { icon: Star, label: "Top Rated", desc: "Rating above 4.5", gradient: "from-yellow-500 to-amber-500", earned: (user?.rating || 0) >= 4.5 },
+                { icon: Heart, label: "Eco-Hero", desc: "Redeemed badge perk", gradient: "from-violet-500 to-purple-500", earned: (user?.ecoPoints || 0) >= 200 },
+                { icon: Globe, label: "Planet Saver", desc: "Avoided 1t CO₂", gradient: "from-cyan-500 to-blue-500", earned: (user?.totalKg || 0) >= 500 },
+                { icon: Sparkles, label: "Premium", desc: "ReciMap Premium", gradient: "from-pink-500 to-rose-500", earned: false },
+                { icon: BadgeCheck, label: "Verified", desc: "Account verified", gradient: "from-emerald-500 to-green-600", earned: !!user?.isVerified },
+              ].map((badge) => (
+                <div
+                  key={badge.label}
+                  className={`group relative flex flex-col items-center gap-1.5 rounded-xl border p-3 text-center transition-all ${
+                    badge.earned
+                      ? "border-border bg-card hover:-translate-y-0.5 hover:shadow-md"
+                      : "border-border/30 bg-muted/30 opacity-50"
+                  }`}
+                >
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl shadow-sm ${
+                    badge.earned
+                      ? `bg-gradient-to-br ${badge.gradient}`
+                      : "bg-muted"
+                  }`}>
+                    {badge.earned ? (
+                      <badge.icon className="h-5 w-5 text-white" />
+                    ) : (
+                      <Lock className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
+                  <p className="text-[10px] font-semibold leading-tight">{badge.label}</p>
+                  <p className="text-[8px] text-muted-foreground leading-tight">{badge.desc}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Edit form */}

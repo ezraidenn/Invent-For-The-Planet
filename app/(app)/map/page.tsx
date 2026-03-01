@@ -763,7 +763,7 @@ export default function MapPage() {
 
       {/* ─── Selected listing panel ─── */}
       {selectedListing && (
-        <div className="absolute bottom-16 left-2 right-2 z-20 lg:bottom-4 sm:left-4 sm:right-4 lg:max-w-md">
+        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-auto lg:top-4 lg:left-4 lg:right-auto lg:w-96">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-3">
@@ -829,7 +829,7 @@ export default function MapPage() {
 
       {/* ─── Selected center panel ─── */}
       {selectedCenter && (
-        <div className="absolute bottom-16 left-2 right-2 z-20 lg:bottom-4 sm:left-4 sm:right-4 lg:max-w-md">
+        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-auto lg:top-4 lg:left-4 lg:right-auto lg:w-96">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-2">
