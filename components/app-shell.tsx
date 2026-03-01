@@ -104,7 +104,7 @@ export function AppShell({ user, children }: AppShellProps) {
   useRealtimeNotifications();
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* ──── Desktop Sidebar (lg+) ──── */}
       <aside className="fixed inset-y-0 left-0 z-50 hidden w-[260px] flex-col border-r border-border/50 bg-card/50 backdrop-blur-2xl lg:flex">
         {/* Logo */}
@@ -182,9 +182,9 @@ export function AppShell({ user, children }: AppShellProps) {
       </aside>
 
       {/* ──── Main area ──── */}
-      <div className="flex min-h-screen flex-1 flex-col lg:pl-[260px]">
+      <div className="flex h-screen flex-1 flex-col lg:pl-[260px]">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border/50 bg-background/80 px-4 backdrop-blur-2xl lg:hidden">
+        <header className="shrink-0 z-40 flex h-14 items-center justify-between border-b border-border/50 bg-background px-4 lg:hidden">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-sm">
               <Leaf className="h-4 w-4 text-white" />
@@ -203,7 +203,7 @@ export function AppShell({ user, children }: AppShellProps) {
         </header>
 
         {/* Desktop breadcrumb bar */}
-        <header className="sticky top-0 z-40 hidden h-12 items-center justify-between border-b border-border/50 bg-background/80 px-6 backdrop-blur-2xl lg:flex">
+        <header className="shrink-0 z-40 hidden h-12 items-center justify-between border-b border-border/50 bg-background px-6 lg:flex">
           <h1 className="text-sm font-medium capitalize text-muted-foreground">
             {pathname.split("/").filter(Boolean).pop()?.replace(/-/g, " ") || "Dashboard"}
           </h1>
@@ -214,12 +214,12 @@ export function AppShell({ user, children }: AppShellProps) {
         </header>
 
         {/* Main content */}
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto">
           <PageTransition>{children}</PageTransition>
         </main>
 
         {/* ──── Mobile bottom nav ──── */}
-        <nav className="sticky bottom-0 z-50 border-t border-border/50 bg-background/80 backdrop-blur-2xl lg:hidden">
+        <nav className="shrink-0 z-50 border-t border-border/50 bg-background/80 backdrop-blur-2xl lg:hidden">
           <div className="flex items-center justify-around">
             {items.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/");

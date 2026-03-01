@@ -139,7 +139,7 @@ export default function BatchDetailPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col">
+    <div className="flex h-full flex-col">
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-border/50 bg-background/80 backdrop-blur-sm px-4 py-3">
         <Button variant="ghost" size="icon" onClick={() => router.back()}>

@@ -146,7 +146,7 @@ export default function MapPage() {
   });
 
   return (
-    <div className="relative flex h-[calc(100vh-7rem)] flex-col">
+    <div className="relative flex h-full flex-col">
       {/* Filter bar */}
       <div className="border-b bg-background">
         <div className="flex items-center gap-2 px-4 py-2">

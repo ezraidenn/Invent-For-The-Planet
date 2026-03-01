@@ -84,7 +84,7 @@ export default function ListingDetailPage() {
   const materialColor = MATERIAL_COLORS[listing.materialType] || "#64748b";
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col">
+    <div className="flex h-full flex-col">
       {/* Header */}
       <div className="flex items-center gap-3 border-b bg-background px-4 py-3">
         <Button variant="ghost" size="icon" onClick={() => router.back()}>
