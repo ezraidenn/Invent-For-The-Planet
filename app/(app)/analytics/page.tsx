@@ -305,8 +305,8 @@ export default function AnalyticsPage() {
             {chartMode === "price" && (
               <Card className="border-border/50">
                 <CardContent className="p-4">
-                  <div className="h-[320px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-[320px] w-full" style={{ minHeight: 320 }}>
+                    <ResponsiveContainer width="100%" height={320} minHeight={320}>
                       <ComposedChart data={mainChartData} margin={{ top: 8, right: 8, left: -15, bottom: 0 }}>
                         <defs>
                           <linearGradient id="gradPrice" x1="0" y1="0" x2="0" y2="1">
@@ -344,8 +344,8 @@ export default function AnalyticsPage() {
             {chartMode === "bollinger" && (
               <Card className="border-border/50">
                 <CardContent className="p-4">
-                  <div className="h-[320px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-[320px] w-full" style={{ minHeight: 320 }}>
+                    <ResponsiveContainer width="100%" height={320} minHeight={320}>
                       <ComposedChart data={mainChartData.filter((d: any) => !d.isForecast)} margin={{ top: 8, right: 8, left: -15, bottom: 0 }}>
                         <defs>
                           <linearGradient id="bbFill" x1="0" y1="0" x2="0" y2="1">
@@ -376,8 +376,8 @@ export default function AnalyticsPage() {
             {chartMode === "rsi" && (
               <Card className="border-border/50">
                 <CardContent className="p-4">
-                  <div className="h-[260px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-[260px] w-full" style={{ minHeight: 260 }}>
+                    <ResponsiveContainer width="100%" height={260} minHeight={260}>
                       <ComposedChart data={rsiData} margin={{ top: 8, right: 8, left: -15, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.4} />
                         <XAxis dataKey="date" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
@@ -403,8 +403,8 @@ export default function AnalyticsPage() {
             {chartMode === "macd" && (
               <Card className="border-border/50">
                 <CardContent className="p-4">
-                  <div className="h-[260px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-[260px] w-full" style={{ minHeight: 260 }}>
+                    <ResponsiveContainer width="100%" height={260} minHeight={260}>
                       <ComposedChart data={macdData} margin={{ top: 8, right: 8, left: -15, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.4} />
                         <XAxis dataKey="date" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
@@ -440,8 +440,8 @@ export default function AnalyticsPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-2">
-                  <div className="h-[200px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="h-[200px] w-full" style={{ minHeight: 200 }}>
+                    <ResponsiveContainer width="100%" height={200} minHeight={200}>
                       <BarChart data={demandChartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }} barCategoryGap="20%">
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.4} vertical={false} />
                         <XAxis dataKey="name" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />

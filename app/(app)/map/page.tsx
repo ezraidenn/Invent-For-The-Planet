@@ -146,9 +146,9 @@ export default function MapPage() {
   });
 
   return (
-    <div className="relative flex flex-col" style={{ height: '100%', minHeight: 0 }}>
+    <div className="relative flex flex-col overflow-hidden" style={{ height: '100%', minHeight: 0, width: '100%', maxWidth: '100vw' }}>
       {/* Filter bar */}
-      <div className="border-b bg-background">
+      <div className="shrink-0 border-b bg-background">
         <div className="flex items-center gap-2 px-4 py-2">
           <Button
             variant="ghost"
