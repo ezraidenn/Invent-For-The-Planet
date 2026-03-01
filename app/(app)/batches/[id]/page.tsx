@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -66,6 +66,20 @@ interface RouteOptResult {
   totalDistanceKm: number;
   totalDurationMin: number;
   savings: { naiveDistanceKm: number; optimizedDistanceKm: number; savedKm: number; savedPercent: number };
+}
+
+// Fits map bounds to show all stop markers
+function MapBoundsFitter({ coords }: { coords: { lat: number; lng: number }[] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!map || coords.length === 0) return;
+    if (typeof google === "undefined" || !google.maps) return;
+    const bounds = new google.maps.LatLngBounds();
+    for (const c of coords) bounds.extend(c);
+    // Add padding so markers aren't at the very edge
+    map.fitBounds(bounds, { top: 30, right: 30, bottom: 30, left: 30 });
+  }, [map, coords]);
+  return null;
 }
 
 export default function BatchDetailPage() {
@@ -257,7 +271,25 @@ export default function BatchDetailPage() {
   }
 
   const route: any[] = batch.optimizedRoute || [];
-  const mapCenter = route.length > 0 ? { lat: route[0].lat, lng: route[0].lng } : DEFAULT_MAP_CENTER;
+
+  // Resolve coordinates for a route stop — use route data first, then fall back to listing data
+  const getStopCoords = (i: number): { lat: number; lng: number } | null => {
+    const stop = route[i];
+    if (!stop) return null;
+    // Route data has lat/lng
+    if (stop.lat && stop.lng) return { lat: Number(stop.lat), lng: Number(stop.lng) };
+    // Fallback: find matching listing by listingId
+    const listing = batch.listings?.find((l: any) => l.id === stop.listingId);
+    if (listing?.latitude && listing?.longitude) return { lat: Number(listing.latitude), lng: Number(listing.longitude) };
+    return null;
+  };
+
+  // Collect all valid stop coordinates for map bounds
+  const allStopCoords = route.map((_: any, i: number) => getStopCoords(i)).filter(Boolean) as { lat: number; lng: number }[];
+  const mapCenter = allStopCoords.length > 0
+    ? { lat: allStopCoords.reduce((s, c) => s + c.lat, 0) / allStopCoords.length,
+        lng: allStopCoords.reduce((s, c) => s + c.lng, 0) / allStopCoords.length }
+    : DEFAULT_MAP_CENTER;
 
   // Use optimized stops if available
   const displayStops = routeOpt?.stops || route.map((s: any, i: number) => ({
@@ -268,7 +300,7 @@ export default function BatchDetailPage() {
   // Get listing for a stop
   const getListingForStop = (stop: any, i: number) => {
     if (stop.materialType) return stop;
-    const lid = route[i]?.listingId;
+    const lid = stop.listingId || route[i]?.listingId;
     return batch.listings?.find((l: any) => l.id === lid);
   };
 
@@ -319,16 +351,17 @@ export default function BatchDetailPage() {
       {/* ─── STOPS PHASE ─── */}
       {deliveryPhase === "stops" && (
         <>
-          {/* Map with route */}
+          {/* Map with route — all stops */}
           <div className="h-44 shrink-0">
             <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}>
-              <Map defaultCenter={mapCenter} defaultZoom={14} gestureHandling="greedy" disableDefaultUI className="h-full w-full">
-                {route.map((stop: any, i: number) => {
+              <Map defaultCenter={mapCenter} defaultZoom={12} gestureHandling="greedy" disableDefaultUI className="h-full w-full">
+                <MapBoundsFitter coords={allStopCoords} />
+                {allStopCoords.map((coords, i) => {
                   const status = getStopStatus(i);
                   return (
                     <Marker
                       key={i}
-                      position={{ lat: stop.lat, lng: stop.lng }}
+                      position={coords}
                       onClick={() => setActiveStop(i)}
                       label={{
                         text: status === "confirmed" ? "✓" : String(i + 1),
@@ -450,9 +483,9 @@ export default function BatchDetailPage() {
 
                           <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={(e) => {
                             e.stopPropagation();
-                            const lat = stop.lat || route[i]?.lat;
-                            const lng = stop.lng || route[i]?.lng;
-                            if (lat && lng) window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, "_blank");
+                            const coords = getStopCoords(i);
+                            if (coords) window.open(`https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`, "_blank");
+                            else toast.error("No coordinates for this stop");
                           }}>
                             <Navigation className="h-4 w-4" />
                           </Button>
