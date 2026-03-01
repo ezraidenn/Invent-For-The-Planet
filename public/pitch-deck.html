@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReciMap — Pitch Deck | Invent for the Planet 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green: #16a34a;
+    --green-light: #22c55e;
+    --emerald: #10b981;
+    --teal: #0d9488;
+    --blue: #3b82f6;
+    --indigo: #6366f1;
+    --purple: #8b5cf6;
+    --amber: #f59e0b;
+    --pink: #ec4899;
+    --dark: #0f172a;
+    --dark2: #1e293b;
+    --gray: #64748b;
+    --light: #f8fafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--dark);
+    color: white;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── SLIDE SYSTEM ─── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+    position: relative;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+
+  .slide-content {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ─── SLIDE COUNTER ─── */
+  .slide-num {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── DECORATIVE ELEMENTS ─── */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .glow-green { background: #22c55e; }
+  .glow-blue { background: #3b82f6; }
+  .glow-purple { background: #8b5cf6; }
+  .glow-amber { background: #f59e0b; }
+
+  .dot-grid {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+
+  .title-xxl {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  .title-xl {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .title-lg {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .title-md {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-warm {
+    background: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-emerald {
+    background: linear-gradient(135deg, #10b981, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+  }
+
+  .tag-green { border-color: rgba(34,197,94,0.3); color: #6ee7b7; background: rgba(34,197,94,0.08); }
+  .tag-amber { border-color: rgba(245,158,11,0.3); color: #fcd34d; background: rgba(245,158,11,0.08); }
+  .tag-blue { border-color: rgba(59,130,246,0.3); color: #93c5fd; background: rgba(59,130,246,0.08); }
+  .tag-purple { border-color: rgba(139,92,246,0.3); color: #c4b5fd; background: rgba(139,92,246,0.08); }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+
+  .card-sm {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+
+  /* ─── GRIDS ─── */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── STAT NUMBERS ─── */
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+  }
+
+  /* ─── FLOW ARROWS ─── */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .flow-item {
+    text-align: center;
+    padding: 1.25rem;
+    min-width: 120px;
+  }
+
+  .flow-item .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .flow-item h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.15rem; }
+  .flow-item p { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: rgba(34,197,94,0.5);
+    flex-shrink: 0;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #22c55e, #3b82f6, #8b5cf6);
+    border-radius: 1px;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2px solid var(--dark);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+    transform: translateX(-5px);
+  }
+
+  .timeline-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .timeline-item p { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+
+  /* ─── BAR CHART ─── */
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    height: 220px;
+    padding-top: 1rem;
+  }
+
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 60px;
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: height 1s ease;
+    position: relative;
+  }
+
+  .bar-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .bar-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* ─── QUOTE ─── */
+  .quote {
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    max-width: 800px;
+    line-height: 1.4;
+  }
+
+  .quote-author {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.3);
+    margin-top: 1rem;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ─── PILL BADGE ─── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .pill-green { background: rgba(34,197,94,0.15); color: #6ee7b7; }
+  .pill-blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .pill-amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
+  .pill-purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+
+  /* ─── NAVIGATION ─── */
+  .nav-dots {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34,197,94,0.4);
+    transform: scale(1.3);
+  }
+
+  @media (max-width: 768px) { .nav-dots { display: none; } }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate { animation: fadeUp 0.8s ease forwards; }
+  .delay-1 { animation-delay: 0.15s; opacity: 0; }
+  .delay-2 { animation-delay: 0.3s; opacity: 0; }
+  .delay-3 { animation-delay: 0.45s; opacity: 0; }
+  .delay-4 { animation-delay: 0.6s; opacity: 0; }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.2; }
+  }
+
+  .pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+
+  /* ─── SPEECH SECTION ─── */
+  .speech-card {
+    background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(59,130,246,0.05));
+    border: 1px solid rgba(34,197,94,0.15);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .speech-card::before {
+    content: '🎤';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-size: 4rem;
+    opacity: 0.1;
+  }
+
+  .speech-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .speech-text strong {
+    color: #6ee7b7;
+    font-weight: 600;
+  }
+
+  .speech-text em {
+    color: #93c5fd;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .speech-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1 — COVER
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s1" style="background: linear-gradient(160deg, #0a1628, #0f2419 50%, #0a1628);">
+  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: -10%; right: -10%;"></div>
+  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: -15%; left: -5%;"></div>
+  <div class="dot-grid" style="top: 10%; left: 5%; opacity: 0.3;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag tag-green animate">♻️ Invent for the Planet 2026</div>
+    <h1 class="title-xxl animate delay-1">
+      Reci<span class="gradient-text">Map</span>
+    </h1>
+    <p style="font-size: clamp(1rem, 2.5vw, 1.6rem); color: rgba(255,255,255,0.5); font-weight: 300; margin-top: 1rem; margin-bottom: 0.5rem;" class="animate delay-2">
+      Household Circular Systems
+    </p>
+    <p style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin-bottom: 2rem;" class="animate delay-2">
+      Tu basura de hoy es<br><span class="gradient-text">la comida de mañana</span>
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" class="animate delay-3">
+      <span class="pill pill-green">🌱 Sustentable</span>
+      <span class="pill pill-blue">🤖 AI-Powered</span>
+      <span class="pill pill-amber">💰 Profitable</span>
+      <span class="pill pill-purple">📱 Mobile-First</span>
+    </div>
+    <p style="font-size: 0.8rem; color: rgba(255,255,255,0.25); margin-top: 3rem;" class="animate delay-4">
+      Tecnológico de Monterrey · Mérida 2026
+    </p>
+  </div>
+  <span class="slide-num">01 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 2 — THE PROBLEM
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s2" style="background: linear-gradient(160deg, #1a0a0a, #0f172a);">
+  <div class="glow glow-amber pulse-glow" style="width: 400px; height: 400px; top: 10%; left: -5%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-amber">⚠️ El Problema</div>
+    <h2 class="title-xl" style="margin-bottom: 2rem;">
+      México genera <span class="gradient-text-warm">120,000 toneladas</span><br>de basura al día
+    </h2>
+    <p class="subtitle" style="margin-bottom: 3rem;">
+      Solo el 12% se recicla. El 88% restante termina en rellenos sanitarios o tiraderos a cielo abierto — contaminando suelo, agua y eliminando el potencial económico de millones.
+    </p>
+
+    <div class="grid-4">
+      <div class="card-sm" style="text-align: center;">
+        <div class="stat-num gradient-text-warm">88%</div>
+        <div class="stat-label">De residuos NO<br>se reciclan</div>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div class="stat-num gradient-text-warm">$286B</div>
+        <div class="stat-label">USD perdidos/año<br>en materiales en LATAM</div>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div class="stat-num gradient-text-warm">40%</div>
+        <div class="stat-label">Son residuos orgánicos<br>que podrían ser composta</div>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div class="stat-num gradient-text-warm">2M+</div>
+        <div class="stat-label">Pepenadores sin<br>herramientas digitales</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">02 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3 — THE FOOD CONNECTION (PUNCHLINE)
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s3" style="background: linear-gradient(160deg, #0a1628, #0f2419);">
+  <div class="glow glow-green pulse-glow" style="width: 600px; height: 600px; top: 20%; left: 30%;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag tag-green">🍽️ La Conexión con la Comida</div>
+    <h2 class="title-xl" style="margin-bottom: 2rem;">
+      ¿Qué tiene que ver<br>tu basura con la <span class="gradient-text">comida</span>?
+    </h2>
+    <p class="quote" style="margin-bottom: 3rem;">
+      "<strong>Todo.</strong> Tu cartón se convierte en empaques de alimentos.<br>
+      Tu PET en invernaderos donde crecen jitomates.<br>
+      Tus cáscaras en composta que nutre la tierra<br>
+      que produce la fruta que compras la siguiente semana."
+    </p>
+
+    <div class="flow-row">
+      <div class="flow-item"><div class="icon">🍌</div><h4>Residuo Orgánico</h4><p>Cáscaras, restos</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="icon">🌿</div><h4>Composta</h4><p>Suelo fértil</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="icon">🌾</div><h4>Cultivo</h4><p>Producción agrícola</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="icon">🍎</div><h4>Alimento</h4><p>De vuelta a tu mesa</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="icon">🏠</div><h4>Tu Hogar</h4><p>El ciclo se repite</p></div>
+    </div>
+  </div>
+  <span class="slide-num">03 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4 — OUR SOLUTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s4" style="background: linear-gradient(160deg, #0f172a, #0c1a2e);">
+  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: 10%; right: -5%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-blue">💡 Nuestra Solución</div>
+    <h2 class="title-xl" style="margin-bottom: 1rem;">
+      Reci<span class="gradient-text">Map</span>
+    </h2>
+    <p class="subtitle" style="margin-bottom: 3rem;">
+      La plataforma que conecta <strong style="color: #6ee7b7;">generadores</strong> de residuos en hogares
+      con <strong style="color: #93c5fd;">recolectores</strong> y <strong style="color: #c4b5fd;">centros de acopio</strong> —
+      con trazabilidad completa, rutas inteligentes y economía circular verificable.
+    </p>
+
+    <div class="grid-3">
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">📱</div>
+        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Hogares</h3>
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
+          Publica tus materiales reciclables. IA clasifica automáticamente. Gana EcoPoints y dinero por tu separación.
+        </p>
+      </div>
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">🚛</div>
+        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Recolectores</h3>
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
+          Smart Route Builder con grafos y IA. Rutas optimizadas por material, kg, tiempo. Gana 60% de cada entrega verificada.
+        </p>
+      </div>
+      <div class="card">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">🏭</div>
+        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Centros</h3>
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
+          Dashboard de recepción. Precios dinámicos por material. Trazabilidad completa del residuo hasta su transformación.
+        </p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">04 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5 — THE CIRCULAR FLOW
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s5" style="background: linear-gradient(160deg, #0a1628, #0f2419);">
+  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 30%; left: 40%;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag tag-green">♻️ El Ciclo Circular</div>
+    <h2 class="title-xl" style="margin-bottom: 3rem;">
+      Cada Material se Convierte en <span class="gradient-text">Recurso</span>
+    </h2>
+
+    <div class="grid-3" style="text-align: left;">
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">📦</span>
+          <h4 style="font-weight: 700;">Cartón</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Cajas de envíos, cereal</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Empaques de alimentos orgánicos</p>
+      </div>
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">🍶</span>
+          <h4 style="font-weight: 700;">PET / Plástico</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Botellas, envases</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Fibra para invernaderos agrícolas</p>
+      </div>
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">🥫</span>
+          <h4 style="font-weight: 700;">Aluminio</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Latas de refresco</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Sistemas de riego eficiente</p>
+      </div>
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">🍳</span>
+          <h4 style="font-weight: 700;">Aceite Usado</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Aceite de cocina</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Biodiésel para transporte agrícola</p>
+      </div>
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">🍌</span>
+          <h4 style="font-weight: 700;">Orgánicos</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Cáscaras, restos de comida</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Composta → suelo fértil → cosechas</p>
+      </div>
+      <div class="card-sm">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 1.5rem;">🪟</span>
+          <h4 style="font-weight: 700;">Vidrio</h4>
+        </div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Botellas, frascos</p>
+        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Envases reutilizables de alimentos</p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">05 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6 — TECH / HOW IT WORKS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s6" style="background: linear-gradient(160deg, #0f172a, #0c1a32);">
+  <div class="glow glow-purple pulse-glow" style="width: 400px; height: 400px; top: 20%; right: 10%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-purple">⚙️ Tecnología</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Cómo <span class="gradient-text">Funciona</span>
+    </h2>
+
+    <div class="grid-2">
+      <div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h4>1. Generador publica</h4>
+            <p>Foto + IA clasifica material, estima kg y sugiere precio. Geolocalización automática.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>2. Smart Route Builder</h4>
+            <p>Algoritmo de grafos (nearest-neighbor + 2-opt) genera ruta óptima respetando kg, tiempo y material.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>3. Recolección verificada</h4>
+            <p>Per-stop: llegar → pesar → foto prueba → confirmar. Todo verificable con timestamps.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>4. Entrega en centro</h4>
+            <p>Pesaje oficial, foto de entrega, payout automático con split 60/25/15.</p>
+          </div>
+          <div class="timeline-item" style="margin-bottom: 0;">
+            <h4>5. Ciclo completo</h4>
+            <p>Material procesado → nuevo recurso → cadena alimentaria. Trazabilidad end-to-end.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div class="card-sm">
+          <span class="pill pill-blue" style="margin-bottom: 0.75rem; display: inline-flex;">Stack</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
+            <strong style="color: white;">Next.js 14</strong> · React · TypeScript · Tailwind CSS ·
+            <strong style="color: white;">Drizzle ORM</strong> · PostgreSQL ·
+            <strong style="color: white;">Google Maps</strong> · Ably Realtime ·
+            <strong style="color: white;">Graph-based TSP solver</strong>
+          </p>
+        </div>
+        <div class="card-sm">
+          <span class="pill pill-green" style="margin-bottom: 0.75rem; display: inline-flex;">Verificación</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
+            Foto comprimida en-device (JPEG 55%, max 800px) · Pesaje por stop ·
+            Timestamps inmutables · Notificaciones real-time al generador
+          </p>
+        </div>
+        <div class="card-sm">
+          <span class="pill pill-purple" style="margin-bottom: 0.75rem; display: inline-flex;">AI / Algoritmos</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
+            Scoring multi-factor · Haversine distance · Nearest-neighbor heuristic ·
+            2-opt local improvement · Constrained optimization (kg + tiempo)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">06 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 7 — LEGAL FRAMEWORK
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s7" style="background: linear-gradient(160deg, #0f172a, #1a1a0a);">
+  <div class="glow glow-amber pulse-glow" style="width: 400px; height: 400px; bottom: 10%; left: 10%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-amber">⚖️ Marco Legal</div>
+    <h2 class="title-xl" style="margin-bottom: 1rem;">
+      Ley General de Economía Circular
+    </h2>
+    <p class="subtitle" style="margin-bottom: 2.5rem;">
+      Publicada en el <strong style="color: #fcd34d;">Diario Oficial de la Federación, enero 2025</strong>.
+      México es el primer país de LATAM con ley específica de economía circular.
+    </p>
+
+    <div class="grid-2">
+      <div class="card" style="border-color: rgba(245,158,11,0.15);">
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #fcd34d;">📋 Lo que exige la ley</h3>
+        <ul style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 2; list-style: none;">
+          <li>✅ Responsabilidad extendida del productor</li>
+          <li>✅ Trazabilidad de residuos obligatoria</li>
+          <li>✅ Metas de valorización por sector</li>
+          <li>✅ Incentivos fiscales para modelos circulares</li>
+          <li>✅ Registro de gestores autorizados</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color: rgba(34,197,94,0.15);">
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #6ee7b7;">🎯 ReciMap cumple todo</h3>
+        <ul style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 2; list-style: none;">
+          <li>♻️ Trazabilidad end-to-end con fotos + peso</li>
+          <li>♻️ Registro digital de cada transacción</li>
+          <li>♻️ Reportes de kg reciclados por material</li>
+          <li>♻️ Conecta generadores ↔ gestores ↔ centros</li>
+          <li>♻️ Plataforma lista para registro SEMARNAT</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-sm" style="margin-top: 1.5rem; text-align: center; border-color: rgba(245,158,11,0.12);">
+      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">
+        🏛️ <strong style="color: #fcd34d;">Ventaja regulatoria</strong>: ReciMap es la infraestructura digital
+        que municipios y empresas necesitan para cumplir la nueva ley.
+        <strong style="color: white;">Quien no tenga trazabilidad, será multado.</strong>
+      </p>
+    </div>
+  </div>
+  <span class="slide-num">07 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 8 — METRICS: BEFORE & AFTER
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s8" style="background: linear-gradient(160deg, #0f172a, #0c1a2e);">
+  <div class="glow glow-green pulse-glow" style="width: 400px; height: 400px; top: 20%; right: 20%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-green">📊 Métricas de Impacto</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Antes vs. <span class="gradient-text">Después</span> de ReciMap
+    </h2>
+
+    <div class="grid-2">
+      <!-- Before -->
+      <div class="card" style="border-color: rgba(239,68,68,0.15);">
+        <h3 style="color: #fca5a5; font-size: 1rem; margin-bottom: 1.5rem;">❌ Sin ReciMap</h3>
+        <div class="bar-chart">
+          <div class="bar-col">
+            <div class="bar-value" style="color: #fca5a5;">12%</div>
+            <div class="bar" style="height: 24px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
+            <div class="bar-label">Tasa de<br>reciclaje</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #fca5a5;">0</div>
+            <div class="bar" style="height: 8px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
+            <div class="bar-label">Trazabilidad</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #fca5a5;">$80</div>
+            <div class="bar" style="height: 40px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
+            <div class="bar-label">Ingreso/día<br>recolector</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #fca5a5;">6h</div>
+            <div class="bar" style="height: 120px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
+            <div class="bar-label">Tiempo<br>búsqueda</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- After -->
+      <div class="card" style="border-color: rgba(34,197,94,0.2);">
+        <h3 style="color: #6ee7b7; font-size: 1rem; margin-bottom: 1.5rem;">✅ Con ReciMap</h3>
+        <div class="bar-chart">
+          <div class="bar-col">
+            <div class="bar-value" style="color: #6ee7b7;">67%</div>
+            <div class="bar" style="height: 134px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
+            <div class="bar-label">Tasa de<br>reciclaje</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #6ee7b7;">100%</div>
+            <div class="bar" style="height: 180px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
+            <div class="bar-label">Trazabilidad</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #6ee7b7;">$650</div>
+            <div class="bar" style="height: 150px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
+            <div class="bar-label">Ingreso/día<br>recolector</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-value" style="color: #6ee7b7;">45m</div>
+            <div class="bar" style="height: 20px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
+            <div class="bar-label">Tiempo<br>búsqueda</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <div class="stat-num gradient-text" style="font-size: 2rem;">5.6x</div>
+        <div class="stat-label">más reciclaje</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="stat-num gradient-text" style="font-size: 2rem;">8x</div>
+        <div class="stat-label">más ingreso</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="stat-num gradient-text" style="font-size: 2rem;">87%</div>
+        <div class="stat-label">menos tiempo</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">08 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 9 — BUSINESS MODEL
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s9" style="background: linear-gradient(160deg, #0a1628, #0f172a);">
+  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: 20%; left: 20%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-blue">💰 Modelo de Negocio</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Triple Revenue <span class="gradient-text">Model</span>
+    </h2>
+
+    <div class="grid-3">
+      <div class="card" style="text-align: center; border-color: rgba(34,197,94,0.15);">
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔄</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Comisión por Transacción</h3>
+        <div class="stat-num gradient-text-emerald" style="font-size: 2.2rem;">15%</div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
+          De cada kg entregado.<br>
+          <strong style="color: rgba(255,255,255,0.7);">60% recolector · 25% generador · 15% plataforma</strong>
+        </p>
+      </div>
+      <div class="card" style="text-align: center; border-color: rgba(59,130,246,0.15);">
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🏢</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">SaaS para Empresas</h3>
+        <div class="stat-num" style="font-size: 2.2rem; color: #93c5fd;">B2B</div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
+          Licencia para empresas que necesitan<br>
+          <strong style="color: rgba(255,255,255,0.7);">reportar trazabilidad ante SEMARNAT</strong>
+        </p>
+      </div>
+      <div class="card" style="text-align: center; border-color: rgba(139,92,246,0.15);">
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📊</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Data & Analytics</h3>
+        <div class="stat-num" style="font-size: 2.2rem; color: #c4b5fd;">API</div>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
+          Datos de residuos por zona, material y temporada<br>
+          <strong style="color: rgba(255,255,255,0.7);">para municipios y marcas con RSE</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="card-sm" style="margin-top: 2rem; text-align: center;">
+      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+        💡 <strong style="color: white;">Unit economics</strong>: Con 500 tx/día × $3.50 MXN prom. comisión =
+        <strong style="color: #6ee7b7;">$52,500 MXN/día · $1.5M MXN/mes</strong> solo en comisiones
+      </p>
+    </div>
+  </div>
+  <span class="slide-num">09 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 10 — GROWTH PROJECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s10" style="background: linear-gradient(160deg, #0f172a, #0f2419);">
+  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; bottom: 10%; right: 10%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-green">📈 Proyección</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Hoja de <span class="gradient-text">Ruta</span>
+    </h2>
+
+    <div class="grid-4" style="margin-bottom: 2rem;">
+      <div class="card" style="text-align: center; border-color: rgba(34,197,94,0.12);">
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Q1 2026</p>
+        <div class="stat-num gradient-text" style="font-size: 1.8rem; margin: 0.5rem 0;">MVP</div>
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Mérida piloto<br>100 hogares<br>5 recolectores</p>
+      </div>
+      <div class="card" style="text-align: center; border-color: rgba(59,130,246,0.12);">
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Q3 2026</p>
+        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #93c5fd;">Escala</div>
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">3 ciudades<br>2,000 hogares<br>50 recolectores</p>
+      </div>
+      <div class="card" style="text-align: center; border-color: rgba(139,92,246,0.12);">
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">2027</p>
+        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #c4b5fd;">B2B</div>
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">10 ciudades<br>SaaS empresarial<br>Alianzas municipales</p>
+      </div>
+      <div class="card" style="text-align: center; border-color: rgba(245,158,11,0.12);">
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">2028</p>
+        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #fcd34d;">LATAM</div>
+        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Expansión regional<br>50,000+ hogares<br>API marketplace</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-color: rgba(34,197,94,0.1);">
+      <div style="display: flex; align-items: center; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div class="stat-num gradient-text" style="font-size: 2rem;">$18M</div>
+          <div class="stat-label">MXN revenue<br>proyectado año 2</div>
+        </div>
+        <div style="width: 1px; height: 50px; background: rgba(255,255,255,0.1);"></div>
+        <div style="text-align: center;">
+          <div class="stat-num" style="font-size: 2rem; color: #93c5fd;">200K+</div>
+          <div class="stat-label">Toneladas desviadas<br>de rellenos en 3 años</div>
+        </div>
+        <div style="width: 1px; height: 50px; background: rgba(255,255,255,0.1);"></div>
+        <div style="text-align: center;">
+          <div class="stat-num" style="font-size: 2rem; color: #fcd34d;">5,000+</div>
+          <div class="stat-label">Empleos verdes<br>generados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">10 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 11 — WHY US, NOT OTHERS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s11" style="background: linear-gradient(160deg, #0f172a, #1a0a20);">
+  <div class="glow glow-purple pulse-glow" style="width: 400px; height: 400px; top: 10%; right: 10%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-purple">🏆 Ventaja Competitiva</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      ¿Por qué <span class="gradient-text">ReciMap</span><br>y no otros?
+    </h2>
+
+    <div class="grid-2">
+      <div>
+        <table style="width: 100%; font-size: 0.82rem; border-collapse: collapse;">
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <th style="text-align: left; padding: 0.75rem 0; color: rgba(255,255,255,0.4); font-weight: 600;">Característica</th>
+            <th style="text-align: center; padding: 0.75rem; color: #6ee7b7; font-weight: 700;">ReciMap</th>
+            <th style="text-align: center; padding: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 600;">Otros</th>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Rutas con IA/grafos</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Trazabilidad foto+peso</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Payout automático</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">~</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Real-time notifications</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Enfoque en hogares</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Compliance Ley Circular</td>
+            <td style="text-align: center; padding: 0.65rem;">✅</td>
+            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div class="card-sm" style="border-left: 3px solid #22c55e;">
+          <h4 style="font-size: 0.9rem; font-weight: 700; color: #6ee7b7; margin-bottom: 0.3rem;">Enfoque en hogares</h4>
+          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
+            No somos una app de reciclaje genérica. Atacamos el eslabón más débil: el hogar. Donde el 40% del residuo nace y muere sin valor.
+          </p>
+        </div>
+        <div class="card-sm" style="border-left: 3px solid #3b82f6;">
+          <h4 style="font-size: 0.9rem; font-weight: 700; color: #93c5fd; margin-bottom: 0.3rem;">Tech-first, no marketing-first</h4>
+          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
+            Algoritmos reales de optimización, no solo UI bonito. TSP solver, compresión de imagen, real-time events.
+          </p>
+        </div>
+        <div class="card-sm" style="border-left: 3px solid #8b5cf6;">
+          <h4 style="font-size: 0.9rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.3rem;">Legal-ready desde día 1</h4>
+          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
+            Diseñado para la Ley de Economía Circular. No es un add-on — es nuestra arquitectura core.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">11 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 12 — TARGET COMPANIES
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s12" style="background: linear-gradient(160deg, #0f172a, #0c1a28);">
+  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; top: 20%; left: 30%;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag tag-blue">🏢 B2B Opportunities</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Empresas que <span class="gradient-text">Necesitan</span> ReciMap
+    </h2>
+
+    <div class="grid-4" style="margin-bottom: 2rem;">
+      <div class="card-sm" style="text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏪</div>
+        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Retail & CPG</h4>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Walmart, OXXO, Bimbo — cumplir responsabilidad extendida</p>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏗️</div>
+        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Constructoras</h4>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Desarrollos sustentables con programa de reciclaje integrado</p>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
+        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Municipios</h4>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Cumplir metas de valorización y reportar a SEMARNAT</p>
+      </div>
+      <div class="card-sm" style="text-align: center;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌿</div>
+        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">ESG & RSE</h4>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Corporativos que necesitan métricas verificables de impacto</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-color: rgba(59,130,246,0.12);">
+      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+        🎯 <strong style="color: white;">TAM México</strong>: 127M habitantes × 1.2 kg/día = <strong style="color: #93c5fd;">55.6M ton/año</strong> de residuos.
+        Solo el mercado de reciclables vale <strong style="color: #6ee7b7;">$89,000M MXN/año</strong>.
+      </p>
+    </div>
+  </div>
+  <span class="slide-num">12 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 13 — LIVE DEMO HIGHLIGHTS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s13" style="background: linear-gradient(160deg, #0f172a, #0a1628);">
+  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 30%; right: 20%;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag tag-green">🖥️ Demo en Vivo</div>
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Producto <span class="gradient-text">Real</span>, Funcionando
+    </h2>
+
+    <div class="grid-3">
+      <div class="card" style="border-color: rgba(34,197,94,0.12);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">📍</div>
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Smart Route Builder</h3>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
+          Selecciona materiales, kg, horas disponibles → genera ruta óptima con predicción de ganancias en segundos.
+        </p>
+      </div>
+      <div class="card" style="border-color: rgba(139,92,246,0.12);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">📸</div>
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Verificación por Foto</h3>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
+          Cámara directa del dispositivo. Compresión automática a ~50KB. Prueba inmutable por stop.
+        </p>
+      </div>
+      <div class="card" style="border-color: rgba(59,130,246,0.12);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🗺️</div>
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Mapa Interactivo</h3>
+        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
+          Google Maps con marcadores por material, centros de acopio, ubicación en tiempo real del recolector.
+        </p>
+      </div>
+    </div>
+
+    <div class="card-sm" style="margin-top: 2rem; border-color: rgba(34,197,94,0.15);">
+      <p style="font-size: 0.95rem; color: rgba(255,255,255,0.6);">
+        🔴 <strong style="color: #6ee7b7;">No es un mockup. No es un Figma.</strong>
+        Es una aplicación real, desplegada, funcional, con base de datos PostgreSQL,
+        autenticación, rutas optimizadas y transacciones verificables.
+      </p>
+    </div>
+  </div>
+  <span class="slide-num">13 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 14 — SPEECH (1:30)
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s14" style="background: linear-gradient(160deg, #0f172a, #0f2419);">
+  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 10%; left: 30%;"></div>
+
+  <div class="slide-content">
+    <div class="tag tag-green">🎤 Speech 1:30</div>
+    <h2 class="title-lg" style="margin-bottom: 2rem;">
+      Script de Presentación
+    </h2>
+
+    <div class="speech-card">
+      <div class="speech-text">
+        <p style="margin-bottom: 1rem;">
+          <span class="speech-time">⏱️ 0:00 – 0:15 · HOOK</span><br>
+          <strong>"Cada día, tu casa produce 1.2 kilos de basura. Y cada día, esos 1.2 kilos podrían convertirse en la comida que compras la próxima semana. Suena imposible. Pero se llama economía circular. Y ya funciona."</strong>
+        </p>
+        <p style="margin-bottom: 1rem;">
+          <span class="speech-time">⏱️ 0:15 – 0:35 · PROBLEMA</span><br>
+          "México genera 120 mil toneladas de basura al día. Solo el 12% se recicla. El resto va a rellenos sanitarios. <em>Ese cartón que tiraste ayer podría ser el empaque de frutas orgánicas mañana.</em> Pero no llega. Porque no hay infraestructura digital que conecte tu hogar con la cadena circular."
+        </p>
+        <p style="margin-bottom: 1rem;">
+          <span class="speech-time">⏱️ 0:35 – 0:55 · SOLUCIÓN</span><br>
+          "<strong>ReciMap</strong> es la plataforma que cierra ese ciclo. Desde tu casa: publicas tus materiales, nuestra IA los clasifica. Un recolector con <em>rutas optimizadas por grafos</em> los recoge — con verificación por foto y pesaje en cada punto. Entrega en centro de acopio con payout automático. <strong>Trazabilidad de punta a punta.</strong>"
+        </p>
+        <p style="margin-bottom: 1rem;">
+          <span class="speech-time">⏱️ 0:55 – 1:10 · DIFERENCIADOR</span><br>
+          "En enero de 2025, México publicó la <em>Ley General de Economía Circular</em>. Exige trazabilidad obligatoria. <strong>ReciMap ya cumple.</strong> No somos una app de reciclaje más — somos la infraestructura digital que municipios, empresas y hogares van a necesitar. O ya necesitan."
+        </p>
+        <p>
+          <span class="speech-time">⏱️ 1:10 – 1:30 · CIERRE</span><br>
+          "Con 500 transacciones diarias generamos 1.5 millones de pesos mensuales. Cada recolector multiplica su ingreso 8 veces. <strong>Y cada botella, cada caja, cada cáscara que pasa por ReciMap, se convierte en recurso que alimenta a alguien.</strong> <em>Tu basura de hoy es la comida de mañana.</em> Gracias."
+        </p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">14 / 15</span>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 15 — CLOSING / CTA
+     ═══════════════════════════════════════════════════════════ -->
+<section class="slide" id="s15" style="background: linear-gradient(160deg, #0a1628, #0f2419 50%, #0a1628);">
+  <div class="glow glow-green pulse-glow" style="width: 600px; height: 600px; top: 20%; left: 30%;"></div>
+  <div class="glow glow-blue pulse-glow" style="width: 300px; height: 300px; bottom: 10%; right: 10%;"></div>
+
+  <div class="slide-content" style="text-align: center;">
+    <h1 class="title-xxl" style="margin-bottom: 1.5rem;">
+      Reci<span class="gradient-text">Map</span>
+    </h1>
+    <p style="font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 300; color: rgba(255,255,255,0.5); margin-bottom: 3rem;">
+      Household Circular Systems<br>
+      <span style="font-weight: 700; color: rgba(255,255,255,0.8);">Tu basura de hoy es la comida de mañana 🌱</span>
+    </p>
+
+    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+      <div class="card-sm" style="text-align: center; min-width: 150px;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌍</div>
+        <p style="font-size: 0.8rem; font-weight: 600;">Impacto Ambiental</p>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">200K+ ton desviadas</p>
+      </div>
+      <div class="card-sm" style="text-align: center; min-width: 150px;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">💰</div>
+        <p style="font-size: 0.8rem; font-weight: 600;">Impacto Económico</p>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">5,000+ empleos verdes</p>
+      </div>
+      <div class="card-sm" style="text-align: center; min-width: 150px;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚖️</div>
+        <p style="font-size: 0.8rem; font-weight: 600;">Compliance</p>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Ley Circular 2025</p>
+      </div>
+      <div class="card-sm" style="text-align: center; min-width: 150px;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🤖</div>
+        <p style="font-size: 0.8rem; font-weight: 600;">Tech</p>
+        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">AI + Graph Optimization</p>
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.3);">
+      Invent for the Planet 2026 · Tecnológico de Monterrey
+    </p>
+    <p style="font-size: 0.75rem; color: rgba(255,255,255,0.2); margin-top: 0.5rem;">
+      ♻️ Built with Next.js · TypeScript · PostgreSQL · Google Maps · Graph-based TSP solver
+    </p>
+  </div>
+  <span class="slide-num">15 / 15</span>
+</section>
+
+<script>
+  // ─── Navigation dots ───
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.title = `Slide ${i + 1}`;
+    dot.onclick = () => slide.scrollIntoView({ behavior: 'smooth' });
+    navDots.appendChild(dot);
+  });
+
+  // Update active dot on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        document.querySelectorAll('.nav-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const dots = document.querySelectorAll('.nav-dot');
+    const activeIdx = Array.from(dots).findIndex(d => d.classList.contains('active'));
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      if (activeIdx < slides.length - 1) slides[activeIdx + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (activeIdx > 0) slides[activeIdx - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
