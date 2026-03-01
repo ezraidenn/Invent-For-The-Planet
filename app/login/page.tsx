@@ -91,7 +91,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex bg-background text-foreground" style={{ minHeight: 'var(--app-height, 100vh)' }}>
       {/* ─── Left: Branding panel (desktop only) ─── */}
       <div className="relative hidden w-1/2 overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 lg:flex lg:flex-col lg:justify-between">
         {/* Decorative elements */}

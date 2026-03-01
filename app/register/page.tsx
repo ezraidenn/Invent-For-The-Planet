@@ -95,7 +95,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/50 px-4 py-8">
+    <div className="flex items-center justify-center bg-muted/50 px-4 py-8" style={{ minHeight: 'var(--app-height, 100vh)' }}>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-2 flex items-center gap-2">

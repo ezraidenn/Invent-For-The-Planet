@@ -57,9 +57,35 @@
   * {
     @apply border-border;
   }
+
+  /* ── Dynamic viewport height ──
+     Mobile browsers (Chrome, Safari) have collapsible address bars
+     that change the visible viewport. 100vh = largest viewport which
+     causes content to hide behind browser chrome. We use dvh with
+     fallbacks for full browser compatibility. */
+  :root {
+    --app-height: 100vh; /* fallback for old browsers */
+    --sai-top: env(safe-area-inset-top, 0px);
+    --sai-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  @supports (height: 100dvh) {
+    :root {
+      --app-height: 100dvh;
+    }
+  }
+
+  html {
+    /* Prevent overscroll bounce on iOS that reveals blank bg */
+    overscroll-behavior: none;
+  }
+
   body {
     @apply bg-background text-foreground;
+    /* Ensure body never exceeds actual visible viewport */
+    min-height: var(--app-height);
   }
+
   ::selection {
     @apply bg-primary/20 text-primary;
   }

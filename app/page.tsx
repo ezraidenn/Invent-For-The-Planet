@@ -91,7 +91,7 @@ const stats = [
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden bg-background">
+    <div className="flex flex-col overflow-x-hidden bg-background" style={{ minHeight: 'var(--app-height, 100vh)' }}>
       {/* ─── Sticky Header ─── */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-2xl">
         <div className="container flex h-16 items-center justify-between">
