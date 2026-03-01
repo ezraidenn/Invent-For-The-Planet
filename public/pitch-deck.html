@@ -5,34 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ReciMap — Pitch Deck | Invent for the Planet 2026</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap');
 
   :root {
-    --green: #16a34a;
-    --green-light: #22c55e;
     --emerald: #10b981;
-    --teal: #0d9488;
+    --green: #22c55e;
+    --teal: #14b8a6;
     --blue: #3b82f6;
     --indigo: #6366f1;
-    --purple: #8b5cf6;
+    --violet: #8b5cf6;
     --amber: #f59e0b;
+    --rose: #f43f5e;
     --pink: #ec4899;
     --dark: #0f172a;
     --dark2: #1e293b;
-    --gray: #64748b;
+    --slate: #475569;
     --light: #f8fafc;
+    --white: #ffffff;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
 
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: var(--dark);
-    color: white;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1e293b;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    background: var(--white);
   }
+
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+  .serif { font-family: 'Playfair Display', Georgia, serif; }
 
   /* ─── SLIDE SYSTEM ─── */
   .slide {
@@ -41,7 +45,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 3rem 2.5rem;
+    padding: 3rem 2rem;
     position: relative;
     scroll-snap-align: start;
     overflow: hidden;
@@ -54,136 +58,80 @@
     z-index: 2;
   }
 
-  /* ─── SLIDE COUNTER ─── */
   .slide-num {
     position: absolute;
     top: 1.5rem;
     right: 2rem;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.2);
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.15);
     font-weight: 600;
     letter-spacing: 0.15em;
   }
 
+  .slide-num-light { color: rgba(255,255,255,0.2); }
+
   /* ─── DECORATIVE ELEMENTS ─── */
-  .glow {
+  .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
+    filter: blur(100px);
     opacity: 0.15;
     pointer-events: none;
   }
 
-  .glow-green { background: #22c55e; }
-  .glow-blue { background: #3b82f6; }
-  .glow-purple { background: #8b5cf6; }
-  .glow-amber { background: #f59e0b; }
-
-  .dot-grid {
+  .dot {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-    background-size: 20px 20px;
+    border-radius: 50%;
     pointer-events: none;
   }
 
-  /* ─── TYPOGRAPHY ─── */
-  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
-
-  .title-xxl {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-  }
-
-  .title-xl {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-
-  .title-lg {
-    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-    font-weight: 700;
-    line-height: 1.15;
-  }
-
-  .title-md {
-    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-    font-weight: 600;
-    line-height: 1.2;
-  }
-
-  .subtitle {
-    font-size: clamp(0.95rem, 1.8vw, 1.3rem);
-    color: rgba(255,255,255,0.55);
-    font-weight: 300;
-    line-height: 1.6;
-    max-width: 700px;
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-warm {
-    background: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-emerald {
-    background: linear-gradient(135deg, #10b981, #22c55e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .tag {
-    display: inline-flex;
+  .line-label {
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.03);
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 1.5rem;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 
-  .tag-green { border-color: rgba(34,197,94,0.3); color: #6ee7b7; background: rgba(34,197,94,0.08); }
-  .tag-amber { border-color: rgba(245,158,11,0.3); color: #fcd34d; background: rgba(245,158,11,0.08); }
-  .tag-blue { border-color: rgba(59,130,246,0.3); color: #93c5fd; background: rgba(59,130,246,0.08); }
-  .tag-purple { border-color: rgba(139,92,246,0.3); color: #c4b5fd; background: rgba(139,92,246,0.08); }
+  .line-label .line {
+    width: 2rem;
+    height: 1px;
+  }
+
+  .line-label span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
 
   /* ─── CARDS ─── */
   .card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 1.25rem;
     padding: 2rem;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s, border-color 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-  .card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+  .card:hover { transform: translateY(-3px); }
 
-  .card-sm {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 1rem;
-    padding: 1.5rem;
+  .card-white {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .card-white:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+  }
+  .card-dark:hover { border-color: rgba(255,255,255,0.2); }
+
+  .card-colored {
+    border: none;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   }
 
   /* ─── GRIDS ─── */
@@ -196,51 +144,104 @@
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
   }
 
+  /* ─── TYPOGRAPHY ─── */
+  .title-hero {
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  .title-xl {
+    font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .title-lg {
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+    color: #64748b;
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 650px;
+  }
+
+  .subtitle-light {
+    color: rgba(255,255,255,0.5);
+  }
+
   /* ─── STAT NUMBERS ─── */
   .stat-num {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 0.25rem;
   }
 
   .stat-label {
     font-size: 0.78rem;
-    color: rgba(255,255,255,0.45);
     font-weight: 500;
+    margin-top: 0.25rem;
   }
 
-  /* ─── FLOW ARROWS ─── */
-  .flow-row {
+  /* ─── ICON CIRCLES ─── */
+  .icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .flow-item {
-    text-align: center;
-    padding: 1.25rem;
-    min-width: 120px;
-  }
-
-  .flow-item .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-  .flow-item h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.15rem; }
-  .flow-item p { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-
-  .flow-arrow {
     font-size: 1.5rem;
-    color: rgba(34,197,94,0.5);
-    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
   }
+
+  .icon-circle-sm {
+    width: 44px;
+    height: 44px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* ─── ACCENT BORDER LEFT ─── */
+  .accent-left {
+    border-left: 4px solid;
+    padding-left: 1.5rem;
+  }
+
+  /* ─── BAR CHART ─── */
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    height: 200px;
+    padding-top: 1rem;
+  }
+
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+
+  .bar {
+    width: 100%;
+    max-width: 55px;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .bar-label { font-size: 0.68rem; color: #94a3b8; text-align: center; font-weight: 500; }
+  .bar-value { font-family: 'Space Grotesk'; font-size: 0.8rem; font-weight: 700; }
 
   /* ─── TIMELINE ─── */
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
-  }
+  .timeline { position: relative; padding-left: 2rem; }
 
   .timeline::before {
     content: '';
@@ -248,18 +249,13 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, #22c55e, #3b82f6, #8b5cf6);
-    border-radius: 1px;
+    width: 3px;
+    border-radius: 2px;
   }
 
-  .timeline-item {
-    position: relative;
-    margin-bottom: 2rem;
-    padding-left: 1.5rem;
-  }
+  .tl-item { position: relative; margin-bottom: 1.75rem; padding-left: 1.5rem; }
 
-  .timeline-item::before {
+  .tl-item::before {
     content: '';
     position: absolute;
     left: -2rem;
@@ -267,98 +263,31 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: #22c55e;
-    border: 2px solid var(--dark);
-    box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
-    transform: translateX(-5px);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px currentColor;
+    transform: translateX(-4.5px);
   }
 
-  .timeline-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
-  .timeline-item p { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+  .tl-item h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .tl-item p { font-size: 0.82rem; color: #64748b; line-height: 1.5; }
 
-  /* ─── BAR CHART ─── */
-  .bar-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 1.5rem;
-    height: 220px;
-    padding-top: 1rem;
-  }
-
-  .bar-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .bar {
-    width: 100%;
-    max-width: 60px;
-    border-radius: 0.5rem 0.5rem 0 0;
-    transition: height 1s ease;
-    position: relative;
-  }
-
-  .bar-label {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.45);
-    text-align: center;
-    font-weight: 500;
-  }
-
-  .bar-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  /* ─── QUOTE ─── */
-  .quote {
-    font-size: clamp(1.3rem, 3vw, 2.2rem);
-    font-style: italic;
-    font-weight: 300;
-    color: rgba(255,255,255,0.7);
-    text-align: center;
-    max-width: 800px;
-    line-height: 1.4;
-  }
-
-  .quote-author {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.3);
-    margin-top: 1rem;
-    font-style: normal;
-    font-weight: 500;
-  }
-
-  /* ─── PILL BADGE ─── */
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-  }
-
-  .pill-green { background: rgba(34,197,94,0.15); color: #6ee7b7; }
-  .pill-blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
-  .pill-amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
-  .pill-purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+  /* ─── TABLE ─── */
+  .comp-table { width: 100%; font-size: 0.82rem; border-collapse: collapse; }
+  .comp-table th, .comp-table td { padding: 0.7rem 0.5rem; text-align: left; }
+  .comp-table th { font-weight: 600; color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .comp-table tr { border-bottom: 1px solid #f1f5f9; }
+  .comp-table td:nth-child(2) { text-align: center; font-weight: 600; }
+  .comp-table td:nth-child(3) { text-align: center; color: #cbd5e1; }
 
   /* ─── NAVIGATION ─── */
   .nav-dots {
     position: fixed;
-    right: 1.5rem;
+    right: 1.2rem;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.5rem;
     z-index: 100;
   }
 
@@ -366,7 +295,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.12);
     border: none;
     cursor: pointer;
     transition: all 0.3s;
@@ -374,36 +303,17 @@
   }
 
   .nav-dot.active {
-    background: #22c55e;
-    box-shadow: 0 0 10px rgba(34,197,94,0.4);
-    transform: scale(1.3);
+    background: var(--emerald);
+    box-shadow: 0 0 8px rgba(16,185,129,0.4);
+    transform: scale(1.4);
   }
 
   @media (max-width: 768px) { .nav-dots { display: none; } }
 
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate { animation: fadeUp 0.8s ease forwards; }
-  .delay-1 { animation-delay: 0.15s; opacity: 0; }
-  .delay-2 { animation-delay: 0.3s; opacity: 0; }
-  .delay-3 { animation-delay: 0.45s; opacity: 0; }
-  .delay-4 { animation-delay: 0.6s; opacity: 0; }
-
-  @keyframes pulse-glow {
-    0%, 100% { opacity: 0.1; }
-    50% { opacity: 0.2; }
-  }
-
-  .pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
-
-  /* ─── SPEECH SECTION ─── */
+  /* ─── SPEECH ─── */
   .speech-card {
-    background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(59,130,246,0.05));
-    border: 1px solid rgba(34,197,94,0.15);
+    background: linear-gradient(135deg, #f0fdf4, #ecfeff);
+    border: 1px solid #bbf7d0;
     border-radius: 1.5rem;
     padding: 2.5rem;
     position: relative;
@@ -413,71 +323,106 @@
   .speech-card::before {
     content: '🎤';
     position: absolute;
-    top: -10px;
+    top: -5px;
     right: 20px;
-    font-size: 4rem;
-    opacity: 0.1;
+    font-size: 3.5rem;
+    opacity: 0.08;
   }
 
-  .speech-text {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: rgba(255,255,255,0.75);
-  }
+  .speech-text { font-size: 0.95rem; line-height: 1.9; color: #334155; }
+  .speech-text strong { color: #059669; font-weight: 600; }
+  .speech-text em { color: #2563eb; font-style: normal; font-weight: 500; }
+  .speech-time { font-size: 0.65rem; font-weight: 700; color: #94a3b8; letter-spacing: 0.05em; }
 
-  .speech-text strong {
-    color: #6ee7b7;
-    font-weight: 600;
-  }
-
-  .speech-text em {
-    color: #93c5fd;
-    font-style: normal;
-    font-weight: 500;
-  }
-
-  .speech-time {
+  /* ─── PILL BADGES ─── */
+  .pill {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
     font-size: 0.7rem;
     font-weight: 600;
-    color: rgba(255,255,255,0.3);
-    margin-top: 0.5rem;
   }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .float { animation: float 6s ease-in-out infinite; }
+  .float-delay { animation: float 6s ease-in-out 2s infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.25s; opacity: 0; }
+  .delay-3 { animation-delay: 0.4s; opacity: 0; }
+  .delay-4 { animation-delay: 0.55s; opacity: 0; }
+
+  /* ─── FLOW STEPS ─── */
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    transition: all 0.3s;
+  }
+  .flow-step:hover { transform: translateX(4px); box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
 </style>
 </head>
 <body>
 
-<!-- Navigation dots -->
 <nav class="nav-dots" id="navDots"></nav>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 1 — COVER
+     SLIDE 1 — COVER (WHITE with colorful accents)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s1" style="background: linear-gradient(160deg, #0a1628, #0f2419 50%, #0a1628);">
-  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: -10%; right: -10%;"></div>
-  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: -15%; left: -5%;"></div>
-  <div class="dot-grid" style="top: 10%; left: 5%; opacity: 0.3;"></div>
+<section class="slide" id="s1" style="background: linear-gradient(160deg, #f0fdf4 0%, #ffffff 30%, #eff6ff 60%, #faf5ff 100%);">
+  <!-- Decorative elements -->
+  <div class="blob" style="width: 500px; height: 500px; background: #22c55e; top: -15%; right: -10%; opacity: 0.08;"></div>
+  <div class="blob" style="width: 400px; height: 400px; background: #3b82f6; bottom: -10%; left: -5%; opacity: 0.06;"></div>
+  <div class="blob" style="width: 300px; height: 300px; background: #f59e0b; top: 40%; left: 50%; opacity: 0.05;"></div>
+  <!-- Floating dots -->
+  <div class="dot float" style="width: 12px; height: 12px; background: #22c55e; opacity: 0.3; top: 15%; left: 8%;"></div>
+  <div class="dot float-delay" style="width: 8px; height: 8px; background: #3b82f6; opacity: 0.25; top: 20%; right: 12%;"></div>
+  <div class="dot float" style="width: 14px; height: 14px; background: #f59e0b; opacity: 0.2; bottom: 25%; left: 15%;"></div>
+  <div class="dot float-delay" style="width: 10px; height: 10px; background: #8b5cf6; opacity: 0.25; bottom: 18%; right: 20%;"></div>
+  <div class="dot float" style="width: 6px; height: 6px; background: #ec4899; opacity: 0.3; top: 35%; left: 45%;"></div>
 
   <div class="slide-content" style="text-align: center;">
-    <div class="tag tag-green animate">♻️ Invent for the Planet 2026</div>
-    <h1 class="title-xxl animate delay-1">
-      Reci<span class="gradient-text">Map</span>
+    <div class="line-label animate">
+      <div class="line" style="background: linear-gradient(to right, transparent, #22c55e);"></div>
+      <span style="color: #16a34a;">♻️ Invent for the Planet 2026</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #22c55e);"></div>
+    </div>
+
+    <h1 class="title-hero animate delay-1">
+      Reci<span style="background: linear-gradient(135deg, #22c55e, #14b8a6, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Map</span>
     </h1>
-    <p style="font-size: clamp(1rem, 2.5vw, 1.6rem); color: rgba(255,255,255,0.5); font-weight: 300; margin-top: 1rem; margin-bottom: 0.5rem;" class="animate delay-2">
+
+    <p style="font-size: clamp(1.1rem, 2.5vw, 1.6rem); color: #64748b; font-weight: 300; margin: 1rem 0 0.25rem;" class="animate delay-2">
       Household Circular Systems
     </p>
-    <p style="font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin-bottom: 2rem;" class="animate delay-2">
-      Tu basura de hoy es<br><span class="gradient-text">la comida de mañana</span>
+
+    <p class="animate delay-2" style="margin-bottom: 2rem;">
+      <span class="serif" style="font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-style: italic; font-weight: 700; background: linear-gradient(135deg, #059669, #0d9488); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Tu basura de hoy es la comida de mañana
+      </span>
     </p>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" class="animate delay-3">
-      <span class="pill pill-green">🌱 Sustentable</span>
-      <span class="pill pill-blue">🤖 AI-Powered</span>
-      <span class="pill pill-amber">💰 Profitable</span>
-      <span class="pill pill-purple">📱 Mobile-First</span>
+
+    <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;" class="animate delay-3">
+      <span class="pill" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">🌱 Sustentable</span>
+      <span class="pill" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;">🤖 AI-Powered</span>
+      <span class="pill" style="background: #fffbeb; color: #d97706; border: 1px solid #fde68a;">💰 Profitable</span>
+      <span class="pill" style="background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe;">📱 Mobile-First</span>
     </div>
-    <p style="font-size: 0.8rem; color: rgba(255,255,255,0.25); margin-top: 3rem;" class="animate delay-4">
+
+    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 3rem;" class="animate delay-4">
       Tecnológico de Monterrey · Mérida 2026
     </p>
   </div>
@@ -485,36 +430,44 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 2 — THE PROBLEM
+     SLIDE 2 — THE PROBLEM (warm reds/amber on white)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s2" style="background: linear-gradient(160deg, #1a0a0a, #0f172a);">
-  <div class="glow glow-amber pulse-glow" style="width: 400px; height: 400px; top: 10%; left: -5%;"></div>
+<section class="slide" id="s2" style="background: linear-gradient(160deg, #fff7ed 0%, #ffffff 40%, #fef2f2 100%);">
+  <div class="blob" style="width: 400px; height: 400px; background: #f59e0b; top: 10%; left: -5%; opacity: 0.1;"></div>
+  <div class="blob" style="width: 350px; height: 350px; background: #ef4444; bottom: 10%; right: -5%; opacity: 0.07;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #f59e0b; opacity: 0.3; top: 12%; right: 15%;"></div>
+  <div class="dot float-delay" style="width: 8px; height: 8px; background: #ef4444; opacity: 0.25; bottom: 20%; left: 10%;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-amber">⚠️ El Problema</div>
-    <h2 class="title-xl" style="margin-bottom: 2rem;">
-      México genera <span class="gradient-text-warm">120,000 toneladas</span><br>de basura al día
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #f59e0b);"></div>
+      <span style="color: #d97706;">⚠️ El Problema</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #f59e0b);"></div>
+    </div>
+
+    <h2 class="title-xl" style="margin-bottom: 1rem;">
+      México genera <span style="color: #dc2626;">120,000 toneladas</span><br>de basura al día
     </h2>
-    <p class="subtitle" style="margin-bottom: 3rem;">
-      Solo el 12% se recicla. El 88% restante termina en rellenos sanitarios o tiraderos a cielo abierto — contaminando suelo, agua y eliminando el potencial económico de millones.
+    <p class="subtitle" style="margin-bottom: 2.5rem;">
+      Solo el 12% se recicla. El 88% restante termina en rellenos sanitarios — contaminando suelo, agua y eliminando el potencial económico de millones.
     </p>
 
     <div class="grid-4">
-      <div class="card-sm" style="text-align: center;">
-        <div class="stat-num gradient-text-warm">88%</div>
-        <div class="stat-label">De residuos NO<br>se reciclan</div>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #f59e0b;">
+        <div class="stat-num" style="color: #dc2626;">88%</div>
+        <div class="stat-label" style="color: #94a3b8;">De residuos NO<br>se reciclan</div>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div class="stat-num gradient-text-warm">$286B</div>
-        <div class="stat-label">USD perdidos/año<br>en materiales en LATAM</div>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #ef4444;">
+        <div class="stat-num" style="color: #dc2626;">$286B</div>
+        <div class="stat-label" style="color: #94a3b8;">USD perdidos/año<br>en materiales LATAM</div>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div class="stat-num gradient-text-warm">40%</div>
-        <div class="stat-label">Son residuos orgánicos<br>que podrían ser composta</div>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #f97316;">
+        <div class="stat-num" style="color: #ea580c;">40%</div>
+        <div class="stat-label" style="color: #94a3b8;">Son orgánicos → <br>podrían ser composta</div>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div class="stat-num gradient-text-warm">2M+</div>
-        <div class="stat-label">Pepenadores sin<br>herramientas digitales</div>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #d97706;">
+        <div class="stat-num" style="color: #b45309;">2M+</div>
+        <div class="stat-label" style="color: #94a3b8;">Pepenadores sin<br>herramientas digitales</div>
       </div>
     </div>
   </div>
@@ -522,75 +475,106 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 3 — THE FOOD CONNECTION (PUNCHLINE)
+     SLIDE 3 — FOOD CONNECTION (green gradient)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s3" style="background: linear-gradient(160deg, #0a1628, #0f2419);">
-  <div class="glow glow-green pulse-glow" style="width: 600px; height: 600px; top: 20%; left: 30%;"></div>
+<section class="slide" id="s3" style="background: linear-gradient(160deg, #064e3b, #065f46, #047857); color: white;">
+  <div class="blob" style="width: 500px; height: 500px; background: #34d399; top: 20%; left: 30%; opacity: 0.1;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #6ee7b7; opacity: 0.3; top: 10%; right: 15%;"></div>
+  <div class="dot float-delay" style="width: 14px; height: 14px; background: #a7f3d0; opacity: 0.15; bottom: 15%; left: 10%;"></div>
 
   <div class="slide-content" style="text-align: center;">
-    <div class="tag tag-green">🍽️ La Conexión con la Comida</div>
-    <h2 class="title-xl" style="margin-bottom: 2rem;">
-      ¿Qué tiene que ver<br>tu basura con la <span class="gradient-text">comida</span>?
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, rgba(167,243,208,0.4));"></div>
+      <span style="color: #6ee7b7;">🍽️ La Conexión con la Comida</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, rgba(167,243,208,0.4));"></div>
+    </div>
+
+    <h2 class="title-xl" style="margin-bottom: 1.5rem;">
+      ¿Qué tiene que ver tu basura<br>con la <span class="serif" style="font-style: italic; color: #6ee7b7;">comida</span>?
     </h2>
-    <p class="quote" style="margin-bottom: 3rem;">
-      "<strong>Todo.</strong> Tu cartón se convierte en empaques de alimentos.<br>
+
+    <p class="serif" style="font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-style: italic; color: rgba(255,255,255,0.7); line-height: 1.5; max-width: 700px; margin: 0 auto 3rem;">
+      "<strong style="color: #6ee7b7;">Todo.</strong> Tu cartón se convierte en empaques de alimentos.<br>
       Tu PET en invernaderos donde crecen jitomates.<br>
       Tus cáscaras en composta que nutre la tierra<br>
       que produce la fruta que compras la siguiente semana."
     </p>
 
-    <div class="flow-row">
-      <div class="flow-item"><div class="icon">🍌</div><h4>Residuo Orgánico</h4><p>Cáscaras, restos</p></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-item"><div class="icon">🌿</div><h4>Composta</h4><p>Suelo fértil</p></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-item"><div class="icon">🌾</div><h4>Cultivo</h4><p>Producción agrícola</p></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-item"><div class="icon">🍎</div><h4>Alimento</h4><p>De vuelta a tu mesa</p></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-item"><div class="icon">🏠</div><h4>Tu Hogar</h4><p>El ciclo se repite</p></div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="text-align: center; padding: 1rem; min-width: 90px;">
+        <div style="font-size: 2rem; margin-bottom: 0.3rem;">🍌</div>
+        <div style="font-size: 0.75rem; font-weight: 700;">Residuo</div>
+      </div>
+      <div style="color: #6ee7b7; font-size: 1.5rem;">→</div>
+      <div style="text-align: center; padding: 1rem; min-width: 90px;">
+        <div style="font-size: 2rem; margin-bottom: 0.3rem;">🌿</div>
+        <div style="font-size: 0.75rem; font-weight: 700;">Composta</div>
+      </div>
+      <div style="color: #6ee7b7; font-size: 1.5rem;">→</div>
+      <div style="text-align: center; padding: 1rem; min-width: 90px;">
+        <div style="font-size: 2rem; margin-bottom: 0.3rem;">🌾</div>
+        <div style="font-size: 0.75rem; font-weight: 700;">Cultivo</div>
+      </div>
+      <div style="color: #6ee7b7; font-size: 1.5rem;">→</div>
+      <div style="text-align: center; padding: 1rem; min-width: 90px;">
+        <div style="font-size: 2rem; margin-bottom: 0.3rem;">🍎</div>
+        <div style="font-size: 0.75rem; font-weight: 700;">Alimento</div>
+      </div>
+      <div style="color: #6ee7b7; font-size: 1.5rem;">→</div>
+      <div style="text-align: center; padding: 1rem; min-width: 90px;">
+        <div style="font-size: 2rem; margin-bottom: 0.3rem;">🏠</div>
+        <div style="font-size: 0.75rem; font-weight: 700;">Tu Hogar</div>
+      </div>
     </div>
   </div>
-  <span class="slide-num">03 / 15</span>
+  <span class="slide-num slide-num-light">03 / 15</span>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 4 — OUR SOLUTION
+     SLIDE 4 — SOLUTION (white, colorful cards)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s4" style="background: linear-gradient(160deg, #0f172a, #0c1a2e);">
-  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: 10%; right: -5%;"></div>
+<section class="slide" id="s4" style="background: linear-gradient(160deg, #ecfdf5, #ffffff 40%, #eff6ff 80%, #f5f3ff);">
+  <div class="blob" style="width: 350px; height: 350px; background: #22c55e; bottom: 10%; right: 0; opacity: 0.08;"></div>
+  <div class="blob" style="width: 300px; height: 300px; background: #3b82f6; top: 10%; left: 10%; opacity: 0.06;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #22c55e; opacity: 0.3; top: 15%; right: 20%;"></div>
+  <div class="dot float-delay" style="width: 8px; height: 8px; background: #8b5cf6; opacity: 0.25; bottom: 20%; left: 25%;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-blue">💡 Nuestra Solución</div>
-    <h2 class="title-xl" style="margin-bottom: 1rem;">
-      Reci<span class="gradient-text">Map</span>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #3b82f6);"></div>
+      <span style="color: #2563eb;">💡 Nuestra Solución</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #3b82f6);"></div>
+    </div>
+
+    <h2 class="title-xl" style="margin-bottom: 0.5rem; text-align: center;">
+      Reci<span style="color: #16a34a;">Map</span>
     </h2>
-    <p class="subtitle" style="margin-bottom: 3rem;">
-      La plataforma que conecta <strong style="color: #6ee7b7;">generadores</strong> de residuos en hogares
-      con <strong style="color: #93c5fd;">recolectores</strong> y <strong style="color: #c4b5fd;">centros de acopio</strong> —
-      con trazabilidad completa, rutas inteligentes y economía circular verificable.
+    <p class="subtitle" style="margin: 0 auto 2.5rem; text-align: center;">
+      Conecta <strong style="color: #059669;">generadores</strong> de residuos en hogares
+      con <strong style="color: #2563eb;">recolectores</strong> y <strong style="color: #7c3aed;">centros de acopio</strong> —
+      con trazabilidad completa.
     </p>
 
     <div class="grid-3">
-      <div class="card">
-        <div style="font-size: 2rem; margin-bottom: 1rem;">📱</div>
-        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Hogares</h3>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
-          Publica tus materiales reciclables. IA clasifica automáticamente. Gana EcoPoints y dinero por tu separación.
+      <div class="card card-colored" style="background: linear-gradient(135deg, #059669, #10b981);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">📱</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem;">Para Hogares</h3>
+        <p style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5;">
+          Publica materiales reciclables. IA clasifica automáticamente. Gana EcoPoints.
         </p>
       </div>
-      <div class="card">
-        <div style="font-size: 2rem; margin-bottom: 1rem;">🚛</div>
-        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Recolectores</h3>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
-          Smart Route Builder con grafos y IA. Rutas optimizadas por material, kg, tiempo. Gana 60% de cada entrega verificada.
+      <div class="card card-colored" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🚛</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem;">Para Recolectores</h3>
+        <p style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5;">
+          Smart Route Builder con grafos. Rutas optimizadas. Gana 60% de cada entrega.
         </p>
       </div>
-      <div class="card">
-        <div style="font-size: 2rem; margin-bottom: 1rem;">🏭</div>
-        <h3 class="title-md" style="margin-bottom: 0.5rem;">Para Centros</h3>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.5;">
-          Dashboard de recepción. Precios dinámicos por material. Trazabilidad completa del residuo hasta su transformación.
+      <div class="card card-colored" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🏭</div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.4rem;">Para Centros</h3>
+        <p style="font-size: 0.82rem; opacity: 0.85; line-height: 1.5;">
+          Dashboard de recepción. Precios dinámicos. Trazabilidad end-to-end.
         </p>
       </div>
     </div>
@@ -599,65 +583,70 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 5 — THE CIRCULAR FLOW
+     SLIDE 5 — CIRCULAR FLOW (white with colored cards)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s5" style="background: linear-gradient(160deg, #0a1628, #0f2419);">
-  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 30%; left: 40%;"></div>
+<section class="slide" id="s5" style="background: linear-gradient(160deg, #f0fdf4, #ffffff, #ecfdf5);">
+  <div class="blob" style="width: 400px; height: 400px; background: #22c55e; top: 30%; left: 40%; opacity: 0.06;"></div>
 
   <div class="slide-content" style="text-align: center;">
-    <div class="tag tag-green">♻️ El Ciclo Circular</div>
-    <h2 class="title-xl" style="margin-bottom: 3rem;">
-      Cada Material se Convierte en <span class="gradient-text">Recurso</span>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #10b981);"></div>
+      <span style="color: #059669;">♻️ El Ciclo Circular</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #10b981);"></div>
+    </div>
+
+    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
+      Cada material se convierte en <span class="serif" style="font-style: italic; color: #059669;">recurso</span>
     </h2>
 
     <div class="grid-3" style="text-align: left;">
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">📦</span>
-          <h4 style="font-weight: 700;">Cartón</h4>
+      <div class="card card-white accent-left" style="border-left-color: #d97706;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">📦</span>
+          <h4 style="color: #92400e;">Cartón</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Cajas de envíos, cereal</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Empaques de alimentos orgánicos</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Cajas de envíos, cereal</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Empaques de alimentos orgánicos</p>
       </div>
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">🍶</span>
-          <h4 style="font-weight: 700;">PET / Plástico</h4>
+      <div class="card card-white accent-left" style="border-left-color: #2563eb;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">🍶</span>
+          <h4 style="color: #1e40af;">PET / Plástico</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Botellas, envases</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Fibra para invernaderos agrícolas</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Botellas, envases</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Fibra para invernaderos agrícolas</p>
       </div>
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">🥫</span>
-          <h4 style="font-weight: 700;">Aluminio</h4>
+      <div class="card card-white accent-left" style="border-left-color: #dc2626;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">🥫</span>
+          <h4 style="color: #991b1b;">Aluminio</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Latas de refresco</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Sistemas de riego eficiente</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Latas de refresco</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Sistemas de riego eficiente</p>
       </div>
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">🍳</span>
-          <h4 style="font-weight: 700;">Aceite Usado</h4>
+      <div class="card card-white accent-left" style="border-left-color: #7c3aed;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">🍳</span>
+          <h4 style="color: #5b21b6;">Aceite Usado</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Aceite de cocina</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Biodiésel para transporte agrícola</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Aceite de cocina</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Biodiésel para transporte agrícola</p>
       </div>
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">🍌</span>
-          <h4 style="font-weight: 700;">Orgánicos</h4>
+      <div class="card card-white accent-left" style="border-left-color: #059669;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">🍌</span>
+          <h4 style="color: #065f46;">Orgánicos</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Cáscaras, restos de comida</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Composta → suelo fértil → cosechas</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Cáscaras, restos de comida</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Composta → suelo fértil → cosechas</p>
       </div>
-      <div class="card-sm">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-          <span style="font-size: 1.5rem;">🪟</span>
-          <h4 style="font-weight: 700;">Vidrio</h4>
+      <div class="card card-white accent-left" style="border-left-color: #0891b2;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.3rem;">🪟</span>
+          <h4 style="color: #155e75;">Vidrio</h4>
         </div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4);">Botellas, frascos</p>
-        <p style="font-size: 0.8rem; color: #6ee7b7; margin-top: 0.5rem; font-weight: 600;">→ Envases reutilizables de alimentos</p>
+        <p style="font-size: 0.78rem; color: #94a3b8;">Botellas, frascos</p>
+        <p style="font-size: 0.82rem; color: #059669; font-weight: 600; margin-top: 0.4rem;">→ Envases reutilizables de alimentos</p>
       </div>
     </div>
   </div>
@@ -665,93 +654,106 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 6 — TECH / HOW IT WORKS
+     SLIDE 6 — TECH (dark blue)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s6" style="background: linear-gradient(160deg, #0f172a, #0c1a32);">
-  <div class="glow glow-purple pulse-glow" style="width: 400px; height: 400px; top: 20%; right: 10%;"></div>
+<section class="slide" id="s6" style="background: linear-gradient(160deg, #0f172a, #1e293b, #0f172a); color: white;">
+  <div class="blob" style="width: 400px; height: 400px; background: #8b5cf6; top: 15%; right: 10%; opacity: 0.08;"></div>
+  <div class="blob" style="width: 350px; height: 350px; background: #3b82f6; bottom: 10%; left: 5%; opacity: 0.06;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #8b5cf6; opacity: 0.3; top: 10%; left: 20%;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-purple">⚙️ Tecnología</div>
-    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Cómo <span class="gradient-text">Funciona</span>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, rgba(139,92,246,0.5));"></div>
+      <span style="color: #a78bfa;">⚙️ Tecnología</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, rgba(139,92,246,0.5));"></div>
+    </div>
+
+    <h2 class="title-xl" style="margin-bottom: 2rem; text-align: center;">
+      Cómo <span class="serif" style="font-style: italic; color: #a78bfa;">funciona</span>
     </h2>
 
     <div class="grid-2">
       <div>
-        <div class="timeline">
-          <div class="timeline-item">
-            <h4>1. Generador publica</h4>
-            <p>Foto + IA clasifica material, estima kg y sugiere precio. Geolocalización automática.</p>
+        <div class="timeline" style="color: #8b5cf6;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px; background: linear-gradient(180deg, #22c55e, #3b82f6, #8b5cf6);"></div>
+          <div class="tl-item" style="color: #22c55e;">
+            <h4 style="color: white;">1. Generador publica</h4>
+            <p style="color: rgba(255,255,255,0.45);">Foto + IA clasifica material, estima kg. Geolocalización automática.</p>
           </div>
-          <div class="timeline-item">
-            <h4>2. Smart Route Builder</h4>
-            <p>Algoritmo de grafos (nearest-neighbor + 2-opt) genera ruta óptima respetando kg, tiempo y material.</p>
+          <div class="tl-item" style="color: #3b82f6;">
+            <h4 style="color: white;">2. Smart Route Builder</h4>
+            <p style="color: rgba(255,255,255,0.45);">Algoritmo de grafos (nearest-neighbor + 2-opt) genera ruta óptima.</p>
           </div>
-          <div class="timeline-item">
-            <h4>3. Recolección verificada</h4>
-            <p>Per-stop: llegar → pesar → foto prueba → confirmar. Todo verificable con timestamps.</p>
+          <div class="tl-item" style="color: #8b5cf6;">
+            <h4 style="color: white;">3. Recolección verificada</h4>
+            <p style="color: rgba(255,255,255,0.45);">Per-stop: llegar → pesar → foto → confirmar. Todo con timestamps.</p>
           </div>
-          <div class="timeline-item">
-            <h4>4. Entrega en centro</h4>
-            <p>Pesaje oficial, foto de entrega, payout automático con split 60/25/15.</p>
+          <div class="tl-item" style="color: #f59e0b;">
+            <h4 style="color: white;">4. Entrega en centro</h4>
+            <p style="color: rgba(255,255,255,0.45);">Pesaje oficial, foto, payout automático 60/25/15 split.</p>
           </div>
-          <div class="timeline-item" style="margin-bottom: 0;">
-            <h4>5. Ciclo completo</h4>
-            <p>Material procesado → nuevo recurso → cadena alimentaria. Trazabilidad end-to-end.</p>
+          <div class="tl-item" style="color: #ec4899; margin-bottom: 0;">
+            <h4 style="color: white;">5. Ciclo completo</h4>
+            <p style="color: rgba(255,255,255,0.45);">Material → nuevo recurso → cadena alimentaria. Trazabilidad total.</p>
           </div>
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div class="card-sm">
-          <span class="pill pill-blue" style="margin-bottom: 0.75rem; display: inline-flex;">Stack</span>
-          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
-            <strong style="color: white;">Next.js 14</strong> · React · TypeScript · Tailwind CSS ·
-            <strong style="color: white;">Drizzle ORM</strong> · PostgreSQL ·
-            <strong style="color: white;">Google Maps</strong> · Ably Realtime ·
-            <strong style="color: white;">Graph-based TSP solver</strong>
+        <div class="card card-dark" style="border-left: 3px solid #3b82f6;">
+          <span class="pill" style="background: rgba(59,130,246,0.15); color: #93c5fd; margin-bottom: 0.5rem; display: inline-flex;">Stack</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6;">
+            <strong style="color: white;">Next.js 14</strong> · React · TypeScript · Tailwind ·
+            <strong style="color: white;">PostgreSQL</strong> · Drizzle ORM ·
+            <strong style="color: white;">Google Maps</strong> · Ably Realtime
           </p>
         </div>
-        <div class="card-sm">
-          <span class="pill pill-green" style="margin-bottom: 0.75rem; display: inline-flex;">Verificación</span>
-          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
-            Foto comprimida en-device (JPEG 55%, max 800px) · Pesaje por stop ·
-            Timestamps inmutables · Notificaciones real-time al generador
+        <div class="card card-dark" style="border-left: 3px solid #22c55e;">
+          <span class="pill" style="background: rgba(34,197,94,0.15); color: #6ee7b7; margin-bottom: 0.5rem; display: inline-flex;">Verificación</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6;">
+            Foto comprimida on-device (JPEG 55%, max 800px) · Pesaje por stop ·
+            Timestamps inmutables · Notificaciones real-time
           </p>
         </div>
-        <div class="card-sm">
-          <span class="pill pill-purple" style="margin-bottom: 0.75rem; display: inline-flex;">AI / Algoritmos</span>
-          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6;">
+        <div class="card card-dark" style="border-left: 3px solid #8b5cf6;">
+          <span class="pill" style="background: rgba(139,92,246,0.15); color: #c4b5fd; margin-bottom: 0.5rem; display: inline-flex;">Algoritmos</span>
+          <p style="font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6;">
             Scoring multi-factor · Haversine distance · Nearest-neighbor heuristic ·
-            2-opt local improvement · Constrained optimization (kg + tiempo)
+            2-opt improvement · Constrained optimization
           </p>
         </div>
       </div>
     </div>
   </div>
-  <span class="slide-num">06 / 15</span>
+  <span class="slide-num slide-num-light">06 / 15</span>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 7 — LEGAL FRAMEWORK
+     SLIDE 7 — LEGAL (amber/warm white)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s7" style="background: linear-gradient(160deg, #0f172a, #1a1a0a);">
-  <div class="glow glow-amber pulse-glow" style="width: 400px; height: 400px; bottom: 10%; left: 10%;"></div>
+<section class="slide" id="s7" style="background: linear-gradient(160deg, #fffbeb, #ffffff, #fef3c7);">
+  <div class="blob" style="width: 400px; height: 400px; background: #f59e0b; bottom: 10%; left: 10%; opacity: 0.08;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #f59e0b; opacity: 0.3; top: 15%; left: 80%;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-amber">⚖️ Marco Legal</div>
-    <h2 class="title-xl" style="margin-bottom: 1rem;">
-      Ley General de Economía Circular
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #f59e0b);"></div>
+      <span style="color: #d97706;">⚖️ Marco Legal</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #f59e0b);"></div>
+    </div>
+
+    <h2 class="title-xl" style="text-align: center; margin-bottom: 0.5rem;">
+      Ley General de <span class="serif" style="font-style: italic; color: #d97706;">Economía Circular</span>
     </h2>
-    <p class="subtitle" style="margin-bottom: 2.5rem;">
-      Publicada en el <strong style="color: #fcd34d;">Diario Oficial de la Federación, enero 2025</strong>.
-      México es el primer país de LATAM con ley específica de economía circular.
+    <p class="subtitle" style="margin: 0 auto 2rem; text-align: center;">
+      Publicada en el <strong style="color: #92400e;">Diario Oficial, enero 2025</strong>.
+      México: primer país de LATAM con ley específica.
     </p>
 
     <div class="grid-2">
-      <div class="card" style="border-color: rgba(245,158,11,0.15);">
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #fcd34d;">📋 Lo que exige la ley</h3>
-        <ul style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 2; list-style: none;">
+      <div class="card card-white" style="border-top: 3px solid #f59e0b;">
+        <h3 style="font-size: 1rem; color: #92400e; margin-bottom: 1rem;">📋 Lo que exige la ley</h3>
+        <ul style="font-size: 0.82rem; color: #64748b; line-height: 2.2; list-style: none; padding: 0;">
           <li>✅ Responsabilidad extendida del productor</li>
           <li>✅ Trazabilidad de residuos obligatoria</li>
           <li>✅ Metas de valorización por sector</li>
@@ -759,23 +761,23 @@
           <li>✅ Registro de gestores autorizados</li>
         </ul>
       </div>
-      <div class="card" style="border-color: rgba(34,197,94,0.15);">
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #6ee7b7;">🎯 ReciMap cumple todo</h3>
-        <ul style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 2; list-style: none;">
+      <div class="card card-white" style="border-top: 3px solid #16a34a;">
+        <h3 style="font-size: 1rem; color: #065f46; margin-bottom: 1rem;">🎯 ReciMap ya cumple</h3>
+        <ul style="font-size: 0.82rem; color: #64748b; line-height: 2.2; list-style: none; padding: 0;">
           <li>♻️ Trazabilidad end-to-end con fotos + peso</li>
           <li>♻️ Registro digital de cada transacción</li>
           <li>♻️ Reportes de kg reciclados por material</li>
           <li>♻️ Conecta generadores ↔ gestores ↔ centros</li>
-          <li>♻️ Plataforma lista para registro SEMARNAT</li>
+          <li>♻️ Lista para registro SEMARNAT</li>
         </ul>
       </div>
     </div>
 
-    <div class="card-sm" style="margin-top: 1.5rem; text-align: center; border-color: rgba(245,158,11,0.12);">
-      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">
-        🏛️ <strong style="color: #fcd34d;">Ventaja regulatoria</strong>: ReciMap es la infraestructura digital
-        que municipios y empresas necesitan para cumplir la nueva ley.
-        <strong style="color: white;">Quien no tenga trazabilidad, será multado.</strong>
+    <div class="card card-white" style="margin-top: 1.5rem; text-align: center; border-left: 4px solid #f59e0b;">
+      <p style="font-size: 0.88rem; color: #64748b;">
+        🏛️ <strong style="color: #92400e;">Ventaja regulatoria</strong>: ReciMap es la infraestructura digital
+        que municipios y empresas necesitan.
+        <strong style="color: #1e293b;">Quien no tenga trazabilidad, será multado.</strong>
       </p>
     </div>
   </div>
@@ -783,85 +785,88 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 8 — METRICS: BEFORE & AFTER
+     SLIDE 8 — METRICS BEFORE/AFTER
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s8" style="background: linear-gradient(160deg, #0f172a, #0c1a2e);">
-  <div class="glow glow-green pulse-glow" style="width: 400px; height: 400px; top: 20%; right: 20%;"></div>
+<section class="slide" id="s8" style="background: linear-gradient(160deg, #f0fdf4, #ffffff, #eff6ff);">
+  <div class="blob" style="width: 400px; height: 400px; background: #22c55e; top: 20%; right: 20%; opacity: 0.06;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-green">📊 Métricas de Impacto</div>
-    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Antes vs. <span class="gradient-text">Después</span> de ReciMap
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #10b981);"></div>
+      <span style="color: #059669;">📊 Métricas</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #10b981);"></div>
+    </div>
+
+    <h2 class="title-xl" style="text-align: center; margin-bottom: 2.5rem;">
+      Antes vs. <span class="serif" style="font-style: italic; color: #059669;">Después</span>
     </h2>
 
     <div class="grid-2">
-      <!-- Before -->
-      <div class="card" style="border-color: rgba(239,68,68,0.15);">
-        <h3 style="color: #fca5a5; font-size: 1rem; margin-bottom: 1.5rem;">❌ Sin ReciMap</h3>
+      <div class="card card-white" style="border-top: 3px solid #ef4444;">
+        <h3 style="color: #dc2626; font-size: 1rem; margin-bottom: 1.5rem;">❌ Sin ReciMap</h3>
         <div class="bar-chart">
           <div class="bar-col">
-            <div class="bar-value" style="color: #fca5a5;">12%</div>
-            <div class="bar" style="height: 24px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
-            <div class="bar-label">Tasa de<br>reciclaje</div>
+            <div class="bar-value" style="color: #dc2626;">12%</div>
+            <div class="bar" style="height: 24px; background: linear-gradient(180deg, #ef4444, #fca5a5);"></div>
+            <div class="bar-label">Reciclaje</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #fca5a5;">0</div>
-            <div class="bar" style="height: 8px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
+            <div class="bar-value" style="color: #dc2626;">0</div>
+            <div class="bar" style="height: 8px; background: linear-gradient(180deg, #ef4444, #fca5a5);"></div>
             <div class="bar-label">Trazabilidad</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #fca5a5;">$80</div>
-            <div class="bar" style="height: 40px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
-            <div class="bar-label">Ingreso/día<br>recolector</div>
+            <div class="bar-value" style="color: #dc2626;">$80</div>
+            <div class="bar" style="height: 40px; background: linear-gradient(180deg, #ef4444, #fca5a5);"></div>
+            <div class="bar-label">Ingreso/día</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #fca5a5;">6h</div>
-            <div class="bar" style="height: 120px; background: linear-gradient(180deg, #ef4444, #991b1b);"></div>
-            <div class="bar-label">Tiempo<br>búsqueda</div>
+            <div class="bar-value" style="color: #dc2626;">6h</div>
+            <div class="bar" style="height: 120px; background: linear-gradient(180deg, #ef4444, #fca5a5);"></div>
+            <div class="bar-label">Búsqueda</div>
           </div>
         </div>
       </div>
 
-      <!-- After -->
-      <div class="card" style="border-color: rgba(34,197,94,0.2);">
-        <h3 style="color: #6ee7b7; font-size: 1rem; margin-bottom: 1.5rem;">✅ Con ReciMap</h3>
+      <div class="card card-white" style="border-top: 3px solid #22c55e;">
+        <h3 style="color: #16a34a; font-size: 1rem; margin-bottom: 1.5rem;">✅ Con ReciMap</h3>
         <div class="bar-chart">
           <div class="bar-col">
-            <div class="bar-value" style="color: #6ee7b7;">67%</div>
-            <div class="bar" style="height: 134px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
-            <div class="bar-label">Tasa de<br>reciclaje</div>
+            <div class="bar-value" style="color: #16a34a;">67%</div>
+            <div class="bar" style="height: 134px; background: linear-gradient(180deg, #22c55e, #86efac);"></div>
+            <div class="bar-label">Reciclaje</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #6ee7b7;">100%</div>
-            <div class="bar" style="height: 180px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
+            <div class="bar-value" style="color: #16a34a;">100%</div>
+            <div class="bar" style="height: 175px; background: linear-gradient(180deg, #22c55e, #86efac);"></div>
             <div class="bar-label">Trazabilidad</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #6ee7b7;">$650</div>
-            <div class="bar" style="height: 150px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
-            <div class="bar-label">Ingreso/día<br>recolector</div>
+            <div class="bar-value" style="color: #16a34a;">$650</div>
+            <div class="bar" style="height: 150px; background: linear-gradient(180deg, #22c55e, #86efac);"></div>
+            <div class="bar-label">Ingreso/día</div>
           </div>
           <div class="bar-col">
-            <div class="bar-value" style="color: #6ee7b7;">45m</div>
-            <div class="bar" style="height: 20px; background: linear-gradient(180deg, #22c55e, #15803d);"></div>
-            <div class="bar-label">Tiempo<br>búsqueda</div>
+            <div class="bar-value" style="color: #16a34a;">45m</div>
+            <div class="bar" style="height: 18px; background: linear-gradient(180deg, #22c55e, #86efac);"></div>
+            <div class="bar-label">Búsqueda</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+    <div style="display: flex; gap: 2.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
       <div style="text-align: center;">
-        <div class="stat-num gradient-text" style="font-size: 2rem;">5.6x</div>
-        <div class="stat-label">más reciclaje</div>
+        <div class="stat-num" style="font-size: 1.8rem; color: #059669;">5.6x</div>
+        <div class="stat-label" style="color: #94a3b8;">más reciclaje</div>
       </div>
       <div style="text-align: center;">
-        <div class="stat-num gradient-text" style="font-size: 2rem;">8x</div>
-        <div class="stat-label">más ingreso</div>
+        <div class="stat-num" style="font-size: 1.8rem; color: #2563eb;">8x</div>
+        <div class="stat-label" style="color: #94a3b8;">más ingreso</div>
       </div>
       <div style="text-align: center;">
-        <div class="stat-num gradient-text" style="font-size: 2rem;">87%</div>
-        <div class="stat-label">menos tiempo</div>
+        <div class="stat-num" style="font-size: 1.8rem; color: #7c3aed;">87%</div>
+        <div class="stat-label" style="color: #94a3b8;">menos tiempo</div>
       </div>
     </div>
   </div>
@@ -869,107 +874,116 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 9 — BUSINESS MODEL
+     SLIDE 9 — BUSINESS MODEL (blue gradient)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s9" style="background: linear-gradient(160deg, #0a1628, #0f172a);">
-  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; bottom: 20%; left: 20%;"></div>
+<section class="slide" id="s9" style="background: linear-gradient(160deg, #1e3a5f, #1e40af, #312e81); color: white;">
+  <div class="blob" style="width: 400px; height: 400px; background: #60a5fa; bottom: 15%; left: 20%; opacity: 0.1;"></div>
+  <div class="dot float" style="width: 10px; height: 10px; background: #93c5fd; opacity: 0.3; top: 12%; left: 15%;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-blue">💰 Modelo de Negocio</div>
-    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Triple Revenue <span class="gradient-text">Model</span>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, rgba(147,197,253,0.4));"></div>
+      <span style="color: #93c5fd;">💰 Modelo de Negocio</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, rgba(147,197,253,0.4));"></div>
+    </div>
+
+    <h2 class="title-xl" style="text-align: center; margin-bottom: 2.5rem;">
+      Triple Revenue <span class="serif" style="font-style: italic; color: #93c5fd;">Model</span>
     </h2>
 
     <div class="grid-3">
-      <div class="card" style="text-align: center; border-color: rgba(34,197,94,0.15);">
-        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔄</div>
-        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Comisión por Transacción</h3>
-        <div class="stat-num gradient-text-emerald" style="font-size: 2.2rem;">15%</div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
-          De cada kg entregado.<br>
+      <div class="card card-dark" style="text-align: center; border-top: 3px solid #22c55e;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔄</div>
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.3rem;">Comisión/Transacción</h3>
+        <div class="stat-num" style="color: #6ee7b7; font-size: 2rem;">15%</div>
+        <p style="font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.4rem;">
           <strong style="color: rgba(255,255,255,0.7);">60% recolector · 25% generador · 15% plataforma</strong>
         </p>
       </div>
-      <div class="card" style="text-align: center; border-color: rgba(59,130,246,0.15);">
-        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🏢</div>
-        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">SaaS para Empresas</h3>
-        <div class="stat-num" style="font-size: 2.2rem; color: #93c5fd;">B2B</div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
-          Licencia para empresas que necesitan<br>
-          <strong style="color: rgba(255,255,255,0.7);">reportar trazabilidad ante SEMARNAT</strong>
+      <div class="card card-dark" style="text-align: center; border-top: 3px solid #3b82f6;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.3rem;">SaaS Empresarial</h3>
+        <div class="stat-num" style="color: #93c5fd; font-size: 2rem;">B2B</div>
+        <p style="font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.4rem;">
+          <strong style="color: rgba(255,255,255,0.7);">Licencia para reportar ante SEMARNAT</strong>
         </p>
       </div>
-      <div class="card" style="text-align: center; border-color: rgba(139,92,246,0.15);">
-        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📊</div>
-        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Data & Analytics</h3>
-        <div class="stat-num" style="font-size: 2.2rem; color: #c4b5fd;">API</div>
-        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">
-          Datos de residuos por zona, material y temporada<br>
-          <strong style="color: rgba(255,255,255,0.7);">para municipios y marcas con RSE</strong>
+      <div class="card card-dark" style="text-align: center; border-top: 3px solid #8b5cf6;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.3rem;">Data & Analytics</h3>
+        <div class="stat-num" style="color: #c4b5fd; font-size: 2rem;">API</div>
+        <p style="font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.4rem;">
+          <strong style="color: rgba(255,255,255,0.7);">Datos de residuos para municipios y marcas</strong>
         </p>
       </div>
     </div>
 
-    <div class="card-sm" style="margin-top: 2rem; text-align: center;">
-      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
-        💡 <strong style="color: white;">Unit economics</strong>: Con 500 tx/día × $3.50 MXN prom. comisión =
-        <strong style="color: #6ee7b7;">$52,500 MXN/día · $1.5M MXN/mes</strong> solo en comisiones
+    <div class="card card-dark" style="margin-top: 1.5rem; text-align: center; border-left: 3px solid #fcd34d;">
+      <p style="font-size: 0.88rem; color: rgba(255,255,255,0.5);">
+        💡 500 tx/día × $3.50 MXN comisión =
+        <strong style="color: #fcd34d;">$52,500 MXN/día · $1.5M MXN/mes</strong>
       </p>
     </div>
   </div>
-  <span class="slide-num">09 / 15</span>
+  <span class="slide-num slide-num-light">09 / 15</span>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 10 — GROWTH PROJECTION
+     SLIDE 10 — ROADMAP (white, colorful timeline)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s10" style="background: linear-gradient(160deg, #0f172a, #0f2419);">
-  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; bottom: 10%; right: 10%;"></div>
+<section class="slide" id="s10" style="background: linear-gradient(160deg, #ecfdf5, #ffffff 40%, #eff6ff 70%, #f5f3ff);">
+  <div class="blob" style="width: 300px; height: 300px; background: #22c55e; bottom: 10%; right: 10%; opacity: 0.06;"></div>
+  <div class="blob" style="width: 250px; height: 250px; background: #8b5cf6; top: 10%; left: 10%; opacity: 0.05;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-green">📈 Proyección</div>
-    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Hoja de <span class="gradient-text">Ruta</span>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #22c55e);"></div>
+      <span style="color: #059669;">📈 Proyección</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #22c55e);"></div>
+    </div>
+
+    <h2 class="title-xl" style="text-align: center; margin-bottom: 2.5rem;">
+      Hoja de <span class="serif" style="font-style: italic; color: #059669;">Ruta</span>
     </h2>
 
-    <div class="grid-4" style="margin-bottom: 2rem;">
-      <div class="card" style="text-align: center; border-color: rgba(34,197,94,0.12);">
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Q1 2026</p>
-        <div class="stat-num gradient-text" style="font-size: 1.8rem; margin: 0.5rem 0;">MVP</div>
-        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Mérida piloto<br>100 hogares<br>5 recolectores</p>
+    <div class="grid-4">
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #22c55e;">
+        <p style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Q1 2026</p>
+        <div class="stat-num" style="font-size: 1.6rem; color: #059669; margin: 0.4rem 0;">MVP</div>
+        <p style="font-size: 0.72rem; color: #94a3b8;">Mérida piloto<br>100 hogares<br>5 recolectores</p>
       </div>
-      <div class="card" style="text-align: center; border-color: rgba(59,130,246,0.12);">
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Q3 2026</p>
-        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #93c5fd;">Escala</div>
-        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">3 ciudades<br>2,000 hogares<br>50 recolectores</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #3b82f6;">
+        <p style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Q3 2026</p>
+        <div class="stat-num" style="font-size: 1.6rem; color: #2563eb; margin: 0.4rem 0;">Escala</div>
+        <p style="font-size: 0.72rem; color: #94a3b8;">3 ciudades<br>2,000 hogares<br>50 recolectores</p>
       </div>
-      <div class="card" style="text-align: center; border-color: rgba(139,92,246,0.12);">
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">2027</p>
-        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #c4b5fd;">B2B</div>
-        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">10 ciudades<br>SaaS empresarial<br>Alianzas municipales</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #8b5cf6;">
+        <p style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">2027</p>
+        <div class="stat-num" style="font-size: 1.6rem; color: #7c3aed; margin: 0.4rem 0;">B2B</div>
+        <p style="font-size: 0.72rem; color: #94a3b8;">10 ciudades<br>SaaS empresarial<br>Alianzas municipales</p>
       </div>
-      <div class="card" style="text-align: center; border-color: rgba(245,158,11,0.12);">
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">2028</p>
-        <div class="stat-num" style="font-size: 1.8rem; margin: 0.5rem 0; color: #fcd34d;">LATAM</div>
-        <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Expansión regional<br>50,000+ hogares<br>API marketplace</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #f59e0b;">
+        <p style="font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">2028</p>
+        <div class="stat-num" style="font-size: 1.6rem; color: #d97706; margin: 0.4rem 0;">LATAM</div>
+        <p style="font-size: 0.72rem; color: #94a3b8;">Expansión regional<br>50,000+ hogares<br>API marketplace</p>
       </div>
     </div>
 
-    <div class="card" style="border-color: rgba(34,197,94,0.1);">
+    <div class="card card-white" style="margin-top: 1.5rem;">
       <div style="display: flex; align-items: center; gap: 2rem; justify-content: center; flex-wrap: wrap;">
         <div style="text-align: center;">
-          <div class="stat-num gradient-text" style="font-size: 2rem;">$18M</div>
-          <div class="stat-label">MXN revenue<br>proyectado año 2</div>
+          <div class="stat-num" style="font-size: 1.8rem; color: #059669;">$18M</div>
+          <div class="stat-label" style="color: #94a3b8;">MXN revenue año 2</div>
         </div>
-        <div style="width: 1px; height: 50px; background: rgba(255,255,255,0.1);"></div>
+        <div style="width: 1px; height: 40px; background: #e2e8f0;"></div>
         <div style="text-align: center;">
-          <div class="stat-num" style="font-size: 2rem; color: #93c5fd;">200K+</div>
-          <div class="stat-label">Toneladas desviadas<br>de rellenos en 3 años</div>
+          <div class="stat-num" style="font-size: 1.8rem; color: #2563eb;">200K+</div>
+          <div class="stat-label" style="color: #94a3b8;">Toneladas desviadas</div>
         </div>
-        <div style="width: 1px; height: 50px; background: rgba(255,255,255,0.1);"></div>
+        <div style="width: 1px; height: 40px; background: #e2e8f0;"></div>
         <div style="text-align: center;">
-          <div class="stat-num" style="font-size: 2rem; color: #fcd34d;">5,000+</div>
-          <div class="stat-label">Empleos verdes<br>generados</div>
+          <div class="stat-num" style="font-size: 1.8rem; color: #d97706;">5,000+</div>
+          <div class="stat-label" style="color: #94a3b8;">Empleos verdes</div>
         </div>
       </div>
     </div>
@@ -978,76 +992,47 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 11 — WHY US, NOT OTHERS
+     SLIDE 11 — WHY US (white + violet accents)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s11" style="background: linear-gradient(160deg, #0f172a, #1a0a20);">
-  <div class="glow glow-purple pulse-glow" style="width: 400px; height: 400px; top: 10%; right: 10%;"></div>
+<section class="slide" id="s11" style="background: linear-gradient(160deg, #faf5ff, #ffffff, #f0f9ff);">
+  <div class="blob" style="width: 350px; height: 350px; background: #8b5cf6; top: 10%; right: 10%; opacity: 0.06;"></div>
 
   <div class="slide-content">
-    <div class="tag tag-purple">🏆 Ventaja Competitiva</div>
-    <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      ¿Por qué <span class="gradient-text">ReciMap</span><br>y no otros?
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #8b5cf6);"></div>
+      <span style="color: #7c3aed;">🏆 Ventaja Competitiva</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #8b5cf6);"></div>
+    </div>
+
+    <h2 class="title-xl" style="text-align: center; margin-bottom: 2.5rem;">
+      ¿Por qué <span class="serif" style="font-style: italic; color: #7c3aed;">ReciMap</span>?
     </h2>
 
     <div class="grid-2">
-      <div>
-        <table style="width: 100%; font-size: 0.82rem; border-collapse: collapse;">
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
-            <th style="text-align: left; padding: 0.75rem 0; color: rgba(255,255,255,0.4); font-weight: 600;">Característica</th>
-            <th style="text-align: center; padding: 0.75rem; color: #6ee7b7; font-weight: 700;">ReciMap</th>
-            <th style="text-align: center; padding: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 600;">Otros</th>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Rutas con IA/grafos</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Trazabilidad foto+peso</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Payout automático</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">~</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Real-time notifications</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
-          </tr>
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Enfoque en hogares</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
-          </tr>
-          <tr>
-            <td style="padding: 0.65rem 0; color: rgba(255,255,255,0.6);">Compliance Ley Circular</td>
-            <td style="text-align: center; padding: 0.65rem;">✅</td>
-            <td style="text-align: center; padding: 0.65rem; color: rgba(255,255,255,0.3);">❌</td>
-          </tr>
+      <div class="card card-white">
+        <table class="comp-table">
+          <tr><th>Característica</th><th style="color: #059669;">ReciMap</th><th>Otros</th></tr>
+          <tr><td>Rutas con IA/grafos</td><td style="color: #059669;">✅</td><td>❌</td></tr>
+          <tr><td>Trazabilidad foto+peso</td><td style="color: #059669;">✅</td><td>❌</td></tr>
+          <tr><td>Payout automático</td><td style="color: #059669;">✅</td><td>~</td></tr>
+          <tr><td>Real-time notifications</td><td style="color: #059669;">✅</td><td>❌</td></tr>
+          <tr><td>Enfoque en hogares</td><td style="color: #059669;">✅</td><td>❌</td></tr>
+          <tr><td>Compliance Ley Circular</td><td style="color: #059669;">✅</td><td>❌</td></tr>
         </table>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div class="card-sm" style="border-left: 3px solid #22c55e;">
-          <h4 style="font-size: 0.9rem; font-weight: 700; color: #6ee7b7; margin-bottom: 0.3rem;">Enfoque en hogares</h4>
-          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
-            No somos una app de reciclaje genérica. Atacamos el eslabón más débil: el hogar. Donde el 40% del residuo nace y muere sin valor.
-          </p>
+        <div class="card card-white accent-left" style="border-left-color: #22c55e;">
+          <h4 style="color: #059669; margin-bottom: 0.3rem;">Enfoque en hogares</h4>
+          <p style="font-size: 0.8rem; color: #64748b;">Atacamos el eslabón más débil: el hogar. Donde el 40% del residuo nace y muere sin valor.</p>
         </div>
-        <div class="card-sm" style="border-left: 3px solid #3b82f6;">
-          <h4 style="font-size: 0.9rem; font-weight: 700; color: #93c5fd; margin-bottom: 0.3rem;">Tech-first, no marketing-first</h4>
-          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
-            Algoritmos reales de optimización, no solo UI bonito. TSP solver, compresión de imagen, real-time events.
-          </p>
+        <div class="card card-white accent-left" style="border-left-color: #3b82f6;">
+          <h4 style="color: #2563eb; margin-bottom: 0.3rem;">Tech-first</h4>
+          <p style="font-size: 0.8rem; color: #64748b;">Algoritmos reales de optimización, no solo UI bonito. TSP solver, compresión de imagen, real-time.</p>
         </div>
-        <div class="card-sm" style="border-left: 3px solid #8b5cf6;">
-          <h4 style="font-size: 0.9rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.3rem;">Legal-ready desde día 1</h4>
-          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">
-            Diseñado para la Ley de Economía Circular. No es un add-on — es nuestra arquitectura core.
-          </p>
+        <div class="card card-white accent-left" style="border-left-color: #8b5cf6;">
+          <h4 style="color: #7c3aed; margin-bottom: 0.3rem;">Legal-ready desde día 1</h4>
+          <p style="font-size: 0.8rem; color: #64748b;">Diseñado para la Ley Circular. No es un add-on — es nuestra arquitectura core.</p>
         </div>
       </div>
     </div>
@@ -1056,44 +1041,48 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 12 — TARGET COMPANIES
+     SLIDE 12 — B2B TARGET
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s12" style="background: linear-gradient(160deg, #0f172a, #0c1a28);">
-  <div class="glow glow-blue pulse-glow" style="width: 400px; height: 400px; top: 20%; left: 30%;"></div>
-
+<section class="slide" id="s12" style="background: linear-gradient(160deg, #ffffff, #f0f9ff, #f0fdf4);">
   <div class="slide-content" style="text-align: center;">
-    <div class="tag tag-blue">🏢 B2B Opportunities</div>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #3b82f6);"></div>
+      <span style="color: #2563eb;">🏢 Oportunidades B2B</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #3b82f6);"></div>
+    </div>
+
     <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Empresas que <span class="gradient-text">Necesitan</span> ReciMap
+      Empresas que <span class="serif" style="font-style: italic; color: #2563eb;">necesitan</span> ReciMap
     </h2>
 
-    <div class="grid-4" style="margin-bottom: 2rem;">
-      <div class="card-sm" style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏪</div>
-        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Retail & CPG</h4>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Walmart, OXXO, Bimbo — cumplir responsabilidad extendida</p>
+    <div class="grid-4">
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #22c55e;">
+        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🏪</div>
+        <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem;">Retail & CPG</h4>
+        <p style="font-size: 0.7rem; color: #94a3b8;">Walmart, OXXO, Bimbo</p>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏗️</div>
-        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Constructoras</h4>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Desarrollos sustentables con programa de reciclaje integrado</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #3b82f6;">
+        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🏗️</div>
+        <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem;">Constructoras</h4>
+        <p style="font-size: 0.7rem; color: #94a3b8;">Desarrollos sustentables</p>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
-        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Municipios</h4>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Cumplir metas de valorización y reportar a SEMARNAT</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #8b5cf6;">
+        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🏛️</div>
+        <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem;">Municipios</h4>
+        <p style="font-size: 0.7rem; color: #94a3b8;">Reportar a SEMARNAT</p>
       </div>
-      <div class="card-sm" style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌿</div>
-        <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">ESG & RSE</h4>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Corporativos que necesitan métricas verificables de impacto</p>
+      <div class="card card-white" style="text-align: center; border-top: 3px solid #f59e0b;">
+        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🌿</div>
+        <h4 style="font-size: 0.85rem; margin-bottom: 0.2rem;">ESG & RSE</h4>
+        <p style="font-size: 0.7rem; color: #94a3b8;">Métricas verificables</p>
       </div>
     </div>
 
-    <div class="card" style="border-color: rgba(59,130,246,0.12);">
-      <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
-        🎯 <strong style="color: white;">TAM México</strong>: 127M habitantes × 1.2 kg/día = <strong style="color: #93c5fd;">55.6M ton/año</strong> de residuos.
-        Solo el mercado de reciclables vale <strong style="color: #6ee7b7;">$89,000M MXN/año</strong>.
+    <div class="card card-white" style="margin-top: 1.5rem; border-left: 4px solid #3b82f6;">
+      <p style="font-size: 0.88rem; color: #64748b;">
+        🎯 <strong style="color: #1e293b;">TAM México</strong>: 127M habitantes × 1.2 kg/día =
+        <strong style="color: #2563eb;">55.6M ton/año</strong>. Mercado de reciclables:
+        <strong style="color: #059669;">$89,000M MXN/año</strong>
       </p>
     </div>
   </div>
@@ -1101,62 +1090,69 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 13 — LIVE DEMO HIGHLIGHTS
+     SLIDE 13 — DEMO (emerald gradient)
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s13" style="background: linear-gradient(160deg, #0f172a, #0a1628);">
-  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 30%; right: 20%;"></div>
+<section class="slide" id="s13" style="background: linear-gradient(160deg, #064e3b, #047857, #065f46); color: white;">
+  <div class="blob" style="width: 400px; height: 400px; background: #34d399; top: 20%; right: 20%; opacity: 0.08;"></div>
 
   <div class="slide-content" style="text-align: center;">
-    <div class="tag tag-green">🖥️ Demo en Vivo</div>
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, rgba(110,231,183,0.4));"></div>
+      <span style="color: #6ee7b7;">🖥️ Demo en Vivo</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, rgba(110,231,183,0.4));"></div>
+    </div>
+
     <h2 class="title-xl" style="margin-bottom: 2.5rem;">
-      Producto <span class="gradient-text">Real</span>, Funcionando
+      Producto <span class="serif" style="font-style: italic; color: #6ee7b7;">real</span>, funcionando
     </h2>
 
     <div class="grid-3">
-      <div class="card" style="border-color: rgba(34,197,94,0.12);">
-        <div style="font-size: 2rem; margin-bottom: 0.75rem;">📍</div>
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Smart Route Builder</h3>
+      <div class="card card-dark" style="border-top: 3px solid #22c55e;">
+        <div style="font-size: 2rem; margin-bottom: 0.6rem;">📍</div>
+        <h3 style="font-size: 1rem; margin-bottom: 0.4rem;">Smart Route Builder</h3>
         <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
-          Selecciona materiales, kg, horas disponibles → genera ruta óptima con predicción de ganancias en segundos.
+          Materiales, kg, horas → ruta óptima con predicción de ganancias.
         </p>
       </div>
-      <div class="card" style="border-color: rgba(139,92,246,0.12);">
-        <div style="font-size: 2rem; margin-bottom: 0.75rem;">📸</div>
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Verificación por Foto</h3>
+      <div class="card card-dark" style="border-top: 3px solid #8b5cf6;">
+        <div style="font-size: 2rem; margin-bottom: 0.6rem;">📸</div>
+        <h3 style="font-size: 1rem; margin-bottom: 0.4rem;">Verificación por Foto</h3>
         <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
-          Cámara directa del dispositivo. Compresión automática a ~50KB. Prueba inmutable por stop.
+          Cámara directa. Compresión a ~50KB. Prueba inmutable por stop.
         </p>
       </div>
-      <div class="card" style="border-color: rgba(59,130,246,0.12);">
-        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🗺️</div>
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Mapa Interactivo</h3>
+      <div class="card card-dark" style="border-top: 3px solid #3b82f6;">
+        <div style="font-size: 2rem; margin-bottom: 0.6rem;">🗺️</div>
+        <h3 style="font-size: 1rem; margin-bottom: 0.4rem;">Mapa Interactivo</h3>
         <p style="font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.5;">
-          Google Maps con marcadores por material, centros de acopio, ubicación en tiempo real del recolector.
+          Google Maps con marcadores por material y centros en tiempo real.
         </p>
       </div>
     </div>
 
-    <div class="card-sm" style="margin-top: 2rem; border-color: rgba(34,197,94,0.15);">
-      <p style="font-size: 0.95rem; color: rgba(255,255,255,0.6);">
-        🔴 <strong style="color: #6ee7b7;">No es un mockup. No es un Figma.</strong>
-        Es una aplicación real, desplegada, funcional, con base de datos PostgreSQL,
-        autenticación, rutas optimizadas y transacciones verificables.
+    <div class="card card-dark" style="margin-top: 1.5rem; border-left: 3px solid #6ee7b7;">
+      <p style="font-size: 0.92rem; color: rgba(255,255,255,0.55);">
+        🔴 <strong style="color: #6ee7b7;">No es mockup. No es Figma.</strong>
+        App real desplegada con PostgreSQL, auth, rutas optimizadas y transacciones.
       </p>
     </div>
   </div>
-  <span class="slide-num">13 / 15</span>
+  <span class="slide-num slide-num-light">13 / 15</span>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 14 — SPEECH (1:30)
+     SLIDE 14 — SPEECH
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s14" style="background: linear-gradient(160deg, #0f172a, #0f2419);">
-  <div class="glow glow-green pulse-glow" style="width: 500px; height: 500px; top: 10%; left: 30%;"></div>
-
+<section class="slide" id="s14" style="background: linear-gradient(160deg, #f0fdf4, #ffffff, #ecfeff);">
   <div class="slide-content">
-    <div class="tag tag-green">🎤 Speech 1:30</div>
-    <h2 class="title-lg" style="margin-bottom: 2rem;">
-      Script de Presentación
+    <div class="line-label">
+      <div class="line" style="background: linear-gradient(to right, transparent, #10b981);"></div>
+      <span style="color: #059669;">🎤 Speech 1:30</span>
+      <div class="line" style="background: linear-gradient(to left, transparent, #10b981);"></div>
+    </div>
+
+    <h2 class="title-lg" style="margin-bottom: 1.5rem; text-align: center;">
+      Script de <span class="serif" style="font-style: italic; color: #059669;">Presentación</span>
     </h2>
 
     <div class="speech-card">
@@ -1167,19 +1163,19 @@
         </p>
         <p style="margin-bottom: 1rem;">
           <span class="speech-time">⏱️ 0:15 – 0:35 · PROBLEMA</span><br>
-          "México genera 120 mil toneladas de basura al día. Solo el 12% se recicla. El resto va a rellenos sanitarios. <em>Ese cartón que tiraste ayer podría ser el empaque de frutas orgánicas mañana.</em> Pero no llega. Porque no hay infraestructura digital que conecte tu hogar con la cadena circular."
+          "México genera 120 mil toneladas de basura al día. Solo el 12% se recicla. <em>Ese cartón que tiraste ayer podría ser el empaque de frutas orgánicas mañana.</em> Pero no llega. Porque no hay infraestructura digital que conecte tu hogar con la cadena circular."
         </p>
         <p style="margin-bottom: 1rem;">
           <span class="speech-time">⏱️ 0:35 – 0:55 · SOLUCIÓN</span><br>
-          "<strong>ReciMap</strong> es la plataforma que cierra ese ciclo. Desde tu casa: publicas tus materiales, nuestra IA los clasifica. Un recolector con <em>rutas optimizadas por grafos</em> los recoge — con verificación por foto y pesaje en cada punto. Entrega en centro de acopio con payout automático. <strong>Trazabilidad de punta a punta.</strong>"
+          "<strong>ReciMap</strong> es la plataforma que cierra ese ciclo. Desde tu casa: publicas tus materiales, nuestra IA los clasifica. Un recolector con <em>rutas optimizadas por grafos</em> los recoge — con verificación por foto y pesaje. <strong>Trazabilidad de punta a punta.</strong>"
         </p>
         <p style="margin-bottom: 1rem;">
           <span class="speech-time">⏱️ 0:55 – 1:10 · DIFERENCIADOR</span><br>
-          "En enero de 2025, México publicó la <em>Ley General de Economía Circular</em>. Exige trazabilidad obligatoria. <strong>ReciMap ya cumple.</strong> No somos una app de reciclaje más — somos la infraestructura digital que municipios, empresas y hogares van a necesitar. O ya necesitan."
+          "En enero de 2025, México publicó la <em>Ley General de Economía Circular</em>. Exige trazabilidad obligatoria. <strong>ReciMap ya cumple.</strong> No somos una app más — somos la infraestructura que municipios y empresas van a necesitar."
         </p>
         <p>
           <span class="speech-time">⏱️ 1:10 – 1:30 · CIERRE</span><br>
-          "Con 500 transacciones diarias generamos 1.5 millones de pesos mensuales. Cada recolector multiplica su ingreso 8 veces. <strong>Y cada botella, cada caja, cada cáscara que pasa por ReciMap, se convierte en recurso que alimenta a alguien.</strong> <em>Tu basura de hoy es la comida de mañana.</em> Gracias."
+          "Con 500 transacciones diarias generamos 1.5 millones de pesos al mes. Cada recolector multiplica su ingreso 8 veces. <strong>Cada botella, cada caja, cada cáscara se convierte en recurso que alimenta a alguien.</strong> <em>Tu basura de hoy es la comida de mañana.</em> Gracias."
         </p>
       </div>
     </div>
@@ -1188,56 +1184,59 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     SLIDE 15 — CLOSING / CTA
+     SLIDE 15 — CLOSING
      ═══════════════════════════════════════════════════════════ -->
-<section class="slide" id="s15" style="background: linear-gradient(160deg, #0a1628, #0f2419 50%, #0a1628);">
-  <div class="glow glow-green pulse-glow" style="width: 600px; height: 600px; top: 20%; left: 30%;"></div>
-  <div class="glow glow-blue pulse-glow" style="width: 300px; height: 300px; bottom: 10%; right: 10%;"></div>
+<section class="slide" id="s15" style="background: linear-gradient(160deg, #f0fdf4 0%, #ffffff 30%, #eff6ff 60%, #faf5ff 100%);">
+  <div class="blob" style="width: 500px; height: 500px; background: #22c55e; top: 20%; left: 30%; opacity: 0.06;"></div>
+  <div class="blob" style="width: 300px; height: 300px; background: #3b82f6; bottom: 10%; right: 10%; opacity: 0.05;"></div>
+  <div class="dot float" style="width: 12px; height: 12px; background: #22c55e; opacity: 0.3; top: 10%; left: 10%;"></div>
+  <div class="dot float-delay" style="width: 8px; height: 8px; background: #8b5cf6; opacity: 0.25; bottom: 20%; right: 15%;"></div>
 
   <div class="slide-content" style="text-align: center;">
-    <h1 class="title-xxl" style="margin-bottom: 1.5rem;">
-      Reci<span class="gradient-text">Map</span>
+    <h1 class="title-hero" style="margin-bottom: 1rem;">
+      Reci<span style="background: linear-gradient(135deg, #22c55e, #14b8a6, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Map</span>
     </h1>
-    <p style="font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 300; color: rgba(255,255,255,0.5); margin-bottom: 3rem;">
-      Household Circular Systems<br>
-      <span style="font-weight: 700; color: rgba(255,255,255,0.8);">Tu basura de hoy es la comida de mañana 🌱</span>
+    <p style="font-size: clamp(1rem, 2vw, 1.4rem); color: #64748b; font-weight: 300; margin-bottom: 0.5rem;">
+      Household Circular Systems
+    </p>
+    <p class="serif" style="font-size: clamp(1.3rem, 3vw, 2rem); font-style: italic; font-weight: 700; color: #059669; margin-bottom: 2.5rem;">
+      Tu basura de hoy es la comida de mañana 🌱
     </p>
 
-    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
-      <div class="card-sm" style="text-align: center; min-width: 150px;">
-        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌍</div>
-        <p style="font-size: 0.8rem; font-weight: 600;">Impacto Ambiental</p>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">200K+ ton desviadas</p>
+    <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+      <div class="card card-white" style="text-align: center; min-width: 140px; border-top: 3px solid #22c55e; padding: 1.25rem;">
+        <div style="font-size: 1.3rem; margin-bottom: 0.2rem;">🌍</div>
+        <p style="font-size: 0.78rem; font-weight: 700; color: #1e293b;">Impacto Ambiental</p>
+        <p style="font-size: 0.68rem; color: #94a3b8;">200K+ ton desviadas</p>
       </div>
-      <div class="card-sm" style="text-align: center; min-width: 150px;">
-        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">💰</div>
-        <p style="font-size: 0.8rem; font-weight: 600;">Impacto Económico</p>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">5,000+ empleos verdes</p>
+      <div class="card card-white" style="text-align: center; min-width: 140px; border-top: 3px solid #f59e0b; padding: 1.25rem;">
+        <div style="font-size: 1.3rem; margin-bottom: 0.2rem;">💰</div>
+        <p style="font-size: 0.78rem; font-weight: 700; color: #1e293b;">Impacto Económico</p>
+        <p style="font-size: 0.68rem; color: #94a3b8;">5,000+ empleos verdes</p>
       </div>
-      <div class="card-sm" style="text-align: center; min-width: 150px;">
-        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚖️</div>
-        <p style="font-size: 0.8rem; font-weight: 600;">Compliance</p>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">Ley Circular 2025</p>
+      <div class="card card-white" style="text-align: center; min-width: 140px; border-top: 3px solid #3b82f6; padding: 1.25rem;">
+        <div style="font-size: 1.3rem; margin-bottom: 0.2rem;">⚖️</div>
+        <p style="font-size: 0.78rem; font-weight: 700; color: #1e293b;">Compliance</p>
+        <p style="font-size: 0.68rem; color: #94a3b8;">Ley Circular 2025</p>
       </div>
-      <div class="card-sm" style="text-align: center; min-width: 150px;">
-        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🤖</div>
-        <p style="font-size: 0.8rem; font-weight: 600;">Tech</p>
-        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4);">AI + Graph Optimization</p>
+      <div class="card card-white" style="text-align: center; min-width: 140px; border-top: 3px solid #8b5cf6; padding: 1.25rem;">
+        <div style="font-size: 1.3rem; margin-bottom: 0.2rem;">🤖</div>
+        <p style="font-size: 0.78rem; font-weight: 700; color: #1e293b;">Tech</p>
+        <p style="font-size: 0.68rem; color: #94a3b8;">AI + Graph Optimization</p>
       </div>
     </div>
 
-    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.3);">
+    <p style="font-size: 0.82rem; color: #94a3b8;">
       Invent for the Planet 2026 · Tecnológico de Monterrey
     </p>
-    <p style="font-size: 0.75rem; color: rgba(255,255,255,0.2); margin-top: 0.5rem;">
-      ♻️ Built with Next.js · TypeScript · PostgreSQL · Google Maps · Graph-based TSP solver
+    <p style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.3rem;">
+      ♻️ Next.js · TypeScript · PostgreSQL · Google Maps · TSP Solver
     </p>
   </div>
   <span class="slide-num">15 / 15</span>
 </section>
 
 <script>
-  // ─── Navigation dots ───
   const slides = document.querySelectorAll('.slide');
   const navDots = document.getElementById('navDots');
 
@@ -1249,7 +1248,6 @@
     navDots.appendChild(dot);
   });
 
-  // Update active dot on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1263,11 +1261,9 @@
 
   slides.forEach(s => observer.observe(s));
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     const dots = document.querySelectorAll('.nav-dot');
     const activeIdx = Array.from(dots).findIndex(d => d.classList.contains('active'));
-
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
       e.preventDefault();
       if (activeIdx < slides.length - 1) slides[activeIdx + 1].scrollIntoView({ behavior: 'smooth' });
@@ -1277,6 +1273,5 @@
     }
   });
 </script>
-
 </body>
 </html>

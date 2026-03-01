@@ -67,6 +67,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)"],
         display: ["var(--font-space-grotesk)"],
+        serif: ["var(--font-playfair)"],
         mono: ["var(--font-jetbrains-mono)"],
       },
       keyframes: {

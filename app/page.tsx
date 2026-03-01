@@ -21,6 +21,9 @@ import {
   Route,
   TreePine,
   Droplets,
+  Star,
+  CheckCircle2,
+  Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -30,63 +33,69 @@ const features = [
     title: "Live Map",
     description: "Interactive map with material pins, collection centers, and real-time prices across your city.",
     gradient: "from-emerald-500 to-teal-500",
-    bg: "bg-emerald-50 dark:bg-emerald-950/30",
-    border: "border-emerald-200 dark:border-emerald-800 hover:border-emerald-400",
+    iconBg: "bg-emerald-500",
+    accentColor: "text-emerald-600 dark:text-emerald-400",
+    borderAccent: "border-l-emerald-500",
   },
   {
     icon: Route,
-    title: "Optimized Routes",
+    title: "Smart Routes",
     description: "Graph-based algorithm groups nearby pickups into optimal routes. Save time, fuel, and CO\u2082.",
-    gradient: "from-teal-500 to-cyan-500",
-    bg: "bg-teal-50 dark:bg-teal-950/30",
-    border: "border-teal-200 dark:border-teal-800 hover:border-teal-400",
+    gradient: "from-blue-500 to-indigo-500",
+    iconBg: "bg-blue-500",
+    accentColor: "text-blue-600 dark:text-blue-400",
+    borderAccent: "border-l-blue-500",
   },
   {
     icon: TrendingUp,
     title: "Real-Time Prices",
     description: "Centers publish prices per kg in MXN. Compare across centers instantly and sell at the best price.",
     gradient: "from-amber-500 to-orange-500",
-    bg: "bg-amber-50 dark:bg-amber-950/30",
-    border: "border-amber-200 dark:border-amber-800 hover:border-amber-400",
+    iconBg: "bg-amber-500",
+    accentColor: "text-amber-600 dark:text-amber-400",
+    borderAccent: "border-l-amber-500",
   },
   {
     icon: Brain,
     title: "AI Classifier",
-    description: "Take a photo and our AI classifies the material and estimates weight automatically with GPT-4o.",
+    description: "Take a photo and our AI classifies the material and estimates weight automatically.",
     gradient: "from-violet-500 to-purple-500",
-    bg: "bg-violet-50 dark:bg-violet-950/30",
-    border: "border-violet-200 dark:border-violet-800 hover:border-violet-400",
+    iconBg: "bg-violet-500",
+    accentColor: "text-violet-600 dark:text-violet-400",
+    borderAccent: "border-l-violet-500",
   },
   {
     icon: BarChart3,
     title: "Predictive Analytics",
     description: "Linear regression predicts price trends. Premium demand and comparison charts.",
-    gradient: "from-blue-500 to-indigo-500",
-    bg: "bg-blue-50 dark:bg-blue-950/30",
-    border: "border-blue-200 dark:border-blue-800 hover:border-blue-400",
+    gradient: "from-rose-500 to-pink-500",
+    iconBg: "bg-rose-500",
+    accentColor: "text-rose-600 dark:text-rose-400",
+    borderAccent: "border-l-rose-500",
   },
   {
     icon: Award,
     title: "EcoPoints & Rewards",
     description: "Earn points for every kg recycled. Level up and redeem for real rewards.",
-    gradient: "from-pink-500 to-rose-500",
-    bg: "bg-pink-50 dark:bg-pink-950/30",
-    border: "border-pink-200 dark:border-pink-800 hover:border-pink-400",
+    gradient: "from-teal-500 to-cyan-500",
+    iconBg: "bg-teal-500",
+    accentColor: "text-teal-600 dark:text-teal-400",
+    borderAccent: "border-l-teal-500",
   },
 ];
 
 const steps = [
-  { num: "01", title: "List your materials", desc: "Take a photo \u2014 AI classifies it. Set weight and price.", icon: Camera, color: "from-emerald-500 to-green-600" },
-  { num: "02", title: "Smart grouping", desc: "Nearby pickups are grouped into optimized routes.", icon: Recycle, color: "from-teal-500 to-cyan-600" },
-  { num: "03", title: "Pickup & delivery", desc: "Recyclers follow guided routes. Centers verify materials.", icon: Truck, color: "from-blue-500 to-indigo-600" },
-  { num: "04", title: "Earn & track impact", desc: "Get paid fairly. Track your CO\u2082 savings and EcoPoints.", icon: TrendingUp, color: "from-violet-500 to-purple-600" },
+  { num: "01", title: "List your materials", desc: "Take a photo \u2014 AI classifies it. Set weight and price.", icon: Camera, color: "bg-emerald-500", ring: "ring-emerald-200 dark:ring-emerald-800" },
+  { num: "02", title: "Smart grouping", desc: "Nearby pickups are grouped into optimized routes.", icon: Recycle, color: "bg-blue-500", ring: "ring-blue-200 dark:ring-blue-800" },
+  { num: "03", title: "Pickup & delivery", desc: "Recyclers follow guided routes. Centers verify materials.", icon: Truck, color: "bg-amber-500", ring: "ring-amber-200 dark:ring-amber-800" },
+  { num: "04", title: "Earn & track impact", desc: "Get paid fairly. Track your CO\u2082 savings and EcoPoints.", icon: TrendingUp, color: "bg-violet-500", ring: "ring-violet-200 dark:ring-violet-800" },
 ];
 
 const stats = [
-  { value: "48,500+", label: "Kg Recycled", icon: Recycle },
-  { value: "12", label: "Collection Centers", icon: MapPin },
-  { value: "10+", label: "Material Types", icon: BarChart3 },
-  { value: "121+", label: "Tons CO\u2082 Avoided", icon: Globe },
+  { value: "48,500+", label: "Kg Recycled", icon: Recycle, color: "text-emerald-600", bg: "bg-emerald-100 dark:bg-emerald-900/30", iconColor: "text-emerald-500" },
+  { value: "12", label: "Collection Centers", icon: MapPin, color: "text-blue-600", bg: "bg-blue-100 dark:bg-blue-900/30", iconColor: "text-blue-500" },
+  { value: "10+", label: "Material Types", icon: BarChart3, color: "text-amber-600", bg: "bg-amber-100 dark:bg-amber-900/30", iconColor: "text-amber-500" },
+  { value: "121+", label: "Tons CO\u2082 Avoided", icon: Globe, color: "text-violet-600", bg: "bg-violet-100 dark:bg-violet-900/30", iconColor: "text-violet-500" },
 ];
 
 export default function Home() {
@@ -119,28 +128,24 @@ export default function Home() {
 
       {/* ─── HERO ─── */}
       <section className="relative overflow-hidden">
-        {/* Decorative background blobs — colorful greens on white */}
+        {/* Rich multi-color decorative blobs */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute -left-40 -top-20 h-[600px] w-[600px] rounded-full bg-emerald-100/70 dark:bg-emerald-900/20 blur-[120px]" />
-          <div className="absolute -right-40 top-20 h-[500px] w-[500px] rounded-full bg-teal-100/60 dark:bg-teal-900/15 blur-[120px]" />
-          <div className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-cyan-50/80 dark:bg-cyan-900/10 blur-[100px]" />
-          {/* Subtle green grid */}
-          <div
-            className="absolute inset-0 opacity-[0.07]"
-            style={{
-              backgroundImage: "linear-gradient(rgba(16,185,129,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.4) 1px, transparent 1px)",
-              backgroundSize: "64px 64px",
-            }}
-          />
-          {/* Floating leaf accents */}
-          <div className="absolute left-[10%] top-[15%] h-3 w-3 rounded-full bg-emerald-400/30" />
-          <div className="absolute right-[15%] top-[25%] h-4 w-4 rounded-full bg-teal-400/25" />
-          <div className="absolute left-[25%] bottom-[20%] h-5 w-5 rounded-full bg-green-400/20" />
-          <div className="absolute right-[30%] bottom-[15%] h-2 w-2 rounded-full bg-emerald-500/35" />
-          <div className="absolute left-[60%] top-[10%] h-6 w-6 rounded-full bg-teal-300/20" />
+          <div className="absolute -left-40 -top-20 h-[600px] w-[600px] rounded-full bg-emerald-100/60 dark:bg-emerald-900/20 blur-[120px]" />
+          <div className="absolute -right-40 top-10 h-[500px] w-[500px] rounded-full bg-blue-100/40 dark:bg-blue-900/15 blur-[120px]" />
+          <div className="absolute bottom-0 left-1/4 h-[400px] w-[400px] rounded-full bg-amber-50/60 dark:bg-amber-900/10 blur-[100px]" />
+          <div className="absolute right-1/4 top-1/3 h-[300px] w-[300px] rounded-full bg-violet-50/50 dark:bg-violet-900/10 blur-[100px]" />
+          {/* Decorative dots — multicolor */}
+          <div className="absolute left-[8%] top-[20%] h-3 w-3 rounded-full bg-emerald-400/40" />
+          <div className="absolute right-[12%] top-[15%] h-4 w-4 rounded-full bg-blue-400/30" />
+          <div className="absolute left-[20%] bottom-[25%] h-5 w-5 rounded-full bg-amber-400/25" />
+          <div className="absolute right-[25%] bottom-[18%] h-2.5 w-2.5 rounded-full bg-violet-500/30" />
+          <div className="absolute left-[55%] top-[12%] h-6 w-6 rounded-full bg-rose-300/20" />
+          <div className="absolute left-[75%] bottom-[30%] h-3.5 w-3.5 rounded-full bg-teal-400/25" />
+          <div className="absolute left-[40%] top-[8%] h-2 w-2 rounded-full bg-pink-400/30" />
         </div>
 
         <div className="container flex flex-col items-center gap-8 pb-20 pt-20 text-center md:pb-28 md:pt-28 lg:pt-36">
+          {/* Pill badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,6 +159,7 @@ export default function Home() {
             Circular Economy Marketplace
           </motion.div>
 
+          {/* Main heading with italic serif accent */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -161,7 +167,8 @@ export default function Home() {
             className="max-w-4xl font-display text-4xl font-extrabold tracking-tight text-balance text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Every kilogram counts.{" "}
-            <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
+            <br className="hidden sm:block" />
+            <span className="font-serif italic bg-gradient-to-r from-emerald-600 via-teal-500 to-blue-500 bg-clip-text text-transparent">
               Map. Recycle. Earn.
             </span>
           </motion.h1>
@@ -195,7 +202,7 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          {/* Stats row */}
+          {/* Stats — each with unique color */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -208,10 +215,12 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 + i * 0.08 }}
-                className="rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-background/80 p-4 text-center shadow-sm backdrop-blur-sm"
+                className="rounded-2xl border border-border bg-background/80 p-4 text-center shadow-sm backdrop-blur-sm"
               >
-                <stat.icon className="mx-auto mb-2 h-5 w-5 text-emerald-600" />
-                <p className="font-display text-xl font-bold text-foreground sm:text-2xl">{stat.value}</p>
+                <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl ${stat.bg}`}>
+                  <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
+                </div>
+                <p className={`font-display text-xl font-bold sm:text-2xl ${stat.color}`}>{stat.value}</p>
                 <p className="text-[11px] text-muted-foreground">{stat.label}</p>
               </motion.div>
             ))}
@@ -221,8 +230,8 @@ export default function Home() {
 
       {/* ─── Features Grid ─── */}
       <section className="relative py-24 lg:py-32">
-        <div className="absolute right-0 top-1/2 -z-10 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-emerald-50 dark:bg-emerald-950/20 blur-[120px]" />
-        <div className="absolute left-0 bottom-0 -z-10 h-[400px] w-[400px] rounded-full bg-teal-50 dark:bg-teal-950/15 blur-[100px]" />
+        <div className="absolute right-0 top-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-blue-50/50 dark:bg-blue-950/10 blur-[120px]" />
+        <div className="absolute left-0 bottom-1/4 -z-10 h-[350px] w-[350px] rounded-full bg-amber-50/40 dark:bg-amber-950/10 blur-[100px]" />
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -230,10 +239,15 @@ export default function Home() {
             viewport={{ once: true }}
             className="mx-auto max-w-2xl text-center"
           >
-            <span className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Platform</span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
+            {/* Decorative line + label */}
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-emerald-400" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">Platform</span>
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-emerald-400" />
+            </div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
               Everything you need for{" "}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">circular materials</span>
+              <span className="font-serif italic text-emerald-600 dark:text-emerald-400">circular materials</span>
             </h2>
             <p className="mt-4 text-muted-foreground lg:text-lg">
               A complete platform connecting every actor in the recycling value chain.
@@ -248,13 +262,12 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                className={`group relative overflow-hidden rounded-2xl border ${feature.border} ${feature.bg} p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-8`}
+                className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-8 border-l-4 ${feature.borderAccent}`}
               >
-                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br opacity-[0.15] blur-3xl transition-opacity group-hover:opacity-[0.25]" />
-                <div className={`relative mb-4 inline-flex rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 shadow-lg`}>
+                <div className={`relative mb-4 inline-flex rounded-xl ${feature.iconBg} p-2.5 shadow-lg`}>
                   <feature.icon className="h-5 w-5 text-white" />
                 </div>
-                <h3 className="relative font-display text-lg font-semibold text-foreground">{feature.title}</h3>
+                <h3 className={`relative font-display text-lg font-semibold ${feature.accentColor}`}>{feature.title}</h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
                   {feature.description}
                 </p>
@@ -264,30 +277,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── How it works ─── */}
-      <section className="relative py-24 lg:py-32">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-emerald-50/50 dark:from-emerald-950/10 via-transparent to-transparent" />
-        <div className="absolute left-0 top-0 -z-10 h-[500px] w-[500px] rounded-full bg-green-50 dark:bg-green-950/15 blur-[120px]" />
-        <div className="container">
+      {/* ─── How it works — DARK SECTION ─── */}
+      <section className="relative py-24 lg:py-32 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 dark:from-slate-950 dark:via-slate-950 dark:to-black text-white">
+        {/* Decorative color blobs on dark */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -left-20 top-0 h-[400px] w-[400px] rounded-full bg-emerald-600/10 blur-[120px]" />
+          <div className="absolute right-0 bottom-0 h-[350px] w-[350px] rounded-full bg-blue-600/10 blur-[100px]" />
+          <div className="absolute left-1/2 top-1/3 h-[250px] w-[250px] rounded-full bg-amber-500/8 blur-[80px]" />
+        </div>
+        <div className="container relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mx-auto max-w-2xl text-center"
           >
-            <span className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Process</span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
-              Four simple steps
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-emerald-400/50" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Process</span>
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-emerald-400/50" />
+            </div>
+            <h2 className="font-display text-3xl font-bold tracking-tight lg:text-4xl xl:text-5xl">
+              Four{" "}
+              <span className="font-serif italic text-emerald-400">simple</span>{" "}
+              steps
             </h2>
-            <p className="mt-4 text-muted-foreground lg:text-lg">
+            <p className="mt-4 text-slate-400 lg:text-lg">
               From listing to earning — the full flow in minutes.
             </p>
           </motion.div>
 
-          <div className="relative mt-16 grid gap-6 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
-            {/* Connector line */}
-            <div className="absolute left-0 right-0 top-[52px] hidden h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent lg:block" />
-
+          <div className="relative mt-16 flex flex-col items-center gap-8 lg:mt-20">
             {steps.map((step, i) => (
               <motion.div
                 key={step.num}
@@ -295,16 +315,16 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative text-center"
+                className="group flex w-full max-w-xl items-center gap-5 rounded-2xl border border-slate-800 bg-slate-800/50 p-5 backdrop-blur-sm transition-all hover:border-slate-700 hover:bg-slate-800/80"
               >
-                <div className="relative z-10 mx-auto mb-5 flex h-[68px] w-[68px] items-center justify-center rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-background shadow-lg shadow-emerald-100 dark:shadow-emerald-900/20 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-emerald-400 group-hover:shadow-xl group-hover:shadow-emerald-200/50">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${step.color}`}>
-                    <step.icon className="h-5 w-5 text-white" />
-                  </div>
+                <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${step.color} ring-4 ${step.ring} shadow-lg transition-transform group-hover:scale-110`}>
+                  <step.icon className="h-6 w-6 text-white" />
                 </div>
-                <span className="mb-1 block text-xs font-bold uppercase tracking-widest text-emerald-500">{step.num}</span>
-                <h3 className="font-display text-base font-semibold text-foreground lg:text-lg">{step.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{step.num}</span>
+                  <h3 className="font-display text-lg font-bold">{step.title}</h3>
+                  <p className="mt-0.5 text-sm text-slate-400">{step.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -313,7 +333,7 @@ export default function Home() {
 
       {/* ─── Impact Section ─── */}
       <section className="relative py-24 lg:py-32">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-emerald-50/40 dark:via-emerald-950/10 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-emerald-50/30 dark:via-emerald-950/10 to-transparent" />
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -321,19 +341,23 @@ export default function Home() {
             viewport={{ once: true }}
             className="mx-auto max-w-2xl text-center"
           >
-            <span className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Impact</span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-teal-400" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-600 dark:text-teal-400">Impact</span>
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-teal-400" />
+            </div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl xl:text-5xl">
               Real, measurable{" "}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">environmental impact</span>
+              <span className="font-serif italic text-teal-600 dark:text-teal-400">environmental impact</span>
             </h2>
           </motion.div>
 
           <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: TreePine, value: "824", label: "Trees Saved", sub: "~17 per ton recycled", card: "border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 hover:shadow-emerald-200/50", iconBg: "from-emerald-500 to-emerald-600", labelColor: "text-emerald-700 dark:text-emerald-400", valueColor: "text-emerald-900 dark:text-emerald-200" },
-              { icon: Droplets, value: "169,750L", label: "Water Saved", sub: "~3.5L per kg", card: "border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 hover:shadow-blue-200/50", iconBg: "from-blue-500 to-blue-600", labelColor: "text-blue-700 dark:text-blue-400", valueColor: "text-blue-900 dark:text-blue-200" },
-              { icon: Zap, value: "116,400 kWh", label: "Energy Conserved", sub: "~2.4 kWh per kg", card: "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 hover:shadow-amber-200/50", iconBg: "from-amber-500 to-amber-600", labelColor: "text-amber-700 dark:text-amber-400", valueColor: "text-amber-900 dark:text-amber-200" },
-              { icon: Shield, value: "48.5t", label: "Landfill Avoided", sub: "digitally verified", card: "border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/30 hover:shadow-purple-200/50", iconBg: "from-purple-500 to-purple-600", labelColor: "text-purple-700 dark:text-purple-400", valueColor: "text-purple-900 dark:text-purple-200" },
+              { icon: TreePine, value: "824", label: "Trees Saved", sub: "~17 per ton recycled", iconBg: "bg-emerald-500", cardBg: "bg-emerald-50 dark:bg-emerald-950/30", borderColor: "border-emerald-200 dark:border-emerald-800", valueColor: "text-emerald-700 dark:text-emerald-300", labelColor: "text-emerald-600 dark:text-emerald-400" },
+              { icon: Droplets, value: "169,750L", label: "Water Saved", sub: "~3.5L per kg", iconBg: "bg-blue-500", cardBg: "bg-blue-50 dark:bg-blue-950/30", borderColor: "border-blue-200 dark:border-blue-800", valueColor: "text-blue-700 dark:text-blue-300", labelColor: "text-blue-600 dark:text-blue-400" },
+              { icon: Zap, value: "116,400", label: "kWh Conserved", sub: "~2.4 kWh per kg", iconBg: "bg-amber-500", cardBg: "bg-amber-50 dark:bg-amber-950/30", borderColor: "border-amber-200 dark:border-amber-800", valueColor: "text-amber-700 dark:text-amber-300", labelColor: "text-amber-600 dark:text-amber-400" },
+              { icon: Shield, value: "48.5t", label: "Landfill Avoided", sub: "digitally verified", iconBg: "bg-violet-500", cardBg: "bg-violet-50 dark:bg-violet-950/30", borderColor: "border-violet-200 dark:border-violet-800", valueColor: "text-violet-700 dark:text-violet-300", labelColor: "text-violet-600 dark:text-violet-400" },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -341,9 +365,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`group rounded-2xl border p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg ${item.card}`}
+                className={`group rounded-2xl border ${item.borderColor} ${item.cardBg} p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg`}
               >
-                <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${item.iconBg} shadow-lg`}>
+                <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl ${item.iconBg} shadow-lg`}>
                   <item.icon className="h-6 w-6 text-white" />
                 </div>
                 <p className={`font-display text-2xl font-bold lg:text-3xl ${item.valueColor}`}>{item.value}</p>
@@ -355,9 +379,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Roles Section ─── */}
+      {/* ─── Roles Section — Colorful cards ─── */}
       <section className="relative py-24 lg:py-32">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-teal-50/30 dark:via-teal-950/10 to-transparent" />
+        <div className="absolute right-0 top-0 -z-10 h-[400px] w-[400px] rounded-full bg-rose-50/40 dark:bg-rose-950/10 blur-[120px]" />
+        <div className="absolute left-0 bottom-0 -z-10 h-[350px] w-[350px] rounded-full bg-violet-50/40 dark:bg-violet-950/10 blur-[100px]" />
         <div className="container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -365,18 +390,23 @@ export default function Home() {
             viewport={{ once: true }}
             className="mx-auto max-w-2xl text-center"
           >
-            <span className="text-sm font-semibold uppercase tracking-[0.15em] text-emerald-600">Roles</span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl">
-              Who can use ReciMap?
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-violet-400" />
+              <span className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-600 dark:text-violet-400">Roles</span>
+              <div className="h-px w-8 bg-gradient-to-l from-transparent to-violet-400" />
+            </div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground lg:text-4xl">
+              Who can use{" "}
+              <span className="font-serif italic text-violet-600 dark:text-violet-400">ReciMap</span>?
             </h2>
           </motion.div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Users, title: "Households", desc: "List your recyclables, earn EcoPoints, and measure your environmental impact.", gradient: "from-emerald-500 to-green-600" },
-              { icon: Recycle, title: "Businesses", desc: "Get rid of cardboard, oil, and waste. Schedule pickups easily.", gradient: "from-teal-500 to-cyan-600" },
-              { icon: Truck, title: "Recyclers", desc: "Claim batches, follow optimized routes, and earn per delivery.", gradient: "from-blue-500 to-indigo-600" },
-              { icon: MapPin, title: "Collection Centers", desc: "Publish prices, receive materials, and manage transactions.", gradient: "from-violet-500 to-purple-600" },
+              { icon: Users, title: "Households", desc: "List your recyclables, earn EcoPoints, and measure your environmental impact.", iconBg: "bg-emerald-500", ring: "ring-emerald-100 dark:ring-emerald-900", accentBorder: "hover:border-emerald-400 dark:hover:border-emerald-600" },
+              { icon: Recycle, title: "Businesses", desc: "Get rid of cardboard, oil, and waste. Schedule pickups easily.", iconBg: "bg-blue-500", ring: "ring-blue-100 dark:ring-blue-900", accentBorder: "hover:border-blue-400 dark:hover:border-blue-600" },
+              { icon: Truck, title: "Recyclers", desc: "Claim batches, follow optimized routes, and earn per delivery.", iconBg: "bg-amber-500", ring: "ring-amber-100 dark:ring-amber-900", accentBorder: "hover:border-amber-400 dark:hover:border-amber-600" },
+              { icon: MapPin, title: "Centers", desc: "Publish prices, receive materials, and manage transactions.", iconBg: "bg-violet-500", ring: "ring-violet-100 dark:ring-violet-900", accentBorder: "hover:border-violet-400 dark:hover:border-violet-600" },
             ].map((role, i) => (
               <motion.div
                 key={role.title}
@@ -384,9 +414,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-lg hover:shadow-emerald-100/50 dark:hover:shadow-emerald-900/20"
+                className={`group rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg ${role.accentBorder}`}
               >
-                <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${role.gradient} shadow-lg transition-transform group-hover:scale-110`}>
+                <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${role.iconBg} ring-4 ${role.ring} shadow-lg transition-transform group-hover:scale-110`}>
                   <role.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-foreground">{role.title}</h3>
@@ -397,10 +427,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── Testimonial / Quote ─── */}
+      <section className="relative py-20 lg:py-28 bg-gradient-to-br from-emerald-50 via-background to-blue-50 dark:from-emerald-950/20 dark:via-background dark:to-blue-950/20">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-3xl text-center"
+          >
+            <div className="mx-auto mb-6 flex justify-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-6 w-6 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <blockquote className="font-serif text-2xl italic leading-relaxed text-foreground/80 sm:text-3xl lg:text-4xl">
+              &ldquo;Tu basura de hoy es la{" "}
+              <span className="not-italic font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+                comida de mañana
+              </span>
+              &rdquo;
+            </blockquote>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-sm font-bold text-white shadow-lg">
+                <Heart className="h-4 w-4" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-foreground">Household Circular Systems</p>
+                <p className="text-xs text-muted-foreground">ReciMap &bull; Invent for the Planet 2026</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ─── CTA ─── */}
       <section className="relative py-24 lg:py-32">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-emerald-50/50 dark:via-emerald-950/10 to-transparent" />
-        <div className="absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-100/60 dark:bg-emerald-900/15 blur-[150px]" />
+        <div className="absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-100/50 dark:bg-emerald-900/15 blur-[150px]" />
+        <div className="absolute right-0 top-0 -z-10 h-[300px] w-[300px] rounded-full bg-violet-100/30 dark:bg-violet-900/10 blur-[100px]" />
 
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
@@ -414,7 +478,7 @@ export default function Home() {
             </div>
             <h2 className="font-display text-3xl font-bold text-foreground lg:text-4xl xl:text-5xl">
               Ready to make an{" "}
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">impact</span>?
+              <span className="font-serif italic text-emerald-600 dark:text-emerald-400">impact</span>?
             </h2>
             <p className="mx-auto mt-4 max-w-md text-muted-foreground lg:text-lg">
               Join the circular economy. Whether you generate waste, collect it, or process it — ReciMap connects you.
@@ -446,7 +510,7 @@ export default function Home() {
             <span className="font-medium text-foreground/70">ReciMap 2026</span>
           </div>
           <p className="text-xs text-muted-foreground/70">
-            Built for Invent for the Planet &bull; Universidad Polit&eacute;cnica de Yucat&aacute;n
+            Built for Invent for the Planet &bull; Tecnol&oacute;gico de Monterrey
           </p>
         </div>
       </footer>
