@@ -10,7 +10,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:generate": "drizzle-kit generate",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "db:seed:massive": "tsx scripts/seed-massive.ts"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^2.0.2",
