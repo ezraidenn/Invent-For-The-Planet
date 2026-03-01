@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -12,9 +12,7 @@ import {
   Trash2,
   Clock,
   MapPin,
-  Navigation,
-  CheckCircle2,
-  AlertCircle,
+  Crosshair,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +44,10 @@ import { Separator } from "@/components/ui/separator";
 import { MATERIAL_LABELS, MATERIAL_COLORS, STATUS_COLORS } from "@/lib/constants";
 import { formatKg, formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
+
+const MERIDA_CENTER = { lat: 20.9674, lng: -89.6235 };
+const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
 export default function ListingsPage() {
   const { data: session } = useSession();
@@ -56,26 +58,35 @@ export default function ListingsPage() {
   const [pricingMode, setPricingMode] = useState("free");
   const [pricePerKg, setPricePerKg] = useState("");
   const [description, setDescription] = useState("");
-  const [userLat, setUserLat] = useState<number | null>(null);
-  const [userLng, setUserLng] = useState<number | null>(null);
-  const [locationStatus, setLocationStatus] = useState<"loading" | "granted" | "denied">("loading");
+  const [pinLat, setPinLat] = useState(MERIDA_CENTER.lat);
+  const [pinLng, setPinLng] = useState(MERIDA_CENTER.lng);
+  const [locatingGPS, setLocatingGPS] = useState(false);
+  const [mapCenter, setMapCenter] = useState(MERIDA_CENTER);
+  const [mapZoom, setMapZoom] = useState(13);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLat(pos.coords.latitude);
-          setUserLng(pos.coords.longitude);
-          setLocationStatus("granted");
-        },
-        () => {
-          setLocationStatus("denied");
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    } else {
-      setLocationStatus("denied");
+  const goToMyLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation not supported by your browser");
+      return;
     }
+    setLocatingGPS(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        setPinLat(lat);
+        setPinLng(lng);
+        setMapCenter({ lat, lng });
+        setMapZoom(16);
+        setLocatingGPS(false);
+        toast.success("Location found!");
+      },
+      () => {
+        setLocatingGPS(false);
+        toast.error("Could not get your location. Drag the pin manually.");
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   }, []);
 
   const { data: listings, isLoading } = useQuery({
@@ -142,17 +153,14 @@ export default function ListingsPage() {
       return;
     }
 
-    const lat = userLat ?? 20.9674 + (Math.random() - 0.5) * 0.02;
-    const lng = userLng ?? -89.6235 + (Math.random() - 0.5) * 0.02;
-
     createMutation.mutate({
       materialType,
       estimatedKg: parseFloat(estimatedKg),
       pricingMode,
       pricePerKg: pricingMode === "for_sale" ? parseFloat(pricePerKg) : undefined,
       description: description || undefined,
-      latitude: lat,
-      longitude: lng,
+      latitude: pinLat,
+      longitude: pinLng,
     });
   }
 
@@ -264,53 +272,80 @@ export default function ListingsPage() {
                 />
               </div>
 
-              {/* Location status */}
-              <div className="rounded-lg border p-3">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <Label className="text-xs font-medium">Location</Label>
+              {/* Location picker with map */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="flex items-center gap-1.5 text-xs font-medium">
+                    <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                    Pickup Location
+                  </Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1 px-2 text-[10px]"
+                    onClick={goToMyLocation}
+                    disabled={locatingGPS}
+                  >
+                    {locatingGPS ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Crosshair className="h-3 w-3" />
+                    )}
+                    My Location
+                  </Button>
                 </div>
-                {locationStatus === "loading" && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Getting your location...
+                <p className="text-[10px] text-muted-foreground">Drag the pin to set the exact pickup location</p>
+                {MAPS_KEY ? (
+                  <div className="relative h-48 w-full overflow-hidden rounded-lg border">
+                    <APIProvider apiKey={MAPS_KEY}>
+                      <Map
+                        center={mapCenter}
+                        zoom={mapZoom}
+                        onCameraChanged={(ev) => {
+                          setMapCenter(ev.detail.center);
+                          setMapZoom(ev.detail.zoom);
+                        }}
+                        gestureHandling="greedy"
+                        disableDefaultUI
+                        mapId="listing-picker"
+                        style={{ width: "100%", height: "100%" }}
+                        clickableIcons={false}
+                        onClick={(ev) => {
+                          if (ev.detail.latLng) {
+                            setPinLat(ev.detail.latLng.lat);
+                            setPinLng(ev.detail.latLng.lng);
+                          }
+                        }}
+                      >
+                        <AdvancedMarker
+                          position={{ lat: pinLat, lng: pinLng }}
+                          draggable
+                          onDragEnd={(ev) => {
+                            if (ev.latLng) {
+                              setPinLat(ev.latLng.lat());
+                              setPinLng(ev.latLng.lng());
+                            }
+                          }}
+                        >
+                          <div className="flex flex-col items-center">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/40 ring-2 ring-white">
+                              <MapPin className="h-4 w-4 text-white" />
+                            </div>
+                            <div className="h-2 w-2 rounded-full bg-emerald-500/50 mt-0.5" />
+                          </div>
+                        </AdvancedMarker>
+                      </Map>
+                    </APIProvider>
+                  </div>
+                ) : (
+                  <div className="flex h-32 items-center justify-center rounded-lg border border-dashed bg-muted/30">
+                    <p className="text-xs text-muted-foreground">Maps API key not configured</p>
                   </div>
                 )}
-                {locationStatus === "granted" && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-emerald-600">
-                    <CheckCircle2 className="h-3.5 w-3.5" />
-                    Using your current location ({userLat?.toFixed(4)}, {userLng?.toFixed(4)})
-                  </div>
-                )}
-                {locationStatus === "denied" && (
-                  <div className="mt-2 space-y-2">
-                    <div className="flex items-center gap-2 text-xs text-amber-600">
-                      <AlertCircle className="h-3.5 w-3.5" />
-                      Location access denied. Using Merida default area.
-                    </div>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className="w-full gap-1.5 text-xs"
-                      onClick={() => {
-                        setLocationStatus("loading");
-                        navigator.geolocation?.getCurrentPosition(
-                          (pos) => {
-                            setUserLat(pos.coords.latitude);
-                            setUserLng(pos.coords.longitude);
-                            setLocationStatus("granted");
-                          },
-                          () => setLocationStatus("denied"),
-                          { enableHighAccuracy: true }
-                        );
-                      }}
-                    >
-                      <Navigation className="h-3 w-3" />
-                      Retry Location
-                    </Button>
-                  </div>
-                )}
+                <p className="text-[10px] text-muted-foreground text-center">
+                  📍 {pinLat.toFixed(5)}, {pinLng.toFixed(5)}
+                </p>
               </div>
 
               <Button

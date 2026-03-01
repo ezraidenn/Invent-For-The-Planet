@@ -763,7 +763,7 @@ export default function MapPage() {
 
       {/* ─── Selected listing panel ─── */}
       {selectedListing && (
-        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-auto lg:top-4 lg:left-4 lg:right-auto lg:w-96">
+        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-6 lg:right-6 lg:left-auto lg:w-96">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-3">
@@ -829,7 +829,7 @@ export default function MapPage() {
 
       {/* ─── Selected center panel ─── */}
       {selectedCenter && (
-        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-auto lg:top-4 lg:left-4 lg:right-auto lg:w-96">
+        <div className="absolute bottom-16 left-2 right-2 z-20 sm:left-4 sm:right-4 lg:bottom-6 lg:right-6 lg:left-auto lg:w-96">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-2">
@@ -854,23 +854,25 @@ export default function MapPage() {
                 </div>
               </div>
 
-              {/* Buy prices */}
+              {/* Buy prices — clean 2-col grid */}
               <div className="mt-2">
-                <p className="mb-1 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">Buy Prices</p>
+                <p className="mb-1.5 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">Buy Prices</p>
                 {loadingPrices ? (
                   <Loader2 className="mx-auto h-4 w-4 animate-spin text-muted-foreground" />
                 ) : centerPrices.length === 0 ? (
                   <p className="text-[11px] text-muted-foreground">No prices published</p>
                 ) : (
-                  <div className="flex flex-wrap gap-1">
+                  <div className="grid grid-cols-2 gap-1.5">
                     {centerPrices.filter((p: CenterPrice) => p.pricePerKg > 0).map((price: CenterPrice) => (
                       <div
                         key={price.materialType}
-                        className="flex items-center gap-1 rounded-md border border-border/40 px-2 py-0.5"
+                        className="flex items-center gap-1.5 rounded-md border border-border/40 bg-muted/30 px-2 py-1.5"
                       >
-                        <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: MATERIAL_COLORS[price.materialType] || "#64748b" }} />
-                        <span className="text-[10px] font-medium">{MATERIAL_LABELS[price.materialType] || price.materialType}</span>
-                        <span className="text-[10px] font-bold text-emerald-600">{formatCurrency(price.pricePerKg)}/kg</span>
+                        <div className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: MATERIAL_COLORS[price.materialType] || "#64748b" }} />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[10px] font-medium">{MATERIAL_LABELS[price.materialType] || price.materialType}</p>
+                          <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">{formatCurrency(price.pricePerKg)}/kg</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -879,7 +881,7 @@ export default function MapPage() {
 
               <Button
                 size="sm"
-                className="mt-2 w-full gap-1.5"
+                className="mt-3 w-full gap-1.5"
                 onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${selectedCenter.latitude},${selectedCenter.longitude}`, "_blank")}
               >
                 <Navigation className="h-3 w-3" />
