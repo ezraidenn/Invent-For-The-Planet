@@ -146,7 +146,7 @@ export default function MapPage() {
   });
 
   return (
-    <div className="relative flex h-full flex-col">
+    <div className="relative flex flex-col" style={{ height: '100%', minHeight: 0 }}>
       {/* Filter bar */}
       <div className="border-b bg-background">
         <div className="flex items-center gap-2 px-4 py-2">
@@ -238,7 +238,7 @@ export default function MapPage() {
       </div>
 
       {/* Map */}
-      <div className="flex-1">
+      <div className="relative flex-1" style={{ minHeight: 0 }}>
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}>
           <Map
             defaultCenter={userLocation}
@@ -246,7 +246,7 @@ export default function MapPage() {
             mapId="recimap-main"
             gestureHandling="greedy"
             disableDefaultUI={false}
-            className="h-full w-full"
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
             colorScheme={isDark ? "DARK" : "LIGHT"}
           >
             {/* Listing markers */}
