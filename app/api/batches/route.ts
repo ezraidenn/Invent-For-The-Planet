@@ -50,7 +50,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { listingIds, zone, scheduledDate, scheduledTime } = body;
+    const {
+      listingIds,
+      zone,
+      scheduledDate,
+      scheduledTime,
+      optimizedRoute,  // From smart route generator
+      autoClaim,       // If true, auto-assign to current recycler
+      estimatedEarnings,
+    } = body;
 
     if (!listingIds || !Array.isArray(listingIds) || listingIds.length === 0) {
       return NextResponse.json({ error: "listingIds required" }, { status: 400 });
@@ -71,6 +79,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No valid listings found" }, { status: 400 });
     }
 
+    const isRecycler = (session.user as any).role === "recycler";
+
     const [newBatch] = await db
       .insert(batches)
       .values({
@@ -79,14 +89,21 @@ export async function POST(req: Request) {
         stopsCount: listingData.length,
         scheduledDate: scheduledDate || null,
         scheduledTime: scheduledTime || null,
+        optimizedRoute: optimizedRoute || null,
+        estimatedEarnings: estimatedEarnings || null,
+        // Auto-claim: recycler who generates the route gets it assigned immediately
+        ...(autoClaim && isRecycler
+          ? { recyclerId: session.user.id, status: "assigned" as const }
+          : {}),
       })
       .returning();
 
-    // Update listings to batched status
+    // Update listings: if auto-claimed, go straight to "assigned", else "batched"
+    const newListingStatus = autoClaim && isRecycler ? "assigned" : "batched";
     for (const l of listingData) {
       await db
         .update(listings)
-        .set({ batchId: newBatch.id, status: "batched", updatedAt: new Date() })
+        .set({ batchId: newBatch.id, status: newListingStatus as any, updatedAt: new Date() })
         .where(eq(listings.id, l.id));
     }
 

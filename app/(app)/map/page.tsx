@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Package,
-  Factory,
   MapPin,
   Filter,
   Loader2,
   RefreshCw,
-  DollarSign,
   Navigation,
   ShieldCheck,
   X,
@@ -20,9 +20,21 @@ import {
   Check,
   Eye,
   EyeOff,
+  Zap,
+  Route,
+  Clock,
+  Weight,
+  Fuel,
+  DollarSign,
+  ChevronDown,
+  ChevronUp,
+  Truck,
+  Play,
+  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -32,6 +44,8 @@ import {
 import { MATERIAL_COLORS, MATERIAL_LABELS, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from "@/lib/constants";
 import { formatKg, formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/lib/store";
+import { toast } from "sonner";
 import type { MaterialType } from "@/types";
 
 // ─── Google Maps dark mode style ──────────────────────────────
@@ -108,6 +122,7 @@ interface CenterPrice {
 }
 
 export default function MapPage() {
+  const router = useRouter();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const [selectedListing, setSelectedListing] = useState<ListingMarker | null>(null);
@@ -118,11 +133,26 @@ export default function MapPage() {
   const [pricingFilter, setPricingFilter] = useState<"all" | "free" | "for_sale">("all");
   const [showFilters, setShowFilters] = useState(false);
   const [userLocation, setUserLocation] = useState(DEFAULT_MAP_CENTER);
+  const [hasRealLocation, setHasRealLocation] = useState(false);
+
+  // ─── Smart Route Builder state ──────────────────────────────
+  const [showRouteBuilder, setShowRouteBuilder] = useState(false);
+  const [rbMaterials, setRbMaterials] = useState<Set<string>>(new Set());
+  const [rbMaxKg, setRbMaxKg] = useState("200");
+  const [rbMaxHours, setRbMaxHours] = useState("4");
+  const [rbPricing, setRbPricing] = useState<"all" | "free" | "for_sale">("all");
+  const [rbRadiusKm, setRbRadiusKm] = useState("20");
+  const [rbGenerating, setRbGenerating] = useState(false);
+  const [rbResult, setRbResult] = useState<any>(null);
+  const [rbCreating, setRbCreating] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        (pos) => {
+          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          setHasRealLocation(true);
+        },
         () => {}
       );
     }
@@ -220,6 +250,83 @@ export default function MapPage() {
     return icons;
   }, []);
 
+  // ─── Smart Route Builder functions ────────────────────────────
+  const toggleRbMaterial = (mat: string) => {
+    setRbMaterials((prev) => {
+      const next = new Set(prev);
+      if (next.has(mat)) next.delete(mat); else next.add(mat);
+      return next;
+    });
+  };
+
+  const generateRoute = async () => {
+    setRbGenerating(true);
+    setRbResult(null);
+    try {
+      const res = await fetch("/api/routes/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lat: userLocation.lat,
+          lng: userLocation.lng,
+          materials: rbMaterials.size > 0 ? Array.from(rbMaterials) : undefined,
+          maxKg: parseFloat(rbMaxKg) || 200,
+          maxHours: parseFloat(rbMaxHours) || 4,
+          pricingMode: rbPricing,
+          radiusKm: parseFloat(rbRadiusKm) || 20,
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Generation failed");
+      }
+      const data = await res.json();
+      setRbResult(data);
+      if (data.stops?.length === 0) {
+        toast.info("No listings match your criteria. Try wider filters.");
+      } else {
+        toast.success(`Route generated: ${data.stops.length} stops, ${data.predictions.totalTimeFormatted}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setRbGenerating(false);
+    }
+  };
+
+  const createBatchFromRoute = async () => {
+    if (!rbResult?.listingIds?.length) return;
+    setRbCreating(true);
+    try {
+      const res = await fetch("/api/batches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          listingIds: rbResult.listingIds,
+          optimizedRoute: rbResult.optimizedRoute,
+          autoClaim: true,
+          estimatedEarnings: rbResult.predictions.estimatedEarnings,
+          zone: rbResult.center?.name || "Auto-generated",
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to create batch");
+      }
+      const batch = await res.json();
+      toast.success("Route created and claimed! Redirecting...");
+      router.push(`/batches/${batch.id}`);
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setRbCreating(false);
+    }
+  };
+
+  // Route preview marker SVG (numbered, different style)
+  const routePreviewMarkerSvg = (num: number) =>
+    `data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"><path d="M16 0C7.2 0 0 7.2 0 16c0 12 16 24 16 24s16-12 16-24C32 7.2 24.8 0 16 0z" fill="%236366f1" stroke="white" stroke-width="2.5"/><circle cx="16" cy="15" r="10" fill="white"/><text x="16" y="19" text-anchor="middle" font-size="12" font-weight="bold" fill="%236366f1" font-family="sans-serif">${num}</text></svg>`;
+
   return (
     <div className="absolute inset-0 flex flex-col overflow-hidden">
       {/* ─── Filter bar ─── */}
@@ -259,6 +366,18 @@ export default function MapPage() {
           >
             {showCenters ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
             Centers ({centers?.length || 0})
+          </Button>
+
+          <div className="h-5 w-px bg-border shrink-0" />
+
+          <Button
+            variant={showRouteBuilder ? "default" : "outline"}
+            size="sm"
+            onClick={() => { setShowRouteBuilder(!showRouteBuilder); setShowFilters(false); }}
+            className={cn("gap-1 shrink-0", showRouteBuilder && "bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-0 hover:from-indigo-600 hover:to-purple-600")}
+          >
+            <Zap className="h-3.5 w-3.5" />
+            Smart Route
           </Button>
 
           <div className="flex-1" />
@@ -364,6 +483,206 @@ export default function MapPage() {
             </div>
           </div>
         )}
+
+        {/* ─── Smart Route Builder Panel ─── */}
+        {showRouteBuilder && (
+          <div className="border-t bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 max-h-[60vh] overflow-y-auto">
+            <div className="px-3 py-3 space-y-3">
+              {/* Header */}
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600">
+                  <Zap className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold">Smart Route Builder</p>
+                  <p className="text-[10px] text-muted-foreground">AI-powered route generation with graph optimization</p>
+                </div>
+                <Button variant="ghost" size="icon" className="ml-auto h-7 w-7" onClick={() => { setShowRouteBuilder(false); setRbResult(null); }}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {!hasRealLocation && (
+                <div className="flex items-center gap-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/50 dark:border-amber-800/30 p-2 text-xs text-amber-700 dark:text-amber-300">
+                  <MapPin className="h-3.5 w-3.5 shrink-0" />
+                  Enable location access for best results. Using default: Mérida center.
+                </div>
+              )}
+
+              {/* Material filter */}
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                  Materials {rbMaterials.size > 0 ? `(${rbMaterials.size} selected)` : "(all)"}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(MATERIAL_LABELS).map(([mat, label]) => {
+                    const color = MATERIAL_COLORS[mat] || "#64748b";
+                    const isActive = rbMaterials.has(mat);
+                    return (
+                      <button
+                        key={mat}
+                        onClick={() => toggleRbMaterial(mat)}
+                        className={cn(
+                          "flex items-center gap-1.5 rounded-md border px-2 py-1 text-[10px] font-medium transition-all",
+                          isActive
+                            ? "shadow-sm"
+                            : "border-border/40 bg-background text-muted-foreground hover:bg-muted/30"
+                        )}
+                        style={isActive ? { borderColor: color, backgroundColor: color + "15", color } : undefined}
+                      >
+                        <div className="h-2 w-2 rounded-full" style={{ backgroundColor: color, opacity: isActive ? 1 : 0.4 }} />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Constraints row */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1 mb-1">
+                    <Weight className="h-3 w-3" /> Max kg
+                  </label>
+                  <Input type="number" value={rbMaxKg} onChange={(e) => setRbMaxKg(e.target.value)} className="h-8 text-xs" min="10" max="2000" step="10" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1 mb-1">
+                    <Clock className="h-3 w-3" /> Max hours
+                  </label>
+                  <Input type="number" value={rbMaxHours} onChange={(e) => setRbMaxHours(e.target.value)} className="h-8 text-xs" min="0.5" max="12" step="0.5" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1 mb-1">
+                    <Route className="h-3 w-3" /> Radius km
+                  </label>
+                  <Input type="number" value={rbRadiusKm} onChange={(e) => setRbRadiusKm(e.target.value)} className="h-8 text-xs" min="1" max="100" step="1" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1 mb-1">
+                    <Tag className="h-3 w-3" /> Pricing
+                  </label>
+                  <select
+                    value={rbPricing}
+                    onChange={(e) => setRbPricing(e.target.value as any)}
+                    className="h-8 w-full rounded-md border border-input bg-background px-2 text-xs"
+                  >
+                    <option value="all">All</option>
+                    <option value="free">Free only</option>
+                    <option value="for_sale">For sale only</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Generate button */}
+              <Button
+                className="w-full gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg"
+                onClick={generateRoute}
+                disabled={rbGenerating}
+              >
+                {rbGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
+                {rbGenerating ? "Generating optimal route..." : "Generate Smart Route"}
+              </Button>
+
+              {/* ─── Results ─── */}
+              {rbResult && rbResult.stops?.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+                  {/* Predictions grid */}
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {[
+                      { icon: MapPin, value: String(rbResult.predictions.totalStops), label: "Stops", color: "text-indigo-500" },
+                      { icon: Weight, value: `${rbResult.predictions.totalKg}kg`, label: "Total", color: "text-emerald-500" },
+                      { icon: Clock, value: rbResult.predictions.totalTimeFormatted, label: "Time", color: "text-amber-500" },
+                      { icon: Route, value: `${rbResult.predictions.totalDistanceKm}km`, label: "Distance", color: "text-blue-500" },
+                    ].map((s, i) => (
+                      <div key={i} className="rounded-lg bg-background/80 border border-border/40 p-2 text-center">
+                        <s.icon className={cn("mx-auto mb-0.5 h-3.5 w-3.5", s.color)} />
+                        <p className="text-xs font-bold">{s.value}</p>
+                        <p className="text-[8px] text-muted-foreground">{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Earnings estimate */}
+                  <div className="rounded-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-200/40 dark:border-emerald-800/30 p-2.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-emerald-500" />
+                        <div>
+                          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Est. Earnings (60%)</p>
+                          <p className="text-[10px] text-muted-foreground">Fuel: ~{formatCurrency(rbResult.predictions.estimatedFuelCost)}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{formatCurrency(rbResult.predictions.estimatedEarnings)}</p>
+                        <p className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">
+                          Profit: ~{formatCurrency(rbResult.predictions.estimatedProfit)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stops preview (compact) */}
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                      Route stops ({rbResult.stops.length})
+                    </p>
+                    <div className="space-y-1 max-h-32 overflow-y-auto">
+                      {rbResult.stops.map((stop: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 rounded-md bg-background/60 border border-border/30 px-2 py-1.5">
+                          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-500 text-[9px] font-bold text-white">
+                            {i + 1}
+                          </div>
+                          <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: MATERIAL_COLORS[stop.materialType] || "#888" }} />
+                          <span className="text-[10px] font-medium truncate flex-1">
+                            {MATERIAL_LABELS[stop.materialType] || stop.materialType} — {stop.estimatedKg}kg
+                          </span>
+                          <span className="text-[9px] text-muted-foreground shrink-0">{stop.segmentKm}km</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Center destination */}
+                  {rbResult.center && (
+                    <div className="flex items-center gap-2 rounded-lg bg-background/60 border border-border/30 p-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded bg-emerald-500 text-xs">♻</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-medium truncate">{rbResult.center.name}</p>
+                        <p className="text-[9px] text-muted-foreground">
+                          Return: {rbResult.predictions.returnToCenter.distanceKm}km · {Math.round(rbResult.predictions.returnToCenter.durationMin)}min
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Create batch button */}
+                  <Button
+                    className="w-full gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg"
+                    onClick={createBatchFromRoute}
+                    disabled={rbCreating}
+                  >
+                    {rbCreating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                    {rbCreating ? "Creating route..." : "Accept & Start Route"}
+                  </Button>
+
+                  <p className="text-[9px] text-center text-muted-foreground">
+                    {rbResult.candidatesScanned} listings scanned · {rbResult.algorithm}
+                  </p>
+                </motion.div>
+              )}
+
+              {/* No results message */}
+              {rbResult && rbResult.stops?.length === 0 && (
+                <div className="text-center py-4">
+                  <Package className="mx-auto h-8 w-8 text-muted-foreground/40 mb-2" />
+                  <p className="text-sm font-medium text-muted-foreground">No listings match your criteria</p>
+                  <p className="text-[11px] text-muted-foreground/60 mt-1">Try increasing radius, time, or removing material filters</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ─── Map ─── */}
@@ -412,6 +731,31 @@ export default function MapPage() {
 
             {/* User location — blue dot */}
             <Marker position={userLocation} title="Your location" icon={markerIcons.user} />
+
+            {/* Route preview markers (from Smart Route Builder) */}
+            {rbResult?.stops?.map((stop: any, i: number) => (
+              <Marker
+                key={`rb-${i}`}
+                position={{ lat: stop.lat, lng: stop.lng }}
+                title={`Stop ${i + 1}: ${MATERIAL_LABELS[stop.materialType] || stop.materialType} — ${stop.estimatedKg}kg`}
+                icon={{
+                  url: routePreviewMarkerSvg(i + 1),
+                  scaledSize: { width: 32, height: 40 } as any,
+                  anchor: { x: 16, y: 40 } as any,
+                }}
+                zIndex={1000 + i}
+              />
+            ))}
+
+            {/* Route center destination marker */}
+            {rbResult?.center && (
+              <Marker
+                position={{ lat: rbResult.center.lat, lng: rbResult.center.lng }}
+                title={`♻ ${rbResult.center.name} (destination)`}
+                icon={markerIcons.center}
+                zIndex={2000}
+              />
+            )}
           </Map>
         </APIProvider>
         )}
@@ -419,7 +763,7 @@ export default function MapPage() {
 
       {/* ─── Selected listing panel ─── */}
       {selectedListing && (
-        <div className="absolute bottom-14 left-2 right-2 z-20 sm:bottom-4 sm:left-4 sm:right-4">
+        <div className="absolute bottom-16 left-2 right-2 z-20 lg:bottom-4 sm:left-4 sm:right-4 lg:max-w-md">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-3">
@@ -485,7 +829,7 @@ export default function MapPage() {
 
       {/* ─── Selected center panel ─── */}
       {selectedCenter && (
-        <div className="absolute bottom-14 left-2 right-2 z-20 sm:bottom-4 sm:left-4 sm:right-4">
+        <div className="absolute bottom-16 left-2 right-2 z-20 lg:bottom-4 sm:left-4 sm:right-4 lg:max-w-md">
           <Card className="border-border/50 shadow-2xl shadow-black/20 backdrop-blur-xl">
             <CardContent className="p-3">
               <div className="flex items-start justify-between gap-2">
