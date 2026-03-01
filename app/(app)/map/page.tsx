@@ -275,7 +275,7 @@ export default function MapPage() {
                   title={center.name}
                   icon={{
                     url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%2316a34a"/><text x="16" y="22" text-anchor="middle" font-size="18" fill="white">♻</text></svg>'),
-                    scaledSize: typeof google !== "undefined" ? new google.maps.Size(32, 32) : undefined,
+                    scaledSize: { width: 32, height: 32 } as any,
                   }}
                 />
               ))}
@@ -286,8 +286,8 @@ export default function MapPage() {
               title="Your location"
               icon={{
                 url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%233b82f6" stroke="white" stroke-width="3"/></svg>'),
-                scaledSize: typeof google !== "undefined" ? new google.maps.Size(24, 24) : undefined,
-                anchor: typeof google !== "undefined" ? new google.maps.Point(12, 12) : undefined,
+                scaledSize: { width: 24, height: 24 } as any,
+                anchor: { x: 12, y: 12 } as any,
               }}
             />
           </Map>
