@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { useQuery } from "@tanstack/react-query";
+import { useTheme } from "next-themes";
 import {
   Package,
   Factory,
@@ -32,6 +33,28 @@ import { MATERIAL_COLORS, MATERIAL_LABELS, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM 
 import { formatKg, formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import type { MaterialType } from "@/types";
+
+// ─── Google Maps dark mode style ──────────────────────────────
+const DARK_MAP_STYLES: any[] = [
+  { elementType: "geometry", stylers: [{ color: "#212121" }] },
+  { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+  { featureType: "administrative", elementType: "geometry", stylers: [{ color: "#757575" }] },
+  { featureType: "administrative.country", elementType: "labels.text.fill", stylers: [{ color: "#9e9e9e" }] },
+  { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#bdbdbd" }] },
+  { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#181818" }] },
+  { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
+  { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#2c2c2c" }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
+  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#373737" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#3c3c3c" }] },
+  { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ color: "#4e4e4e" }] },
+  { featureType: "transit", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#3d3d3d" }] },
+];
 
 // ─── SVG marker builders ─────────────────────────────────────
 // Each material gets a unique colored pin with its initial letter
@@ -85,6 +108,8 @@ interface CenterPrice {
 }
 
 export default function MapPage() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const [selectedListing, setSelectedListing] = useState<ListingMarker | null>(null);
   const [selectedCenter, setSelectedCenter] = useState<CenterMarker | null>(null);
   const [showListings, setShowListings] = useState(true);
@@ -356,6 +381,7 @@ export default function MapPage() {
             gestureHandling="greedy"
             disableDefaultUI={false}
             style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, minHeight: '400px' }}
+            styles={isDark ? DARK_MAP_STYLES as any : undefined}
           >
             {/* Listing markers — color-coded by material */}
             {showListings &&
