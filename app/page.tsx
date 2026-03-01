@@ -27,6 +27,12 @@ import {
   Heart,
   ChevronRight,
   Play,
+  Home as HomeIcon,
+  Smartphone,
+  Factory,
+  Sprout,
+  Wheat,
+  Apple,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -105,7 +111,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-x-hidden bg-background" style={{ minHeight: 'var(--app-height, 100vh)' }}>
       {/* ─── Sticky Header ─── */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-emerald-900/90 backdrop-blur-2xl">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-emerald-900/90 backdrop-blur-2xl">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 shadow-lg">
@@ -114,8 +120,8 @@ export default function Home() {
             <span className="font-display text-xl font-bold tracking-tight text-white">ReciMap</span>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="hidden text-white/70 hover:text-white hover:bg-white/10 sm:inline-flex">
+            <Link href="/login" className="hidden sm:inline-flex">
+              <Button variant="ghost" size="sm" className="text-white/70 hover:text-white hover:bg-white/10">
                 Sign In
               </Button>
             </Link>
@@ -132,7 +138,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════
           HERO — Full green gradient banner with visual elements
           ═══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-700 text-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-700 text-white mt-16">
         {/* Background pattern overlay */}
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -201,7 +207,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/login">
-                  <Button variant="outline" size="lg" className="rounded-full border-white/30 px-8 text-white hover:bg-white/10 hover:text-white">
+                  <Button variant="outline" size="lg" className="rounded-full border-white/40 bg-white/10 px-8 text-white hover:bg-white/20 hover:text-white">
                     I have an account
                   </Button>
                 </Link>
@@ -439,18 +445,20 @@ export default function Home() {
         <div className="container relative">
           <div className="flex items-center justify-center gap-4 overflow-x-auto py-2 text-white sm:gap-8">
             {[
-              { emoji: "🏠", label: "Your Home" },
-              { emoji: "📱", label: "ReciMap" },
-              { emoji: "🚛", label: "Pickup" },
-              { emoji: "🏭", label: "Center" },
-              { emoji: "🌿", label: "Compost" },
-              { emoji: "🌾", label: "Crops" },
-              { emoji: "🍎", label: "Food" },
-              { emoji: "🏠", label: "Your Home" },
+              { icon: HomeIcon, label: "Your Home" },
+              { icon: Smartphone, label: "ReciMap" },
+              { icon: Truck, label: "Pickup" },
+              { icon: Factory, label: "Center" },
+              { icon: Sprout, label: "Compost" },
+              { icon: Wheat, label: "Crops" },
+              { icon: Apple, label: "Food" },
+              { icon: HomeIcon, label: "Your Home" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 sm:gap-6 shrink-0">
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-2xl sm:text-3xl">{item.emoji}</span>
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 sm:h-12 sm:w-12">
+                    <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" />
+                  </div>
                   <span className="text-[10px] sm:text-xs font-semibold text-white/70">{item.label}</span>
                 </div>
                 {i < 7 && (
@@ -582,9 +590,9 @@ export default function Home() {
               ))}
             </div>
             <blockquote className="font-serif text-2xl italic leading-relaxed text-white/90 sm:text-3xl lg:text-4xl">
-              &ldquo;Tu basura de hoy es la{" "}
+              &ldquo;Today&apos;s waste is{" "}
               <span className="not-italic font-bold text-emerald-200">
-                comida de mañana
+                tomorrow&apos;s food
               </span>
               &rdquo;
             </blockquote>
@@ -632,7 +640,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/login">
-                <Button variant="outline" size="lg" className="rounded-full border-white/30 px-8 text-white hover:bg-white/10 hover:text-white">
+                <Button variant="outline" size="lg" className="rounded-full border-white/40 bg-white/10 px-8 text-white hover:bg-white/20 hover:text-white">
                   Sign In
                 </Button>
               </Link>
@@ -649,9 +657,12 @@ export default function Home() {
               <Leaf className="h-3.5 w-3.5 text-white" />
             </div>
             <span className="font-medium text-foreground/70">ReciMap 2026</span>
+            <span className="text-xs text-muted-foreground/50">&bull;</span>
+            <span className="text-xs font-semibold text-violet-800 dark:text-violet-300">Team SamurAi</span>
           </div>
-          <p className="text-xs text-muted-foreground/70">
-            Built for Invent for the Planet &bull; Tecnol&oacute;gico de Monterrey
+          <p className="text-xs text-center">
+            <span className="text-muted-foreground/70">Built for Invent for the Planet &bull; </span>
+            <span className="font-semibold text-violet-800 dark:text-violet-300">Universidad Polit&eacute;cnica de Yucat&aacute;n</span>
           </p>
         </div>
       </footer>
